@@ -15,7 +15,7 @@ namespace ApocalypticPizzaDash
         private const float GRAVITY = 1.3f;
         private const float INITL_JUMP_V = -13.5f;
         private float ySpeed;
-        private bool isUp;
+        private bool isUp, isClimbing;
 
         // when player gets hit, he'll be invincible to attack for some time
         // (to be implemented in milestone 3)
@@ -31,6 +31,7 @@ namespace ApocalypticPizzaDash
         public Player(Texture2D image, Rectangle rect, int health):base(image, rect, health)
         {
             isUp = false;
+            isClimbing = false;
         }
 
         // properties
@@ -38,6 +39,12 @@ namespace ApocalypticPizzaDash
         {
             get { return isUp; }
             set { isUp = value; }
+        }
+
+        public bool IsClimbing
+        {
+            get { return isClimbing; }
+            set { isClimbing = value; }
         }
 
         public Rectangle AttackBox
@@ -121,7 +128,7 @@ namespace ApocalypticPizzaDash
                 }
             }
 
-            //jumping controls
+            // jumping controls
             if(SingleKeyPress(Keys.K) && !isUp)
             {
                 // when the player first jumps, it starts moving upward with an
@@ -131,7 +138,7 @@ namespace ApocalypticPizzaDash
                 // ensuring that the player stays in the air
                 isUp = true;
             }
-            
+
             // saving current keyboard state as the previous one
             prevKBState = kbState;
         }
@@ -162,6 +169,27 @@ namespace ApocalypticPizzaDash
                 return false;
             }
         }
+
+        public bool Climb(KeyboardState kState)
+        {
+
+            // climbing controls
+            if (kState.IsKeyDown(Keys.W) && !isClimbing)
+            {
+                Rect = new Rectangle(Rect.X, Rect.Y - 2, Rect.Width, Rect.Height);
+                isClimbing = true;
+                return true;
+            }
+            else if (kState.IsKeyDown(Keys.S) && isClimbing)
+            {
+                Rect = new Rectangle(Rect.X, Rect.Y + 2, Rect.Width, Rect.Height);
+                return true;
+            }
+
+            return false;
+
+        }
+
         public bool SingleKeyPress(Keys key)
         {
             // only true if it's the first frame in which the param key is pressed

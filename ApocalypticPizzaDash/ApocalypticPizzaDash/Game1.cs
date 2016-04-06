@@ -28,7 +28,7 @@ namespace ApocalypticPizzaDash
         const int PLAYER_HEIGHT = 23;
         const int PLAYER_WIDTH = 15;
 
-        //animating player attacking 
+        //animate player attacking 
         const int PLAYER_ATTACK_HEIGHT = 23;
         const int PLAYER_ATTACK_WIDTH = 21;
         int playerAttackFrame;
@@ -36,7 +36,15 @@ namespace ApocalypticPizzaDash
         int playerAttackFramesElapsed;
         double timePerPlayerAttackFrame = 100;
 
-        //animating player movement
+        // animate player climbing
+        const int PLAYER_CLIMB_HEIGHT = 23;
+        const int PLAYER_CLIMB_WIDTH = 14;
+        int playerClimbFrame;
+        int numPlayerClimbFrames;
+        int playerClimbFramesElapsed;
+        double timePerPlayerClimbFrame = 100;
+
+        //animate player movement
         int numPlayerFrames = 7;
         int playerFrame;
         int playerFramesElapsed;
@@ -55,7 +63,7 @@ namespace ApocalypticPizzaDash
         SpriteFont font;
         int[] types;
         BinaryReader reader;
-        private Texture2D background, playerAttack;
+        private Texture2D background, playerAttack, playerClimb;
         List<Texture2D> UI = new List<Texture2D>();
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -125,6 +133,7 @@ namespace ApocalypticPizzaDash
             // now giving the player and zombie their respective sprites
             player.Image = Content.Load<Texture2D>("spritesheet");
             playerAttack = Content.Load<Texture2D>("attack2");
+            playerClimb = Content.Load<Texture2D>("climb1");
 
             for(int i = 0; i < zombies.Count; i++)
             {
@@ -321,7 +330,7 @@ namespace ApocalypticPizzaDash
                     }
 
                     // decrement the timer
-                    timer--;
+                    //timer--;
                     break;
 
                 case GameState.GameOver:
