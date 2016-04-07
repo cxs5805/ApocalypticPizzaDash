@@ -1,5 +1,3 @@
-        private bool isUp, isClimbing;
-            isClimbing = false;
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +15,7 @@ namespace ApocalypticPizzaDash
         private const float GRAVITY = 1.3f;
         private const float INITL_JUMP_V = -20f;
         private float ySpeed;
-        private bool isUp;
+        private bool isUp, isClimbing;
 
         // when player gets hit, he'll be invincible to attack for some time
         // (to be implemented in milestone 3)
@@ -33,6 +31,7 @@ namespace ApocalypticPizzaDash
         public Player(Texture2D image, Rectangle rect, int health):base(image, rect, health)
         {
             isUp = false;
+            isClimbing = false;
         }
 
         // properties
@@ -46,8 +45,6 @@ namespace ApocalypticPizzaDash
         {
             get { return isClimbing; }
             set { isClimbing = value; }
-        }
-
         }
 
         public Rectangle AttackBox
@@ -174,31 +171,32 @@ namespace ApocalypticPizzaDash
         }
 
         public bool Climb(KeyboardState kState)
-        }
-        public bool SingleKeyPress(Keys key)
         {
-
             // climbing controls
             if (kState.IsKeyDown(Keys.W) && !isClimbing)
-            // only true if it's the first frame in which the param key is pressed
-            if(kbState.IsKeyDown(key) && prevKBState.IsKeyUp(key))
             {
                 Rect = new Rectangle(Rect.X, Rect.Y - 2, Rect.Width, Rect.Height);
                 isClimbing = true;
-                return true;
             }
             else if (kState.IsKeyDown(Keys.S) && isClimbing)
-            }
-            else
             {
                 Rect = new Rectangle(Rect.X, Rect.Y + 2, Rect.Width, Rect.Height);
                 return true;
+            }
+            return false;
+        }
+
+        public bool SingleKeyPress(Keys key)
+        {
+            // only true if it's the first frame in which the param key is pressed
+            if(kbState.IsKeyDown(key) && prevKBState.IsKeyUp(key))
+            {
+                return true;
+            }
+            else
+            {
                 return false;
             }
-
-            return false;
-
-        }
         }
     }
 }

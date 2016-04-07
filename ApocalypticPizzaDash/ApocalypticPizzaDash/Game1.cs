@@ -44,9 +44,12 @@ namespace ApocalypticPizzaDash
         int playerClimbFramesElapsed;
         double timePerPlayerClimbFrame = 100;
 
+        //animating player movement
         int numPlayerFrames = 7;
         int playerFrame;
         int playerFramesElapsed;
+
+
         double timePerPlayerFrame = 100;
 
         // zombie attributes
@@ -78,9 +81,8 @@ namespace ApocalypticPizzaDash
 
 
         SpriteFont font;
-        private Texture2D background, playerAttack, playerClimb;
+        private Texture2D background, playerImage, playerAttack, playerClimb;
         List<Texture2D> UI = new List<Texture2D>();
-        private Texture2D background, playerImage, UI, playerAttack;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont testFont;
