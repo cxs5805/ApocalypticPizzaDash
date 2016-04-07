@@ -41,6 +41,7 @@
     <Compile Include="Building.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="LevelReader.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,6 +71,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\climb1.png">
+    <Content Include="Content\Building1.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Building2.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\gameover.png">

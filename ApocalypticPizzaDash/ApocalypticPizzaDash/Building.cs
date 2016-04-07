@@ -28,5 +28,10 @@ namespace ApocalypticPizzaDash
             get { return rect; }
             set { rect = value; }
         }
+
+        public Texture2D Image
+        {
+            get { return image; }
+        }
     }
 }

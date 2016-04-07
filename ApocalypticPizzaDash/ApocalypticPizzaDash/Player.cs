@@ -1,3 +1,5 @@
+        private bool isUp, isClimbing;
+            isClimbing = false;
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +15,9 @@ namespace ApocalypticPizzaDash
 
         // jumping attributes
         private const float GRAVITY = 1.3f;
-        private const float INITL_JUMP_V = -13.5f;
+        private const float INITL_JUMP_V = -20f;
         private float ySpeed;
-        private bool isUp, isClimbing;
+        private bool isUp;
 
         // when player gets hit, he'll be invincible to attack for some time
         // (to be implemented in milestone 3)
@@ -31,7 +33,6 @@ namespace ApocalypticPizzaDash
         public Player(Texture2D image, Rectangle rect, int health):base(image, rect, health)
         {
             isUp = false;
-            isClimbing = false;
         }
 
         // properties
@@ -45,6 +46,8 @@ namespace ApocalypticPizzaDash
         {
             get { return isClimbing; }
             set { isClimbing = value; }
+        }
+
         }
 
         public Rectangle AttackBox
@@ -69,7 +72,7 @@ namespace ApocalypticPizzaDash
                 // setting leftmost edge of window as boundary
                 if(!(Rect.X <= 0))
                 {
-                    Rect = new Rectangle(Rect.X - 2, Rect.Y, Rect.Width, Rect.Height);
+                    Rect = new Rectangle(Rect.X - 4, Rect.Y, Rect.Width, Rect.Height);
                 }
             }
             // press and hold D to move right
@@ -80,7 +83,7 @@ namespace ApocalypticPizzaDash
                 // setting rightmost edge of window as another boundary
                 if(!(Rect.X + Rect.Width >= screenWidth))
                 {
-                    Rect = new Rectangle(Rect.X + 2, Rect.Y, Rect.Width, Rect.Height);
+                    Rect = new Rectangle(Rect.X + 4, Rect.Y, Rect.Width, Rect.Height);
                 }
             }
             // player faces last direction walked
@@ -114,7 +117,7 @@ namespace ApocalypticPizzaDash
                 ySpeed += GRAVITY;
 
                 // if the player is below the ground and falling...
-                if(Rect.Y + Rect.Height > minHeight && ySpeed > 0)
+                if(Rect.Y > minHeight && ySpeed > 0)
                 {
                     // ...reset the height and ySpeed to default values when grounded
                     Rect = new Rectangle(Rect.X, minHeight, Rect.Width, Rect.Height);
@@ -128,7 +131,7 @@ namespace ApocalypticPizzaDash
                 }
             }
 
-            // jumping controls
+            //jumping controls
             if(SingleKeyPress(Keys.K) && !isUp)
             {
                 // when the player first jumps, it starts moving upward with an
@@ -138,7 +141,7 @@ namespace ApocalypticPizzaDash
                 // ensuring that the player stays in the air
                 isUp = true;
             }
-
+            
             // saving current keyboard state as the previous one
             prevKBState = kbState;
         }
@@ -156,11 +159,11 @@ namespace ApocalypticPizzaDash
                 int hitboxWidth = 18;
                 if (Dir == Direction.FaceRight || Dir == Direction.MoveRight)
                 {
-                    AttackBox = new Rectangle(Rect.X + 16, Rect.Y + 13, hitboxWidth, 5);
+                    AttackBox = new Rectangle(Rect.X + hitboxWidth + 12, Rect.Y + 26, hitboxWidth, 5);
                 }
                 else if (Dir == Direction.FaceLeft || Dir == Direction.MoveLeft)
                 {
-                    AttackBox = new Rectangle(Rect.X - (hitboxWidth + 1), Rect.Y + 13, hitboxWidth, 5);
+                    AttackBox = new Rectangle(Rect.X - (hitboxWidth + 1), Rect.Y + 26, hitboxWidth, 5);
                 }
                 return true;
             }
@@ -171,36 +174,31 @@ namespace ApocalypticPizzaDash
         }
 
         public bool Climb(KeyboardState kState)
+        }
+        public bool SingleKeyPress(Keys key)
         {
 
             // climbing controls
             if (kState.IsKeyDown(Keys.W) && !isClimbing)
+            // only true if it's the first frame in which the param key is pressed
+            if(kbState.IsKeyDown(key) && prevKBState.IsKeyUp(key))
             {
                 Rect = new Rectangle(Rect.X, Rect.Y - 2, Rect.Width, Rect.Height);
                 isClimbing = true;
                 return true;
             }
             else if (kState.IsKeyDown(Keys.S) && isClimbing)
+            }
+            else
             {
                 Rect = new Rectangle(Rect.X, Rect.Y + 2, Rect.Width, Rect.Height);
                 return true;
+                return false;
             }
 
             return false;
 
         }
-
-        public bool SingleKeyPress(Keys key)
-        {
-            // only true if it's the first frame in which the param key is pressed
-            if(kbState.IsKeyDown(key) && prevKBState.IsKeyUp(key))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }

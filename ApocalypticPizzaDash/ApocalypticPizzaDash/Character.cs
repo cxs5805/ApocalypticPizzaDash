@@ -20,7 +20,6 @@ namespace ApocalypticPizzaDash
     {
         // attributes
         private Rectangle rect; //A rectangle object that will store the charatcer's X, Y, width, height, etc.
-        private Vector2 loc;
         private Direction dir;
         private Texture2D image; // the character's sprite
         private int currentHealth, totalHealth;
@@ -31,7 +30,6 @@ namespace ApocalypticPizzaDash
         {
             this.image = image;
             this.rect = rect;
-            loc = new Vector2(this.rect.X, this.rect.Y);
             currentHealth = health;
             totalHealth = health;
             color = Color.White;
@@ -45,12 +43,6 @@ namespace ApocalypticPizzaDash
         {
             get { return rect; }
             set { rect = value; }
-        }
-
-        public Vector2 Loc
-        {
-            get { return loc; }
-            set { loc = value; }
         }
 
         public Direction Dir
