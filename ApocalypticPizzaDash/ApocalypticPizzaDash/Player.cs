@@ -150,17 +150,20 @@ namespace ApocalypticPizzaDash
             kbState = kState;
 
             // attack by pressing the "J" key while on the ground
-            if (SingleKeyPress(Keys.J) && !IsUp)
+            if (SingleKeyPress(Keys.J) && !IsUp && !isClimbing)
             {
-                // draw hitbox of attack depending on direction player is facing
+                // set height and width of attack hitbox
                 int hitboxWidth = 18;
+                int hitboxHeight = 10;
+
+                // draw hitbox of attack depending on direction player is facing
                 if (Dir == Direction.FaceRight || Dir == Direction.MoveRight)
                 {
-                    AttackBox = new Rectangle(Rect.X + hitboxWidth + 12, Rect.Y + 26, hitboxWidth, 5);
+                    AttackBox = new Rectangle(Rect.X + 29, Rect.Y + 26, hitboxWidth, hitboxHeight);
                 }
                 else if (Dir == Direction.FaceLeft || Dir == Direction.MoveLeft)
                 {
-                    AttackBox = new Rectangle(Rect.X - (hitboxWidth + 1), Rect.Y + 26, hitboxWidth, 5);
+                    AttackBox = new Rectangle(Rect.X - (hitboxWidth - 1), Rect.Y + 26, hitboxWidth, hitboxHeight);
                 }
                 return true;
             }
@@ -170,17 +173,21 @@ namespace ApocalypticPizzaDash
             }
         }
 
-        public bool Climb(KeyboardState kState)
+        public bool Climb(KeyboardState kState, int ladderX)
         {
             // climbing controls
-            if (kState.IsKeyDown(Keys.W) && !isClimbing)
+            if (kState.IsKeyDown(Keys.W))
             {
-                Rect = new Rectangle(Rect.X, Rect.Y - 2, Rect.Width, Rect.Height);
+                Rect = new Rectangle(ladderX, Rect.Y - 2, Rect.Width, Rect.Height);
                 isClimbing = true;
             }
             else if (kState.IsKeyDown(Keys.S) && isClimbing)
             {
-                Rect = new Rectangle(Rect.X, Rect.Y + 2, Rect.Width, Rect.Height);
+                Rect = new Rectangle(ladderX, Rect.Y + 2, Rect.Width, Rect.Height);
+                if(Rect.Y >= 356)
+                {
+                    isClimbing = false;
+                }
                 return true;
             }
             return false;

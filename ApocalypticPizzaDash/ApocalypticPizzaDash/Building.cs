@@ -13,6 +13,7 @@ namespace ApocalypticPizzaDash
         // attributes
         private int type;
         private Rectangle rect;
+        private Dictionary<string, Rectangle> hitboxes;
         private Texture2D image;
 
         public Building(int type, Rectangle rect, Texture2D image)
@@ -20,6 +21,7 @@ namespace ApocalypticPizzaDash
             this.type = type;
             this.rect = rect;
             this.image = image;
+            hitboxes = new Dictionary<string, Rectangle>();
         }
 
         // properties
@@ -29,9 +31,35 @@ namespace ApocalypticPizzaDash
             set { rect = value; }
         }
 
+        public Dictionary<string, Rectangle> Hitboxes
+        {
+            get { return hitboxes; }
+            set { hitboxes = value; }
+        }
+
         public Texture2D Image
         {
             get { return image; }
+        }
+
+        public void SetHitboxes()
+        {
+            if(type == 0)
+            {
+                hitboxes.Add("ladder1", new Rectangle(rect.X + 118, rect.Y + 102, 38, 148));
+                hitboxes.Add("ladder2", new Rectangle(rect.X + 88, rect.Y + 38, 36, 66));
+                hitboxes.Add("platform1", new Rectangle(rect.X + 88, rect.Y + 102, 64, 8));
+                hitboxes.Add("roof1", new Rectangle(rect.X + 0, rect.Y + 38, 170, 12));
+                hitboxes.Add("door1", new Rectangle(rect.X + 28, rect.Y + 198, 34, 52));
+            }
+            else if(type == 1)
+            {
+                hitboxes.Add("ladder1", new Rectangle(rect.X + 84, rect.Y + 84, 38, 208));
+                hitboxes.Add("roof1", new Rectangle(rect.X + 0, rect.Y + 84, 140, 12));
+                hitboxes.Add("roof2", new Rectangle(rect.X + 62, rect.Y + 0, 186, 12));
+                hitboxes.Add("door1", new Rectangle(rect.X + 18, rect.Y + 240, 34, 52));
+                hitboxes.Add("door2", new Rectangle(rect.X + 194, rect.Y + 240, 34, 52));
+            }
         }
     }
 }

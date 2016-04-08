@@ -32,8 +32,6 @@ namespace ApocalypticPizzaDash
 
             }
 
-            intholder.Remove(intholder[0]);
-
             return intholder;
         }
 
