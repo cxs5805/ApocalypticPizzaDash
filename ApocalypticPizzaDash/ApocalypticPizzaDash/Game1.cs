@@ -229,7 +229,7 @@ namespace ApocalypticPizzaDash
                         gState = GameState.Game;
                         timer = 600;
                         currentLevel = 1;
-                        levelData = reader.readIn("level" + currentLevel.ToString() + ".dat");
+                        levelData = reader.readIn("Content/Levels/level" + currentLevel.ToString() + ".dat");
                         levelRects = reader.makeRect(levelData);
                         int currentZombies = 0;
                         int currentBuildings = 0;
