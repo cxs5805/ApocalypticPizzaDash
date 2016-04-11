@@ -75,6 +75,14 @@ namespace ApocalypticPizzaDash
         LevelReader reader;
         int levelWidth;
 
+        //indicator stuff
+        List<Rectangle> indicator;
+        Rectangle charStandee;
+        Rectangle indBar;
+        Texture2D indicatorBar;
+        Texture2D playerStandee;
+        Texture2D delivery;
+
         // eventually, these Vector2 objects will become attributes of the Character class,
         // but for testing purposes they're in Game1 because we're only using one zombie to
         // test stuff out
@@ -145,6 +153,11 @@ namespace ApocalypticPizzaDash
             levelRects = new List<Rectangle>();
             levelWidth = 0;
 
+            //set up indicator stuff
+            indicator = new List<Rectangle>();
+            charStandee = new Rectangle(0, 20, 8, 12);
+            indBar = new Rectangle(((GraphicsDevice.Viewport.Width / 2) - (101)), 32, 202, 12);
+
             // initialize the screen's position
             screen = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
@@ -182,6 +195,11 @@ namespace ApocalypticPizzaDash
             // buildings
             building1 = Content.Load<Texture2D>("Building1");
             building2 = Content.Load<Texture2D>("Building2");
+
+            //indicator
+            playerStandee = Content.Load<Texture2D>("Pizzaperson");
+            indicatorBar = Content.Load<Texture2D>("IndicatorBar");
+            delivery = Content.Load<Texture2D>("Delivery");
 
             testFont = Content.Load<SpriteFont>("Arial14Bold");
 
@@ -517,6 +535,9 @@ namespace ApocalypticPizzaDash
                         screen = new Rectangle(levelWidth - screen.Width, 0, screen.Width, screen.Height);
                     }
 
+                    //set up the indicators
+                    charStandee.X = (indBar.X + ((indBar.Width * player.Rect.X) / levelWidth));
+
                     break;
 
                 case GameState.GameOver:
@@ -569,9 +590,13 @@ namespace ApocalypticPizzaDash
                         {
                             timeDisplay = "Time: " + minutes + ":0" + seconds;
                         }
-                       
-                         // draw buildings
-                        for(int i = 0; i < buildings.Count; i++)
+
+                    //draw indicators
+                    spriteBatch.Draw(indicatorBar, indBar, Color.White);
+                    spriteBatch.Draw(playerStandee, charStandee, Color.White);
+
+                    // draw buildings
+                    for (int i = 0; i < buildings.Count; i++)
                         {
                             spriteBatch.Draw(buildings[i].Image, new Rectangle(buildings[i].Rect.X - screen.X, buildings[i].Rect.Y, buildings[i].Rect.Width, buildings[i].Rect.Height), Color.White);
                         }
