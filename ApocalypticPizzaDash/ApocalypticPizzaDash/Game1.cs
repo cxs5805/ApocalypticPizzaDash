@@ -169,7 +169,7 @@ namespace ApocalypticPizzaDash
 
             gameover = Content.Load<Texture2D>("gameover");
 
-            pause = Content.Load<Texture2D>("paused");
+            pause = Content.Load<Texture2D>("pausebox2");
 
             // now giving the player and zombie their respective sprites
             player.Image = Content.Load<Texture2D>("spritesheet");
@@ -446,7 +446,7 @@ namespace ApocalypticPizzaDash
                             // handling input to move player
                             if (!player.IsClimbing)
                             {
-                                player.Move(kState, levelWidth, 356, GraphicsDevice.Viewport.Height - 120);
+                                player.Move(kState, levelWidth, 356, GraphicsDevice.Viewport.Height - 120, buildings);
                             }
 
                             // If the player is colliding with the right hitbox, enable climbing
@@ -548,8 +548,6 @@ namespace ApocalypticPizzaDash
 
             spriteBatch.Begin();
 
-            if(!isPaused)
-            {
                 switch (gState)
                 {
                     case GameState.Menu:
@@ -662,21 +660,20 @@ namespace ApocalypticPizzaDash
 
                             }
                         }
-                        break;
+
+                    if (isPaused)
+                    {
+                        spriteBatch.Draw(pause, new Rectangle(0, 0, 800, 450), Color.White);
+                    }
+
+                    break;
 
                     case GameState.GameOver:
                         // drawing the game over screen and prompting player to try again
                         spriteBatch.Draw(gameover, new Rectangle(0, 0, 800, 450), Color.White);
                         break;
                 }
-            }
-            // draw the pause screen
-            else
-            {
-                GraphicsDevice.Clear(Color.White);
-                spriteBatch.Draw(pause, new Rectangle(0, 0, 800, 450), Color.White);
-            }
-            
+
             spriteBatch.End();
 
             base.Draw(gameTime);

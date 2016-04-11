@@ -85,6 +85,9 @@
     <Content Include="Content\pause screen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\pausebox2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\paused.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -263,3 +263,4 @@ D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\
 D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\levels\level1.dat
 D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\climb1.png
 D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Levels\level1.dat
+D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\pausebox2.png

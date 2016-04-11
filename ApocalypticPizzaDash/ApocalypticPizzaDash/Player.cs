@@ -56,7 +56,7 @@ namespace ApocalypticPizzaDash
         /// <summary>
         /// Moves the player
         /// </summary>
-        public void Move(KeyboardState kState, int screenWidth, int minHeight, int maxHeight)
+        public void Move(KeyboardState kState, int screenWidth, int minHeight, int maxHeight, List<Building> buildings)
         {
             // storing param into attribute for use later
             kbState = kState;
@@ -108,13 +108,33 @@ namespace ApocalypticPizzaDash
                 }
             }
             // Update Velocity
-            if(isUp)
+            bool isOnBuilding = false;
+            if (isUp)
             {
                 // decrementing by acceleration due to gravity
                 ySpeed += GRAVITY;
 
+                // Logic for solid platforms
+                Rectangle collision = new Rectangle(Rect.X, Rect.Y, Rect.Width, Rect.Height + 1);
+                for (int i = 0; i < buildings.Count && !isOnBuilding; i++)
+                {
+                    for (int j = 0; j < buildings[i].Hitboxes.Count && !isOnBuilding; j++)
+                    {
+                        if (buildings[i].Hitboxes.ContainsKey("roof" + j.ToString()))
+                        {
+                            if (collision.Intersects(buildings[i].Hitboxes["roof" + j.ToString()]) && ySpeed > 0)
+                            {
+                                Rect = new Rectangle(Rect.X, buildings[i].Hitboxes["roof" + j.ToString()].Y - Rect.Height, Rect.Width, Rect.Height);
+                                isOnBuilding = true;
+                                isUp = false;
+                                ySpeed = 0;
+                            }
+                        }
+                    }
+                }
+
                 // if the player is below the ground and falling...
-                if(Rect.Y > minHeight && ySpeed > 0)
+                if (Rect.Y > minHeight && ySpeed > 0)
                 {
                     // ...reset the height and ySpeed to default values when grounded
                     Rect = new Rectangle(Rect.X, minHeight, Rect.Width, Rect.Height);
@@ -126,10 +146,18 @@ namespace ApocalypticPizzaDash
                     // moving player up before falling
                     Rect = new Rectangle(Rect.X, Rect.Y + (int)ySpeed, Rect.Width, Rect.Height);
                 }
+
+            }
+            if (!isOnBuilding)
+            {
+                if (Rect.Y < minHeight)
+                {
+                    isUp = true;
+                }
             }
 
             //jumping controls
-            if(SingleKeyPress(Keys.K) && !isUp)
+            if (SingleKeyPress(Keys.K) && !isUp)
             {
                 // when the player first jumps, it starts moving upward with an
                 // initial velocity in the opposite direction of gravity
