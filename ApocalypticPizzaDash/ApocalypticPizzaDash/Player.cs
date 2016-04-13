@@ -30,7 +30,7 @@ namespace ApocalypticPizzaDash
 
         public Player(Texture2D image, Rectangle rect, int health):base(image, rect, health)
         {
-            isUp = false;
+            isUp = true;
             isClimbing = false;
         }
 
@@ -109,6 +109,9 @@ namespace ApocalypticPizzaDash
             }
             // Update Velocity
             bool isOnBuilding = false;
+
+            isUp = true;
+
             if (isUp)
             {
                 // decrementing by acceleration due to gravity
@@ -124,17 +127,27 @@ namespace ApocalypticPizzaDash
                         {
                             if (collision.Intersects(buildings[i].Hitboxes["roof" + j.ToString()]) && ySpeed > 0)
                             {
+                                
                                 Rect = new Rectangle(Rect.X, buildings[i].Hitboxes["roof" + j.ToString()].Y - Rect.Height, Rect.Width, Rect.Height);
                                 isOnBuilding = true;
-                                isUp = false;
+                                
                                 ySpeed = 0;
+                                isUp = false;
                             }
                         }
                     }
                 }
 
+                if (!isOnBuilding)
+                {
+                    if (Rect.Y < minHeight)
+                    {
+                        isUp = true;
+                    }
+                }
+
                 // if the player is below the ground and falling...
-                if (Rect.Y > minHeight && ySpeed > 0)
+                if (collision.Y + 1 > minHeight && ySpeed > 0)
                 {
                     // ...reset the height and ySpeed to default values when grounded
                     Rect = new Rectangle(Rect.X, minHeight, Rect.Width, Rect.Height);
@@ -148,14 +161,7 @@ namespace ApocalypticPizzaDash
                 }
 
             }
-            if (!isOnBuilding)
-            {
-                if (Rect.Y < minHeight)
-                {
-                    isUp = true;
-                }
-            }
-
+            
             //jumping controls
             if (SingleKeyPress(Keys.K) && !isUp)
             {
@@ -203,15 +209,18 @@ namespace ApocalypticPizzaDash
 
         public bool Climb(KeyboardState kState, int ladderX)
         {
-            // climbing controls
+            // climbing controls when at bottom of ladder
             if (kState.IsKeyDown(Keys.W))
             {
                 Rect = new Rectangle(ladderX, Rect.Y - 2, Rect.Width, Rect.Height);
                 isClimbing = true;
             }
+            // climb down
             else if (kState.IsKeyDown(Keys.S) && isClimbing)
             {
                 Rect = new Rectangle(ladderX, Rect.Y + 2, Rect.Width, Rect.Height);
+                
+                // when player reaches ground, don't change Y value anymore
                 if(Rect.Y >= 356)
                 {
                     isClimbing = false;
