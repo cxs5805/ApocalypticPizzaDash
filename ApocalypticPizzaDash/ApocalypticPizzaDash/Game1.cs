@@ -37,10 +37,10 @@ namespace ApocalypticPizzaDash
         double timePerPlayerAttackFrame = 100;
 
         // animate player climbing
-        const int PLAYER_CLIMB_HEIGHT = 23;
-        const int PLAYER_CLIMB_WIDTH = 14;
+        const int PLAYER_CLIMB_HEIGHT = 46;
+        const int PLAYER_CLIMB_WIDTH = 28;
         int playerClimbFrame;
-        int numPlayerClimbFrames;
+        int numPlayerClimbFrames = 3;
         int playerClimbFramesElapsed;
         double timePerPlayerClimbFrame = 100;
 
@@ -398,6 +398,7 @@ namespace ApocalypticPizzaDash
 
                         // getting total number of frames elapsed thus far in the existence of each object 
                         playerAttackFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerAttackFrame);
+                        playerClimbFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerClimbFrame);
                         playerFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerFrame);
                         zombieFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerZombieFrame);
 
@@ -446,9 +447,13 @@ namespace ApocalypticPizzaDash
                                     }
                                 }
                             }
-                            if(canClimb)
+                            if (canClimb)
                             {
                                 player.Climb(kState, ladderX);
+                                if (player.IsClimbing == true && (kState.IsKeyDown(Keys.W) || kState.IsKeyDown(Keys.S)))
+                                {
+                                    playerClimbFrame = playerClimbFramesElapsed % numPlayerClimbFrames + 1;
+                                }
                             }
                             else
                             {
@@ -456,6 +461,7 @@ namespace ApocalypticPizzaDash
                             }
 
                             // animating player
+
                             switch (player.Dir)
                             {
                                 // when the player is standing still, only frame 0 (standing idle) gets drawn
@@ -469,7 +475,7 @@ namespace ApocalypticPizzaDash
                                 default:
                                     playerFrame = playerFramesElapsed % numPlayerFrames + 1;
                                     break;
-                            }
+                            }                       
                         }
                         else
                         {
@@ -627,14 +633,22 @@ namespace ApocalypticPizzaDash
                             // draw the player moving
                             else
                             {
-                                if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
+                                if (player.IsClimbing == false)
                                 {
-                                    spriteBatch.Draw(player.Image, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerFrame * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT), player.Color, 0, Vector2.Zero, 1,
-                                        SpriteEffects.FlipHorizontally, 0);
+                                    if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
+                                    {
+                                        spriteBatch.Draw(player.Image, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerFrame * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT), player.Color, 0, Vector2.Zero, 1,
+                                            SpriteEffects.FlipHorizontally, 0);
+                                    }
+                                    else if (player.Dir == Direction.FaceRight || player.Dir == Direction.MoveRight)
+                                    {
+                                        spriteBatch.Draw(player.Image, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerFrame * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT), player.Color);
+                                    }
                                 }
-                                else if (player.Dir == Direction.FaceRight || player.Dir == Direction.MoveRight)
+                                else
                                 {
-                                    spriteBatch.Draw(player.Image, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerFrame * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT), player.Color);
+                                    spriteBatch.Draw(playerClimb, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerClimbFrame * PLAYER_CLIMB_WIDTH, 0, PLAYER_CLIMB_WIDTH, PLAYER_CLIMB_HEIGHT), player.Color, 0, Vector2.Zero, 1,
+                                            SpriteEffects.FlipHorizontally, 0);
                                 }
                             }
                         }

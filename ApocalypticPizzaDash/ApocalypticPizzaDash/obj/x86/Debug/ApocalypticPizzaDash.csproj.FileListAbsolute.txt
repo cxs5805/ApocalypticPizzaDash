@@ -275,7 +275,6 @@ Z:\GDAPSII\GDAPS Current Game\Game\ApocalypticPizzaDash\ApocalypticPizzaDash\bin
 Z:\GDAPSII\GDAPS Current Game\Game\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\climb1.png
 Z:\GDAPSII\GDAPS Current Game\Game\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\gameover.png
 Z:\GDAPSII\GDAPS Current Game\Game\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\pause screen.png
-Z:\GDAPSII\GDAPS Current Game\Game\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\pausebox2.png
 Z:\GDAPSII\GDAPS Current Game\Game\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\paused.png
 Z:\GDAPSII\GDAPS Current Game\Game\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Pizzagirl.png
 Z:\GDAPSII\GDAPS Current Game\Game\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\spritesheet.png
@@ -324,3 +323,4 @@ D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\Apocaly
 D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\MonoGame.Framework.dll
 D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\OpenTK.dll
 D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
+Z:\GDAPSII\GDAPS Current Game\Game\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\pausebox2.png
