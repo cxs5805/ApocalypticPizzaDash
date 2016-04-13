@@ -324,3 +324,6 @@ D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\Apocaly
 D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\MonoGame.Framework.dll
 D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\OpenTK.dll
 D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
+D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Delivery.png
+D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\IndicatorBar.png
+D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Pizzaperson.png

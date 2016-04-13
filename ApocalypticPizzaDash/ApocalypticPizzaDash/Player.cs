@@ -118,8 +118,8 @@ namespace ApocalypticPizzaDash
                 ySpeed += GRAVITY;
 
                 // Logic for solid platforms
-                Rectangle collision = new Rectangle(Rect.X, Rect.Y, Rect.Width, Rect.Height + 1);
-                for (int i = 0; i < buildings.Count && !isOnBuilding; i++)
+                Rectangle collision = new Rectangle(Rect.X, Rect.Y, Rect.Width, Rect.Height + 2);
+                for (int i = 0; i < buildings.Count && !isOnBuilding && !isClimbing; i++)
                 {
                     for (int j = 0; j < buildings[i].Hitboxes.Count && !isOnBuilding; j++)
                     {
@@ -127,10 +127,18 @@ namespace ApocalypticPizzaDash
                         {
                             if (collision.Intersects(buildings[i].Hitboxes["roof" + j.ToString()]) && ySpeed > 0)
                             {
-                                
                                 Rect = new Rectangle(Rect.X, buildings[i].Hitboxes["roof" + j.ToString()].Y - Rect.Height, Rect.Width, Rect.Height);
                                 isOnBuilding = true;
-                                
+                                ySpeed = 0;
+                                isUp = false;
+                            }
+                        }
+                        if(buildings[i].Hitboxes.ContainsKey("platform" + j.ToString()))
+                        {
+                            if (collision.Intersects(buildings[i].Hitboxes["platform" + j.ToString()]) && ySpeed > 0)
+                            {
+                                Rect = new Rectangle(Rect.X, buildings[i].Hitboxes["platform" + j.ToString()].Y - Rect.Height, Rect.Width, Rect.Height);
+                                isOnBuilding = true;
                                 ySpeed = 0;
                                 isUp = false;
                             }
@@ -147,7 +155,7 @@ namespace ApocalypticPizzaDash
                 }
 
                 // if the player is below the ground and falling...
-                if (collision.Y + 1 > minHeight && ySpeed > 0)
+                if (collision.Y + 2 > minHeight && ySpeed > 0)
                 {
                     // ...reset the height and ySpeed to default values when grounded
                     Rect = new Rectangle(Rect.X, minHeight, Rect.Width, Rect.Height);
@@ -207,18 +215,33 @@ namespace ApocalypticPizzaDash
             }
         }
 
-        public bool Climb(KeyboardState kState, int ladderX)
+        public bool Climb(KeyboardState kState, Rectangle ladder)
         {
             // climbing controls when at bottom of ladder
             if (kState.IsKeyDown(Keys.W))
             {
-                Rect = new Rectangle(ladderX, Rect.Y - 2, Rect.Width, Rect.Height);
-                isClimbing = true;
+                if (Rect.Intersects(ladder))
+                {
+                    Rect = new Rectangle(ladder.X, Rect.Y - 2, Rect.Width, Rect.Height);
+                    isClimbing = true;
+                }
+                else
+                {
+                    isUp = true;
+                }
             }
             // climb down
-            else if (kState.IsKeyDown(Keys.S) && isClimbing)
+            else if (kState.IsKeyDown(Keys.S))
             {
-                Rect = new Rectangle(ladderX, Rect.Y + 2, Rect.Width, Rect.Height);
+                if (Rect.Height + Rect.Y < ladder.Y + ladder.Height - 2)
+                {
+                    Rect = new Rectangle(ladder.X, Rect.Y + 2, Rect.Width, Rect.Height);
+                    isClimbing = true;
+                }
+                else
+                {
+                    isClimbing = false;
+                }
                 
                 // when player reaches ground, don't change Y value anymore
                 if(Rect.Y >= 356)
@@ -228,6 +251,14 @@ namespace ApocalypticPizzaDash
                 return true;
             }
             return false;
+        }
+
+        public void Deliver(KeyboardState kState, Rectangle doorRect)
+        {
+            if(kState.IsKeyDown(Keys.W))
+            {
+                Rect = new Rectangle(doorRect.X, Rect.Y, Rect.Width, Rect.Height);
+            }
         }
 
         public bool SingleKeyPress(Keys key)

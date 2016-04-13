@@ -46,15 +46,15 @@ namespace ApocalypticPizzaDash
         {
             if(type == 0)
             {
-                hitboxes.Add("ladder1", new Rectangle(rect.X + 130, rect.Y + 102, 14, 148));
-                hitboxes.Add("ladder2", new Rectangle(rect.X + 100, rect.Y + 38, 12, 66));
+                hitboxes.Add("ladder1", new Rectangle(rect.X + 122, rect.Y + 102, 30, 148));
+                hitboxes.Add("ladder2", new Rectangle(rect.X + 92, rect.Y + 38, 28, 66));
                 hitboxes.Add("platform1", new Rectangle(rect.X + 88, rect.Y + 102, 64, 8));
                 hitboxes.Add("roof1", new Rectangle(rect.X + 0, rect.Y + 38, 170, 12));
                 hitboxes.Add("door1", new Rectangle(rect.X + 28, rect.Y + 198, 34, 52));
             }
             else if(type == 1)
             {
-                hitboxes.Add("ladder1", new Rectangle(rect.X + 96, rect.Y + 84, 14, 208));
+                hitboxes.Add("ladder1", new Rectangle(rect.X + 88, rect.Y + 84, 30, 208));
                 hitboxes.Add("roof1", new Rectangle(rect.X + 0, rect.Y + 84, 140, 12));
                 hitboxes.Add("roof2", new Rectangle(rect.X + 62, rect.Y + 0, 186, 12));
                 hitboxes.Add("door1", new Rectangle(rect.X + 18, rect.Y + 240, 34, 52));

@@ -434,25 +434,40 @@ namespace ApocalypticPizzaDash
 
                             // If the player is colliding with the right hitbox, enable climbing
                             bool canClimb = false;
-                            int ladderX = 0;
+                            Rectangle ladderRect = new Rectangle();
+                            Rectangle collision = new Rectangle(player.Rect.X, player.Rect.Y, player.Rect.Width, player.Rect.Height + 2);
                             for(int i = 0; i < buildings.Count && !canClimb && !player.IsUp; i++)
                             {
                                 for (int ladder = 1; buildings[i].Hitboxes.ContainsKey("ladder" + ladder.ToString()) && !canClimb; ladder++)
                                 {
-                                    if (player.Rect.Intersects(buildings[i].Hitboxes["ladder" + ladder.ToString()]))
+                                    if (collision.Intersects(buildings[i].Hitboxes["ladder" + ladder.ToString()]))
                                     {
                                         canClimb = true;
-                                        ladderX = buildings[i].Hitboxes["ladder" + ladder.ToString()].X;
+                                        ladderRect = buildings[i].Hitboxes["ladder" + ladder.ToString()];
                                     }
                                 }
                             }
                             if(canClimb)
                             {
-                                player.Climb(kState, ladderX);
+                                player.Climb(kState, ladderRect);
                             }
                             else
                             {
                                 player.IsClimbing = false;
+                            }
+
+                            // Delivery!
+                            Rectangle doorRect = new Rectangle();
+                            for(int i = 0; i < buildings.Count && !player.IsUp; i++)
+                            {
+                                for(int door = 1; buildings[i].Hitboxes.ContainsKey("door" + door.ToString()); door++)
+                                {
+                                    if (player.Rect.Intersects(buildings[i].Hitboxes["door" + door.ToString()]))
+                                    {
+                                        doorRect = buildings[i].Hitboxes["door" + door.ToString()];
+                                        player.Deliver(kState, doorRect);
+                                    }
+                                }
                             }
 
                             // animating player
