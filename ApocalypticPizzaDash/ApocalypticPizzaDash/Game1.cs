@@ -25,6 +25,7 @@ namespace ApocalypticPizzaDash
 
         //player attributes
         Player player;
+        int playerAnimationOffset;
         const int PLAYER_HEIGHT = 46;
         const int PLAYER_WIDTH = 30;
 
@@ -73,6 +74,7 @@ namespace ApocalypticPizzaDash
 
         // buildings
         List<Building> buildings;
+        bool buildingsLeft;
         Texture2D building1;
         Texture2D building2;
         int currentBuildings;
@@ -122,6 +124,7 @@ namespace ApocalypticPizzaDash
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 450;
             Content.RootDirectory = "Content";
         }
 
@@ -262,10 +265,12 @@ namespace ApocalypticPizzaDash
                     {
                         gState = GameState.Game;
                         timer = 6000;
+                        buildingsLeft = true;
                         currentLevel = 1;
                         levelData.Clear();
                         buildings.Clear();
                         zombies.Clear();
+                        indicator.Clear();
                         levelData = reader.readIn("Content/Levels/level" + currentLevel.ToString() + ".dat");
                         levelWidth = levelData[0] * 2;
                         levelData.RemoveAt(0);
@@ -281,12 +286,14 @@ namespace ApocalypticPizzaDash
                                     {
                                         buildings[currentBuildings] = new Building(0, levelRects[i / 3], building1);
                                         buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
                                         currentBuildings++;
                                     }
                                     else
                                     {
                                         buildings.Add(new Building(0, levelRects[i / 3], building1));
                                         buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
                                         currentBuildings++;
                                     }
                                     break;
@@ -295,12 +302,14 @@ namespace ApocalypticPizzaDash
                                     {
                                         buildings[currentBuildings] = new Building(1, levelRects[i / 3], building2);
                                         buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
                                         currentBuildings++;
                                     }
                                     else
                                     {
                                         buildings.Add(new Building(1, levelRects[i / 3], building2));
                                         buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
                                         currentBuildings++;
                                     }
                                     break;
@@ -413,6 +422,7 @@ namespace ApocalypticPizzaDash
                         // getting total number of frames elapsed thus far in the existence of each object 
                         playerAttackFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerAttackFrame);
                         playerClimbFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerClimbFrame);
+                        playerDeliveryFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerDeliveryFrame);
                         playerFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerFrame);
                         zombieFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerZombieFrame);
 
@@ -436,7 +446,7 @@ namespace ApocalypticPizzaDash
                         }
 
                         // move player normally if not attacking
-                        if (!player.Attack(kState))
+                        if (!player.Attack(kState) && !player.IsDelivering)
                         {
                             // disable attack box
                             player.AttackBox = Rectangle.Empty;
@@ -481,98 +491,109 @@ namespace ApocalypticPizzaDash
                             {
                                 for(int door = 1; buildings[i].Hitboxes.ContainsKey("door" + door.ToString()); door++)
                                 {
-                                    if (player.Rect.Intersects(buildings[i].Hitboxes["door" + door.ToString()]))
+                                    if (player.Rect.Intersects(buildings[i].Hitboxes["door" + door.ToString()]) && !buildings[i].HasPizza)
                                     {
                                         doorRect = buildings[i].Hitboxes["door" + door.ToString()];
                                         if(player.Deliver(kState, doorRect))
                                         {
+                                            player.IsDelivering = true;
+                                            playerAnimationOffset = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerDeliveryFrame);
                                             buildings[i].HasPizza = true;
-                                            bool buildingsLeft = false;
+                                            buildingsLeft = false;
                                             for(int k = 0; k < currentBuildings; k++)
                                             {
                                                 if(!buildings[k].HasPizza)
                                                 {
                                                     buildingsLeft = true;
-                                                }
-                                            }
-                                            if(!buildingsLeft)
-                                            {
-                                                player.AllDelivered = true;
-                                                currentLevel++;
-                                                // Time to load the new level
-                                                timer = 6000;
-                                                levelData.Clear();
-                                                buildings.Clear();
-                                                zombies.Clear();
-                                                levelData = reader.readIn("Content/Levels/level" + currentLevel.ToString() + ".dat");
-                                                levelWidth = levelData[0] * 2;
-                                                levelData.RemoveAt(0);
-                                                levelRects = reader.makeRect(levelData);
-                                                int currentZombies = 0;
-                                                currentBuildings = 0;
-                                                for (int l = 0; l < levelData.Count; l += 3)
-                                                {
-                                                    switch (levelData[l])
-                                                    {
-                                                        case 0:
-                                                            if (currentBuildings < buildings.Count)
-                                                            {
-                                                                buildings[currentBuildings] = new Building(0, levelRects[l / 3], building1);
-                                                                buildings[currentBuildings].SetHitboxes();
-                                                                currentBuildings++;
-                                                            }
-                                                            else
-                                                            {
-                                                                buildings.Add(new Building(0, levelRects[l / 3], building1));
-                                                                buildings[currentBuildings].SetHitboxes();
-                                                                currentBuildings++;
-                                                            }
-                                                            break;
-                                                        case 1:
-                                                            if (currentBuildings < buildings.Count)
-                                                            {
-                                                                buildings[currentBuildings] = new Building(1, levelRects[l / 3], building2);
-                                                                buildings[currentBuildings].SetHitboxes();
-                                                                currentBuildings++;
-                                                            }
-                                                            else
-                                                            {
-                                                                buildings.Add(new Building(1, levelRects[l / 3], building2));
-                                                                buildings[currentBuildings].SetHitboxes();
-                                                                currentBuildings++;
-                                                            }
-                                                            break;
-                                                        case 2:
-                                                            player = new Player(player.Image, new Rectangle(levelRects[l / 3].X, levelRects[l / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth);
-                                                            break;
-                                                        case 3:
-                                                            if (currentZombies < zombies.Count)
-                                                            {
-                                                                zombies[currentZombies] = new Zombie(zombie1, levelRects[l / 3], 3);
-                                                                currentZombies++;
-                                                            }
-                                                            else
-                                                            {
-                                                                zombies.Add(new Zombie(zombie1, levelRects[l / 3], 3));
-                                                                currentZombies++;
-                                                            }
-                                                            break;
-                                                        case 4:
-                                                            if (currentZombies < zombies.Count)
-                                                            {
-                                                                zombies[currentZombies] = new Zombie(zombie2, levelRects[l / 3], 3);
-                                                                currentZombies++;
-                                                            }
-                                                            else
-                                                            {
-                                                                zombies.Add(new Zombie(zombie2, levelRects[l / 3], 3));
-                                                                currentZombies++;
-                                                            }
-                                                            break;
-                                                    }
+                                                    break;
                                                 }
                                             }
                                         }
+                                    }
+                                }
+                            }
+
+                            if (!buildingsLeft && !player.IsDelivering)
+                            {
+                                player.IsDelivering = false;
+                                player.AllDelivered = true;
+                                currentLevel++;
+                                // Time to load the new level
+                                buildingsLeft = true;
+                                timer = 6000;
+                                levelData.Clear();
+                                buildings.Clear();
+                                zombies.Clear();
+                                indicator.Clear();
+                                levelData = reader.readIn("Content/Levels/level" + currentLevel.ToString() + ".dat");
+                                levelWidth = levelData[0] * 2;
+                                levelData.RemoveAt(0);
+                                levelRects = reader.makeRect(levelData);
+                                int currentZombies = 0;
+                                currentBuildings = 0;
+                                for (int l = 0; l < levelData.Count; l += 3)
+                                {
+                                    switch (levelData[l])
+                                    {
+                                        case 0:
+                                            if (currentBuildings < buildings.Count)
+                                            {
+                                                buildings[currentBuildings] = new Building(0, levelRects[l / 3], building1);
+                                                buildings[currentBuildings].SetHitboxes();
+                                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                                currentBuildings++;
+                                            }
+                                            else
+                                            {
+                                                buildings.Add(new Building(0, levelRects[l / 3], building1));
+                                                buildings[currentBuildings].SetHitboxes();
+                                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                                currentBuildings++;
+                                            }
+                                            break;
+                                        case 1:
+                                            if (currentBuildings < buildings.Count)
+                                            {
+                                                buildings[currentBuildings] = new Building(1, levelRects[l / 3], building2);
+                                                buildings[currentBuildings].SetHitboxes();
+                                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                                currentBuildings++;
+                                            }
+                                            else
+                                            {
+                                                buildings.Add(new Building(1, levelRects[l / 3], building2));
+                                                buildings[currentBuildings].SetHitboxes();
+                                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                                currentBuildings++;
+                                            }
+                                            break;
+                                        case 2:
+                                            player = new Player(player.Image, new Rectangle(levelRects[l / 3].X, levelRects[l / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth);
+                                            break;
+                                        case 3:
+                                            if (currentZombies < zombies.Count)
+                                            {
+                                                zombies[currentZombies] = new Zombie(zombie1, levelRects[l / 3], 3);
+                                                currentZombies++;
+                                            }
+                                            else
+                                            {
+                                                zombies.Add(new Zombie(zombie1, levelRects[l / 3], 3));
+                                                currentZombies++;
+                                            }
+                                            break;
+                                        case 4:
+                                            if (currentZombies < zombies.Count)
+                                            {
+                                                zombies[currentZombies] = new Zombie(zombie2, levelRects[l / 3], 3);
+                                                currentZombies++;
+                                            }
+                                            else
+                                            {
+                                                zombies.Add(new Zombie(zombie2, levelRects[l / 3], 3));
+                                                currentZombies++;
+                                            }
+                                            break;
                                     }
                                 }
                             }
@@ -594,10 +615,20 @@ namespace ApocalypticPizzaDash
                                     break;
                             }                       
                         }
-                        else
+                        else if(!player.IsDelivering)
                         {
                             // animate the player attacking
-                            playerAttackFrame = playerAttackFramesElapsed % numPlayerAttackFrames + 1;
+                            playerAttackFrame = playerAttackFramesElapsed % (numPlayerAttackFrames + 1);
+                        }
+                        else if(player.IsDelivering)
+                        {
+                            // animate the delivery
+                            playerDeliveryFrame = (playerDeliveryFramesElapsed - playerAnimationOffset) % (numPlayerDeliveryFrames + 2);
+                            if(playerDeliveryFrame == numPlayerDeliveryFrames + 1)
+                            {
+                                player.IsDelivering = false;
+                                playerDeliveryFrame = 0;
+                            }
                         }
 
                         // moving and animating the zombie
@@ -682,6 +713,13 @@ namespace ApocalypticPizzaDash
                     //draw indicators
                     spriteBatch.Draw(indicatorBar, indBar, Color.White);
                     spriteBatch.Draw(playerStandee, charStandee, Color.White);
+                    for(int i = 0; i < currentBuildings; i++)
+                    {
+                        if (!buildings[i].HasPizza)
+                        {
+                            spriteBatch.Draw(delivery, indicator[i], Color.White);
+                        }
+                    }
 
                     // draw buildings
                     for (int i = 0; i < buildings.Count; i++)
@@ -700,20 +738,10 @@ namespace ApocalypticPizzaDash
                     spriteBatch.DrawString(testFont, "Player health: " + player.CurrentHealth, new Vector2(0, 0), Color.Black);
                     spriteBatch.DrawString(testFont, timeDisplay, new Vector2(325, 0), Color.Black);
                     spriteBatch.DrawString(testFont, "Zombie health: " + zombies[0].CurrentHealth, new Vector2(GraphicsDevice.Viewport.Width - 200, 0), Color.Black);
-                    
-                    // debugging: test to see if player is up on current frame
-                    if(player.IsUp)
-                    {
-                        spriteBatch.DrawString(testFont, "UP!", new Vector2(0, 100), Color.Black);
-                    }
-                    if(player.AllDelivered)
-                    {
-                        spriteBatch.DrawString(testFont, "Clear!", new Vector2(0, 132), Color.Black);
-                    }
 
-                        // drawing the objects. when a collision occurs, both the player and the zombie turn red
-                        // testing if player is colliding with the zombie on the current frame
-                        for (int i = 0; i < zombies.Count; i++)
+                    // drawing the objects. when a collision occurs, both the player and the zombie turn red
+                    // testing if player is colliding with the zombie on the current frame
+                    for (int i = 0; i < zombies.Count; i++)
                         {
                             // when attack box collides with zombie, turn zombie red
                             if (player.AttackBox.Intersects(zombies[i].Rect))
@@ -737,7 +765,7 @@ namespace ApocalypticPizzaDash
 
 
                         // draw the attack box (for debugging purposes, TO BE REMOVED IN FINAL GAME)
-                        if(player.Attack(kState))
+                        if(player.Attack(kState) && !player.IsDelivering)
                         {
                             spriteBatch.Draw(gameover, new Rectangle(player.AttackBox.X - screen.X, player.AttackBox.Y, player.AttackBox.Width, player.AttackBox.Height), Color.White);
                         }
@@ -746,7 +774,7 @@ namespace ApocalypticPizzaDash
                         if (player.CurrentHealth > 0)
                         {
                             //draws the player's attack
-                            if (player.Attack(kState))
+                            if (player.Attack(kState) && !player.IsDelivering)
                             {
                                 if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
                                 {
@@ -756,6 +784,19 @@ namespace ApocalypticPizzaDash
                                 else if (player.Dir == Direction.FaceRight || player.Dir == Direction.MoveRight)
                                 {
                                     spriteBatch.Draw(playerAttack, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerAttackFrame * PLAYER_ATTACK_WIDTH, 0, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT), player.Color);
+                                }
+                            }
+                            // draw the delivery
+                            else if(player.IsDelivering)
+                            {
+                                if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
+                                {
+                                    spriteBatch.Draw(playerDeliver, new Vector2((player.Rect.X - 12) - screen.X, player.Rect.Y), new Rectangle(playerDeliveryFrame * PLAYER_DELIVERY_WIDTH, 0, PLAYER_DELIVERY_WIDTH, PLAYER_DELIVERY_HEIGHT), player.Color, 0, Vector2.Zero, 1,
+                                        SpriteEffects.FlipHorizontally, 0);
+                                }
+                                else if (player.Dir == Direction.FaceRight || player.Dir == Direction.MoveRight)
+                                {
+                                    spriteBatch.Draw(playerDeliver, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerDeliveryFrame * PLAYER_DELIVERY_WIDTH, 0, PLAYER_DELIVERY_WIDTH, PLAYER_DELIVERY_HEIGHT), player.Color);
                                 }
                             }
                             // draw the player moving

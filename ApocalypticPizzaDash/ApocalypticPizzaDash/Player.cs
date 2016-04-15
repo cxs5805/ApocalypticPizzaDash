@@ -16,7 +16,7 @@ namespace ApocalypticPizzaDash
         private const float INITL_JUMP_V = -20f;
         private float ySpeed;
         private bool isUp, isClimbing;
-        private bool allDelivered;
+        private bool allDelivered, isDelivering;
 
         // when player gets hit, he'll be invincible to attack for some time
         // (to be implemented in milestone 3)
@@ -34,6 +34,7 @@ namespace ApocalypticPizzaDash
             isUp = true;
             isClimbing = false;
             allDelivered = false;
+            isDelivering = false;
         }
 
         // properties
@@ -47,6 +48,12 @@ namespace ApocalypticPizzaDash
         {
             get { return isClimbing; }
             set { isClimbing = value; }
+        }
+
+        public bool IsDelivering
+        {
+            get { return isDelivering; }
+            set { isDelivering = value; }
         }
 
         public Rectangle AttackBox
