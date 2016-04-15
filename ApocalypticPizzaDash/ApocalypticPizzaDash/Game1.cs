@@ -67,6 +67,7 @@ namespace ApocalypticPizzaDash
         List<Building> buildings;
         Texture2D building1;
         Texture2D building2;
+        int currentBuildings;
 
         // level stuff
         int currentLevel;
@@ -253,12 +254,15 @@ namespace ApocalypticPizzaDash
                         gState = GameState.Game;
                         timer = 6000;
                         currentLevel = 1;
+                        levelData.Clear();
+                        buildings.Clear();
+                        zombies.Clear();
                         levelData = reader.readIn("Content/Levels/level" + currentLevel.ToString() + ".dat");
                         levelWidth = levelData[0] * 2;
                         levelData.RemoveAt(0);
                         levelRects = reader.makeRect(levelData);
                         int currentZombies = 0;
-                        int currentBuildings = 0;
+                        currentBuildings = 0;
                         for(int i = 0; i < levelData.Count; i += 3)
                         {
                             switch(levelData[i])
@@ -293,28 +297,29 @@ namespace ApocalypticPizzaDash
                                     break;
                                 case 2:
                                     player.Rect = levelRects[i / 3];
+                                    player.AllDelivered = false;
                                     break;
                                 case 3:
                                     if (currentZombies < zombies.Count)
                                     {
-                                        zombies[currentZombies] = new Zombie(zombie1, levelRects[i / 3], 100);
+                                        zombies[currentZombies] = new Zombie(zombie1, levelRects[i / 3], 3);
                                         currentZombies++;
                                     }
                                     else
                                     {
-                                        zombies.Add(new Zombie(zombie1, levelRects[i / 3], 100));
+                                        zombies.Add(new Zombie(zombie1, levelRects[i / 3], 3));
                                         currentZombies++;
                                     }
                                     break;
                                 case 4:
                                     if (currentZombies < zombies.Count)
                                     {
-                                        zombies[currentZombies] = new Zombie(zombie2, levelRects[i / 3], 100);
+                                        zombies[currentZombies] = new Zombie(zombie2, levelRects[i / 3], 3);
                                         currentZombies++;
                                     }
                                     else
                                     {
-                                        zombies.Add(new Zombie(zombie2, levelRects[i / 3], 100));
+                                        zombies.Add(new Zombie(zombie2, levelRects[i / 3], 3));
                                         currentZombies++;
                                     }
                                     break;
@@ -470,7 +475,95 @@ namespace ApocalypticPizzaDash
                                     if (player.Rect.Intersects(buildings[i].Hitboxes["door" + door.ToString()]))
                                     {
                                         doorRect = buildings[i].Hitboxes["door" + door.ToString()];
-                                        player.Deliver(kState, doorRect);
+                                        if(player.Deliver(kState, doorRect))
+                                        {
+                                            buildings[i].HasPizza = true;
+                                            bool buildingsLeft = false;
+                                            for(int k = 0; k < currentBuildings; k++)
+                                            {
+                                                if(!buildings[k].HasPizza)
+                                                {
+                                                    buildingsLeft = true;
+                                                }
+                                            }
+                                            if(!buildingsLeft)
+                                            {
+                                                player.AllDelivered = true;
+                                                currentLevel++;
+                                                // Time to load the new level
+                                                timer = 6000;
+                                                levelData.Clear();
+                                                buildings.Clear();
+                                                zombies.Clear();
+                                                levelData = reader.readIn("Content/Levels/level" + currentLevel.ToString() + ".dat");
+                                                levelWidth = levelData[0] * 2;
+                                                levelData.RemoveAt(0);
+                                                levelRects = reader.makeRect(levelData);
+                                                int currentZombies = 0;
+                                                currentBuildings = 0;
+                                                for (int l = 0; l < levelData.Count; l += 3)
+                                                {
+                                                    switch (levelData[l])
+                                                    {
+                                                        case 0:
+                                                            if (currentBuildings < buildings.Count)
+                                                            {
+                                                                buildings[currentBuildings] = new Building(0, levelRects[l / 3], building1);
+                                                                buildings[currentBuildings].SetHitboxes();
+                                                                currentBuildings++;
+                                                            }
+                                                            else
+                                                            {
+                                                                buildings.Add(new Building(0, levelRects[l / 3], building1));
+                                                                buildings[currentBuildings].SetHitboxes();
+                                                                currentBuildings++;
+                                                            }
+                                                            break;
+                                                        case 1:
+                                                            if (currentBuildings < buildings.Count)
+                                                            {
+                                                                buildings[currentBuildings] = new Building(1, levelRects[l / 3], building2);
+                                                                buildings[currentBuildings].SetHitboxes();
+                                                                currentBuildings++;
+                                                            }
+                                                            else
+                                                            {
+                                                                buildings.Add(new Building(1, levelRects[l / 3], building2));
+                                                                buildings[currentBuildings].SetHitboxes();
+                                                                currentBuildings++;
+                                                            }
+                                                            break;
+                                                        case 2:
+                                                            player = new Player(player.Image, new Rectangle(levelRects[l / 3].X, levelRects[l / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth);
+                                                            break;
+                                                        case 3:
+                                                            if (currentZombies < zombies.Count)
+                                                            {
+                                                                zombies[currentZombies] = new Zombie(zombie1, levelRects[l / 3], 3);
+                                                                currentZombies++;
+                                                            }
+                                                            else
+                                                            {
+                                                                zombies.Add(new Zombie(zombie1, levelRects[l / 3], 3));
+                                                                currentZombies++;
+                                                            }
+                                                            break;
+                                                        case 4:
+                                                            if (currentZombies < zombies.Count)
+                                                            {
+                                                                zombies[currentZombies] = new Zombie(zombie2, levelRects[l / 3], 3);
+                                                                currentZombies++;
+                                                            }
+                                                            else
+                                                            {
+                                                                zombies.Add(new Zombie(zombie2, levelRects[l / 3], 3));
+                                                                currentZombies++;
+                                                            }
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -584,7 +677,14 @@ namespace ApocalypticPizzaDash
                     // draw buildings
                     for (int i = 0; i < buildings.Count; i++)
                     {
-                        spriteBatch.Draw(buildings[i].Image, new Rectangle(buildings[i].Rect.X - screen.X, buildings[i].Rect.Y, buildings[i].Rect.Width, buildings[i].Rect.Height), Color.White);
+                        if (buildings[i].HasPizza)
+                        {
+                            spriteBatch.Draw(buildings[i].Image, new Rectangle(buildings[i].Rect.X - screen.X, buildings[i].Rect.Y, buildings[i].Rect.Width, buildings[i].Rect.Height), Color.White);
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(buildings[i].Image, new Rectangle(buildings[i].Rect.X - screen.X, buildings[i].Rect.Y, buildings[i].Rect.Width, buildings[i].Rect.Height), Color.Green);
+                        }
                     }
 
                     // draw the player's health, the timer, and the zombie's health
@@ -596,6 +696,10 @@ namespace ApocalypticPizzaDash
                     if(player.IsUp)
                     {
                         spriteBatch.DrawString(testFont, "UP!", new Vector2(0, 100), Color.Black);
+                    }
+                    if(player.AllDelivered)
+                    {
+                        spriteBatch.DrawString(testFont, "Clear!", new Vector2(0, 132), Color.Black);
                     }
 
                         // drawing the objects. when a collision occurs, both the player and the zombie turn red

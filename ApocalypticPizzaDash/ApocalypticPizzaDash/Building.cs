@@ -15,6 +15,7 @@ namespace ApocalypticPizzaDash
         private Rectangle rect;
         private Dictionary<string, Rectangle> hitboxes;
         private Texture2D image;
+        private bool hasPizza;
 
         public Building(int type, Rectangle rect, Texture2D image)
         {
@@ -22,6 +23,7 @@ namespace ApocalypticPizzaDash
             this.rect = rect;
             this.image = image;
             hitboxes = new Dictionary<string, Rectangle>();
+            hasPizza = false;
         }
 
         // properties
@@ -40,6 +42,12 @@ namespace ApocalypticPizzaDash
         public Texture2D Image
         {
             get { return image; }
+        }
+
+        public bool HasPizza
+        {
+            get { return hasPizza; }
+            set { hasPizza = value; }
         }
 
         public void SetHitboxes()
