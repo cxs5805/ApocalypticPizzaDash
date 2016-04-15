@@ -32,6 +32,7 @@ namespace ApocalypticPizzaDash
 
             }
 
+            level.Close();
             return intholder;
         }
 

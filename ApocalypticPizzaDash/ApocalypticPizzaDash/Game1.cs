@@ -44,6 +44,14 @@ namespace ApocalypticPizzaDash
         int playerClimbFramesElapsed;
         double timePerPlayerClimbFrame = 100;
 
+        //animating dlivery
+        const int PLAYER_DELIVERY_HEIGHT = 46;
+        const int PLAYER_DELIVERY_WIDTH = 42;
+        int playerDeliveryFrame;
+        int numPlayerDeliveryFrames = 10;
+        int playerDeliveryFramesElapsed;
+        double timePerPlayerDeliveryFrame = 100;
+
         //animating player movement
         int numPlayerFrames = 7;
         int playerFrame;
@@ -91,7 +99,7 @@ namespace ApocalypticPizzaDash
 
 
         SpriteFont font;
-        private Texture2D background, playerImage, playerAttack, playerClimb;
+        private Texture2D background, playerImage, playerAttack, playerClimb, playerDeliver;
         List<Texture2D> UI = new List<Texture2D>();
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -189,6 +197,7 @@ namespace ApocalypticPizzaDash
             player.Image = Content.Load<Texture2D>("spritesheet");
             playerAttack = Content.Load<Texture2D>("attack2");
             playerClimb = Content.Load<Texture2D>("climb1");
+            playerDeliver = Content.Load<Texture2D>("PZG_PZZx2");
 
             zombie1 = Content.Load<Texture2D>("Zombie1");
             zombie2 = Content.Load<Texture2D>("Zombie2");
