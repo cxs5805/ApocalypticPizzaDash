@@ -20,7 +20,7 @@ namespace ApocalypticPizzaDash
 
         // when player gets hit, he'll be invincible to attack for some time
         // (to be implemented in milestone 3)
-        private bool invincible;
+        private int invincible;
 
         // keyboard-state attributes
         private KeyboardState kbState;
@@ -35,6 +35,7 @@ namespace ApocalypticPizzaDash
             isClimbing = false;
             allDelivered = false;
             isDelivering = false;
+            invincible = 0;
         }
 
         // properties
@@ -66,6 +67,12 @@ namespace ApocalypticPizzaDash
         {
             get { return allDelivered; }
             set { allDelivered = value; }
+        }
+
+        public int Invincible
+        {
+            get { return invincible; }
+            set { invincible = value; }
         }
 
         /// <summary>
@@ -207,7 +214,7 @@ namespace ApocalypticPizzaDash
             kbState = kState;
 
             // attack by pressing the "J" key while on the ground
-            if (SingleKeyPress(Keys.J) && !IsUp && !isClimbing)
+            if (SingleKeyPress(Keys.J) && !IsUp && !isClimbing && !isDelivering)
             {
                 // set height and width of attack hitbox
                 int hitboxWidth = 18;
@@ -276,6 +283,18 @@ namespace ApocalypticPizzaDash
                 return true;
             }
             return false;
+        }
+
+        public override void Collision()
+        {
+            if(invincible == 0)
+            {
+                CurrentHealth--;
+                if(IsColliding && !WasColliding)
+                {
+                    Color = Color.Red;
+                }
+            }
         }
 
         public bool SingleKeyPress(Keys key)

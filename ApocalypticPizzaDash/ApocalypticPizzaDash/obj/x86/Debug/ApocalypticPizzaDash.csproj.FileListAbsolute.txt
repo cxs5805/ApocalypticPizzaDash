@@ -30,3 +30,39 @@ D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\
 D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.exe
 D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.pdb
 D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\attack.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\attack2.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\backdrop.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\BG-1.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building1.gif
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building2.gif
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\climb1.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Delivery.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\gameover.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\IndicatorBar.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\pause screen.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\pausebox2.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\paused.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Pizzagirl.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Pizzaperson.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\PZG_PZZx2.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\spritesheet.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\spritesheet_temp.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\title screen.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Zombie1.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Zombie2.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Font1.spritefont
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Arial14Bold.xnb
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Levels\level1.dat
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Levels\level2.dat
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\ApocalypticPizzaDash.exe
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\ApocalypticPizzaDash.pdb
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\MonoGame.Framework.dll
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\OpenTK.dll
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.exe
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.pdb
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Delivery2.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Levels\level3.dat
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Levels\level4.dat
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Levels\level5.dat
