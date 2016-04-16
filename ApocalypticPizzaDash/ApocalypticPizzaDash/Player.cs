@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ApocalypticPizzaDash
 {
@@ -78,7 +79,7 @@ namespace ApocalypticPizzaDash
         /// <summary>
         /// Moves the player
         /// </summary>
-        public void Move(KeyboardState kState, int screenWidth, int minHeight, int maxHeight, List<Building> buildings)
+        public void Move(KeyboardState kState, int screenWidth, int minHeight, int maxHeight, List<Building> buildings, SoundEffect jumpSFX)
         {
             // storing param into attribute for use later
             kbState = kState;
@@ -201,6 +202,8 @@ namespace ApocalypticPizzaDash
 
                 // ensuring that the player stays in the air
                 isUp = true;
+
+                jumpSFX.Play();
             }
             
             // saving current keyboard state as the previous one
