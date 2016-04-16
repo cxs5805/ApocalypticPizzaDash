@@ -6,6 +6,8 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ApocalypticPizzaDash
 {
@@ -23,6 +25,9 @@ namespace ApocalypticPizzaDash
         int score, loop;
         bool isPaused; // just for Milestone 2, will be added to attack method in Milestone 3
         Texture2D backdrop, pause, gameover;
+
+        // MUSIC
+        Song gameplayBGM;
 
         //player attributes
         Player player;
@@ -185,6 +190,9 @@ namespace ApocalypticPizzaDash
 
             pause = Content.Load<Texture2D>("pausebox2");
 
+            // Load the MUSIC
+            gameplayBGM = Content.Load<Song>("gameplay");
+
             // now giving the player and zombie their respective sprites
             player.Image = Content.Load<Texture2D>("spritesheet");
             playerAttack = Content.Load<Texture2D>("attack2");
@@ -335,6 +343,9 @@ namespace ApocalypticPizzaDash
                                     break;
                             }
                         }
+                        MediaPlayer.Stop();
+                        MediaPlayer.IsRepeating = true;
+                        MediaPlayer.Play(gameplayBGM);
                     }
                     kStatePrev = kState;
                     break;
@@ -361,10 +372,12 @@ namespace ApocalypticPizzaDash
                         if(!isPaused)
                         {
                             isPaused = true;
+                            MediaPlayer.Pause();
                         }
                         else
                         {
                             isPaused = false;
+                            MediaPlayer.Resume();
                         }
                     }
 
@@ -411,12 +424,12 @@ namespace ApocalypticPizzaDash
                                 player.Collision();
                                 player.Invincible = 120;
                             }
-                            else if(player.Invincible > 0)
-                            {
-                                player.Invincible--;
-                            }
                         }
-                        player.WasColliding = player.IsColliding;
+                        if (player.Invincible > 0)
+                        {
+                            player.Invincible--;
+                        }
+                    player.WasColliding = player.IsColliding;
                         for (int i = 0; i < zombies.Count; i++)
                         {
                             zombies[i].WasColliding = zombies[i].IsColliding;
@@ -433,6 +446,7 @@ namespace ApocalypticPizzaDash
                         if (player.Die())
                         {
                             gState = GameState.GameOver;
+                            MediaPlayer.Stop();
                         }
 
                         // when the zombie runs out of health, it dies
@@ -601,6 +615,9 @@ namespace ApocalypticPizzaDash
                                             break;
                                     }
                                 }
+                                MediaPlayer.Stop();
+                                MediaPlayer.IsRepeating = true;
+                                MediaPlayer.Play(gameplayBGM);
                             }
 
                             // animating player
