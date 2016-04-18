@@ -411,10 +411,10 @@ namespace ApocalypticPizzaDash
                                 player.Collision();
                                 player.Invincible = 120;
                             }
-                            else if(player.Invincible > 0)
-                            {
-                                player.Invincible--;
-                            }
+                        }
+                        if (player.Invincible > 0)
+                        {
+                            player.Invincible--;
                         }
                         player.WasColliding = player.IsColliding;
                         for (int i = 0; i < zombies.Count; i++)
