@@ -29,6 +29,7 @@ namespace ApocalypticPizzaDash
         // MUSIC
         Song gameplayBGM;
         int playPosition;
+        bool hasSound;
 
         // SFX
         SoundEffect deliverySFX;
@@ -197,14 +198,22 @@ namespace ApocalypticPizzaDash
 
             pause = Content.Load<Texture2D>("pausebox2");
 
-            // Load the MUSIC
-            gameplayBGM = Content.Load<Song>("Audio/gameplay");
+            try
+            {
+                hasSound = true;
+                // Load the MUSIC
+                gameplayBGM = Content.Load<Song>("Audio/gameplay");
 
-            // Load the SFX
-            deliverySFX = Content.Load<SoundEffect>("Audio/SFX/delivery");
-            playerHitSFX = Content.Load<SoundEffect>("Audio/SFX/hitPizzagirl");
-            zombieHitSFX = Content.Load<SoundEffect>("Audio/SFX/hitZombie");
-            jumpSFX = Content.Load<SoundEffect>("Audio/SFX/jump");
+                // Load the SFX
+                deliverySFX = Content.Load<SoundEffect>("Audio/SFX/delivery");
+                playerHitSFX = Content.Load<SoundEffect>("Audio/SFX/hitPizzagirl");
+                zombieHitSFX = Content.Load<SoundEffect>("Audio/SFX/hitZombie");
+                jumpSFX = Content.Load<SoundEffect>("Audio/SFX/jump");
+            }
+            catch(Exception e)
+            {
+                hasSound = false;
+            }
 
             // now giving the player and zombie their respective sprites
             player.Image = Content.Load<Texture2D>("spritesheet");
@@ -356,8 +365,11 @@ namespace ApocalypticPizzaDash
                                     break;
                             }
                         }
-                        MediaPlayer.Stop();
-                        MediaPlayer.Play(gameplayBGM);
+                        if (hasSound)
+                        {
+                            MediaPlayer.Stop();
+                            MediaPlayer.Play(gameplayBGM);
+                        }
                         playPosition = 0;
                     }
                     kStatePrev = kState;
@@ -369,7 +381,10 @@ namespace ApocalypticPizzaDash
                     if(timer < 60)
                     {
                         gState = GameState.GameOver;
-                        MediaPlayer.Stop();
+                        if (hasSound)
+                        {
+                            MediaPlayer.Stop();
+                        }
                         player.CurrentHealth = 0;
                         for (int i = 0; i < zombies.Count; i++)
                         {
@@ -403,10 +418,13 @@ namespace ApocalypticPizzaDash
                     {
                         // Loop the BGM if it isn't playing
                         playPosition++;
-                        if((gameplayBGM.Duration.TotalSeconds * 60) - playPosition <= 0)
+                        if (hasSound)
                         {
-                            MediaPlayer.Play(gameplayBGM);
-                            playPosition = 0;
+                            if ((gameplayBGM.Duration.TotalSeconds * 60) - playPosition <= 0)
+                            {
+                                MediaPlayer.Play(gameplayBGM);
+                                playPosition = 0;
+                            }
                         }
                         // by default, no objects are colliding
                         player.IsColliding = false;
@@ -431,7 +449,10 @@ namespace ApocalypticPizzaDash
 
                                 zombies[i].IsColliding = true;
                                 zombies[i].Collision();
-                                zombieHitSFX.Play();
+                                if (hasSound)
+                                {
+                                    zombieHitSFX.Play();
+                                }
 
                                 // Increment score upon kill
                                 if(zombies[i].CurrentHealth == 0 && zombies[i].Rect != Rectangle.Empty)
@@ -444,7 +465,10 @@ namespace ApocalypticPizzaDash
                             {
                                 player.IsColliding = true;
                                 player.Collision();
-                                playerHitSFX.Play();
+                                if (hasSound)
+                                {
+                                    playerHitSFX.Play();
+                                }
                                 player.Invincible = 120;
                             }
                         }
@@ -469,7 +493,10 @@ namespace ApocalypticPizzaDash
                         if (player.Die())
                         {
                             gState = GameState.GameOver;
-                            MediaPlayer.Stop();
+                            if (hasSound)
+                            {
+                                MediaPlayer.Stop();
+                            }
                         }
 
                         // when the zombie runs out of health, it dies
@@ -490,7 +517,7 @@ namespace ApocalypticPizzaDash
                             // handling input to move player
                             if (!player.IsClimbing)
                             {
-                                player.Move(kState, levelWidth, 356, GraphicsDevice.Viewport.Height - 120, buildings, jumpSFX);
+                                player.Move(kState, levelWidth, 356, GraphicsDevice.Viewport.Height - 120, buildings, jumpSFX, hasSound);
                             }
 
                             // If the player is colliding with the right hitbox, enable climbing
@@ -533,7 +560,10 @@ namespace ApocalypticPizzaDash
                                         if(player.Deliver(kState, doorRect))
                                         {
                                             player.IsDelivering = true;
-                                            deliverySFX.Play();
+                                            if (hasSound)
+                                            {
+                                                deliverySFX.Play();
+                                            }
                                             playerAnimationOffset = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerDeliveryFrame);
                                             buildings[i].HasPizza = true;
                                             buildingsLeft = false;
@@ -639,8 +669,11 @@ namespace ApocalypticPizzaDash
                                             break;
                                     }
                                 }
-                                MediaPlayer.Stop();
-                                MediaPlayer.Play(gameplayBGM);
+                                if (hasSound)
+                                {
+                                    MediaPlayer.Stop();
+                                    MediaPlayer.Play(gameplayBGM);
+                                }
                                 playPosition = 0;
                             }
 

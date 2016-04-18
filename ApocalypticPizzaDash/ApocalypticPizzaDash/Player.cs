@@ -79,7 +79,7 @@ namespace ApocalypticPizzaDash
         /// <summary>
         /// Moves the player
         /// </summary>
-        public void Move(KeyboardState kState, int screenWidth, int minHeight, int maxHeight, List<Building> buildings, SoundEffect jumpSFX)
+        public void Move(KeyboardState kState, int screenWidth, int minHeight, int maxHeight, List<Building> buildings, SoundEffect jumpSFX, bool hasSound)
         {
             // storing param into attribute for use later
             kbState = kState;
@@ -203,7 +203,10 @@ namespace ApocalypticPizzaDash
                 // ensuring that the player stays in the air
                 isUp = true;
 
-                jumpSFX.Play();
+                if (hasSound)
+                {
+                    jumpSFX.Play();
+                }
             }
             
             // saving current keyboard state as the previous one
