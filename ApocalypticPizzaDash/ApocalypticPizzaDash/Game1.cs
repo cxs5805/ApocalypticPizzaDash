@@ -21,7 +21,7 @@ namespace ApocalypticPizzaDash
         KeyboardState kState, kStatePrev;
         double timer;
         int score, loop;
-        bool isPaused; // just for Milestone 2, will be added to attack method in Milestone 3
+        bool isPaused;
         Texture2D backdrop, pause, gameover;
 
         //player attributes
@@ -30,7 +30,7 @@ namespace ApocalypticPizzaDash
         const int PLAYER_HEIGHT = 46;
         const int PLAYER_WIDTH = 30;
 
-        //animating player attacking 
+        //animate player attacking 
         const int PLAYER_ATTACK_HEIGHT = 46;
         const int PLAYER_ATTACK_WIDTH = 42;
         int playerAttackFrame;
@@ -46,7 +46,7 @@ namespace ApocalypticPizzaDash
         int playerClimbFramesElapsed;
         double timePerPlayerClimbFrame = 100;
 
-        // animating delivery
+        // animate delivery
         const int PLAYER_DELIVERY_HEIGHT = 46;
         const int PLAYER_DELIVERY_WIDTH = 42;
         int playerDeliveryFrame;
@@ -99,25 +99,12 @@ namespace ApocalypticPizzaDash
 
         SpriteFont font;
         private Texture2D background, playerImage, playerAttack, playerClimb, playerDeliver;
-        List<Texture2D> UI = new List<Texture2D>();
+        //List<Texture2D> UI = new List<Texture2D>();
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont testFont;
         Rectangle screen;
-
-        // milestone 3 => replace Texture2D UI w/a list of Texture2D objects
-        // b/c by default, the UI will have markers on the map for houses
-        // that need pizzas. when you deliver a pizza, the marker should
-        // disappear; it'll have to be a separate object from the rest of
-        // the UI.
-
-        // MORE STUFF TO DO IN THE FUTURE (not sure if milestone 3 or 4, but needed)
-        // ACTUALLY IMPLEMENT LEVEL LOADING WITH THE BINARYREADER!!
-        // in draw, layer order (this will be very important after level loading is implemented)
-        // layer 0 = sky and road
-        // layer 1 = buildings
-        // layer 2 = characters (player and all zombies)
-
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -136,11 +123,11 @@ namespace ApocalypticPizzaDash
             // start game out unpaused
             isPaused = false;
 
-            // initializing the player object
+            // initi the player object
             player = new Player(null, new Rectangle(0, GraphicsDevice.Viewport.Height - 75,
             PLAYER_WIDTH, PLAYER_HEIGHT), 3);
 
-            // initializing Zombie list and addig just one zombie for testing purposes
+            // init Zombie list and add one zombie for testing purposes
             zombies = new List<Zombie>();
             zombies.Add(new Zombie(null, new Rectangle(GraphicsDevice.Viewport.Width,
             GraphicsDevice.Viewport.Height - 75, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), 3));
@@ -154,15 +141,15 @@ namespace ApocalypticPizzaDash
             levelRects = new List<Rectangle>();
             levelWidth = 0;
 
-            //set up indicator stuff
+            // set up indicator stuff
             indicator = new List<Rectangle>();
             charStandee = new Rectangle(0, 20, 8, 12);
             indBar = new Rectangle(((GraphicsDevice.Viewport.Width / 2) - (101)), 32, 202, 12);
 
-            // initialize the screen's position
+            // init the screen's position
             screen = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
-            // by default, the game starts at the menu
+            // by default, start game at the menu
             gState = GameState.Menu;
             base.Initialize();
         }
@@ -179,6 +166,7 @@ namespace ApocalypticPizzaDash
             // this background image is only used at the menu
             background = Content.Load<Texture2D>("title screen");
 
+            // basic backdrop for each level
             backdrop = Content.Load<Texture2D>("BG-1");
 
             gameover = Content.Load<Texture2D>("gameover");
@@ -239,7 +227,7 @@ namespace ApocalypticPizzaDash
                       PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth);
                     }
 
-                    // respawn the zombie
+                    // respawn the zombie(s)
                     for (int i = 0; i < zombies.Count; i++)
                     {
                         if (zombies[i].Die())
@@ -254,15 +242,23 @@ namespace ApocalypticPizzaDash
                     if(kState.IsKeyDown(Keys.Enter) && kStatePrev.IsKeyUp(Keys.Enter))
                     {
                         gState = GameState.Game;
+                        
+                        // each level lasts 100 seconds (1 min 40)
                         timer = 6000;
+
+                        // by default, player has no points
                         score = 0;
                         buildingsLeft = true;
                         currentLevel = 1;
                         loop = 1;
+
+                        // clear any leftover in-game assets 
                         levelData.Clear();
                         buildings.Clear();
                         zombies.Clear();
                         indicator.Clear();
+
+                        // read in level file and set
                         levelData = reader.readIn("Content/Levels/level" + currentLevel.ToString() + ".dat");
                         levelWidth = levelData[0] * 2;
                         levelData.RemoveAt(0);
@@ -398,10 +394,10 @@ namespace ApocalypticPizzaDash
                                 zombies[i].IsColliding = true;
                                 zombies[i].Collision();
 
-                                // Increment score upon kill
+                                // Increment score by 50 points upon kill
                                 if(zombies[i].CurrentHealth == 0 && zombies[i].Rect != Rectangle.Empty)
                                 {
-                                    score += 5;
+                                    score += 50;
                                 }
                             }
                             // if zombie collides with player, player takes damage
@@ -633,7 +629,9 @@ namespace ApocalypticPizzaDash
                             {
                                 player.IsDelivering = false;
                                 playerDeliveryFrame = 0;
-                                score += 50;
+
+                                // player earns 100 points for delivery
+                                score += 100;
                             }
                         }
 
@@ -647,7 +645,7 @@ namespace ApocalypticPizzaDash
                     }
 
                     // decrement the timer
-                    //timer--;
+                    timer--;
 
                     // Update screen position
                     screen = new Rectangle(player.Rect.X - (screen.Width / 2), 0, screen.Width, screen.Height);
@@ -698,23 +696,23 @@ namespace ApocalypticPizzaDash
                 {
                     case GameState.Menu:
 
-                        // drawing menu graphic
-                        spriteBatch.Draw(background, new Rectangle(0, 0, 800, 450), Color.White);
-
-                        break;
+                    // drawing menu graphic
+                    spriteBatch.Draw(background, new Rectangle(0, 0, 800, 450), Color.White);
+                    break;
 
                     case GameState.Game:
 
-                        // drawing the in-game backdrop
-                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), Color.White);
+                    // draw the in-game backdrop
+                    spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), Color.White);
 
-                        int minutes = (int)(timer / 3600);
-                        int seconds = (int)((timer / 60) % 60);
-                        string timeDisplay = "Time: " + minutes + ":" + seconds;
-                        if(seconds < 10)
-                        {
-                            timeDisplay = "Time: " + minutes + ":0" + seconds;
-                        }
+                    // format time to display in minutes and seconds
+                    int minutes = (int)(timer / 3600);
+                    int seconds = (int)((timer / 60) % 60);
+                    string timeDisplay = "Time: " + minutes + ":" + seconds;
+                    if(seconds < 10)
+                    {
+                        timeDisplay = "Time: " + minutes + ":0" + seconds;
+                    }
 
                     //draw indicators
                     spriteBatch.Draw(indicatorBar, indBar, Color.White);
@@ -741,7 +739,7 @@ namespace ApocalypticPizzaDash
                         }
                     }
 
-                    // draw the player's health, the timer, and the zombie's health
+                    // draw the UI (player's health, the timer, and the zombie's health)
                     spriteBatch.DrawString(testFont, "Player health: " + player.CurrentHealth, new Vector2(0, 0), Color.Black);
                     spriteBatch.DrawString(testFont, "Day " + currentLevel.ToString(), new Vector2(0, 32), Color.Black);
                     spriteBatch.DrawString(testFont, "Week " + loop.ToString(), new Vector2(0, 64), Color.Black);
@@ -751,107 +749,108 @@ namespace ApocalypticPizzaDash
                     // drawing the objects. when a collision occurs, both the player and the zombie turn red
                     // testing if player is colliding with the zombie on the current frame
                     for (int i = 0; i < zombies.Count; i++)
-                        {
-                            // when attack box collides with zombie, turn zombie red
-                            if (player.AttackBox.Intersects(zombies[i].Rect))
-                            {
-                                zombies[i].Color = Color.Red;
-                            }
-                            else
-                            {
-                                zombies[i].Color = Color.White;
-                            }
-                            if (player.Rect.Intersects(zombies[i].Rect))
-                            {
-                                player.Color = Color.Red;
-                                break;
-                            }
-                            else
-                            {
-                                player.Color = Color.White;
-                            }
-                        }
-
-
-                        // draw the attack box (for debugging purposes, TO BE REMOVED IN FINAL GAME)
-                        if(player.Attack(kState) && !player.IsDelivering)
-                        {
-                            spriteBatch.Draw(gameover, new Rectangle(player.AttackBox.X - screen.X, player.AttackBox.Y, player.AttackBox.Width, player.AttackBox.Height), Color.White);
-                        }
-                // drawing the player
-
-                if (player.Invincible == 0 || player.Invincible % 30 <= 15)
-                {
-                    if (player.CurrentHealth > 0)
                     {
-                        //draws the player's attack
-                        if (player.Attack(kState) && !player.IsDelivering)
+                        // when attack box collides with zombie, turn zombie red
+                        if (player.AttackBox.Intersects(zombies[i].Rect))
                         {
-                            if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
-                            {
-                                spriteBatch.Draw(playerAttack, new Vector2((player.Rect.X - 12) - screen.X, player.Rect.Y), new Rectangle(playerAttackFrame * PLAYER_ATTACK_WIDTH, 0, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT), player.Color, 0, Vector2.Zero, 1,
-                                    SpriteEffects.FlipHorizontally, 0);
-                            }
-                            else if (player.Dir == Direction.FaceRight || player.Dir == Direction.MoveRight)
-                            {
-                                spriteBatch.Draw(playerAttack, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerAttackFrame * PLAYER_ATTACK_WIDTH, 0, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT), player.Color);
-                            }
+                            zombies[i].Color = Color.Red;
                         }
-                        // draw the delivery
-                        else if (player.IsDelivering)
-                        {
-                            if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
-                            {
-                                spriteBatch.Draw(playerDeliver, new Vector2((player.Rect.X - 12) - screen.X, player.Rect.Y), new Rectangle(playerDeliveryFrame * PLAYER_DELIVERY_WIDTH, 0, PLAYER_DELIVERY_WIDTH, PLAYER_DELIVERY_HEIGHT), player.Color, 0, Vector2.Zero, 1,
-                                    SpriteEffects.FlipHorizontally, 0);
-                            }
-                            else if (player.Dir == Direction.FaceRight || player.Dir == Direction.MoveRight)
-                            {
-                                spriteBatch.Draw(playerDeliver, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerDeliveryFrame * PLAYER_DELIVERY_WIDTH, 0, PLAYER_DELIVERY_WIDTH, PLAYER_DELIVERY_HEIGHT), player.Color);
-                            }
-                        }
-                        // draw the player moving
                         else
                         {
-                            if (player.IsClimbing == false)
+                            zombies[i].Color = Color.White;
+                        }
+                        if (player.Rect.Intersects(zombies[i].Rect))
+                        {
+                            player.Color = Color.Red;
+                            break;
+                        }
+                        else
+                        {
+                            player.Color = Color.White;
+                        }
+                    }
+
+
+                    /*// draw the attack box (for debugging purposes, TO BE REMOVED IN FINAL GAME)
+                    if(player.Attack(kState) && !player.IsDelivering)
+                    {
+                        spriteBatch.Draw(gameover, new Rectangle(player.AttackBox.X - screen.X, player.AttackBox.Y, player.AttackBox.Width, player.AttackBox.Height), Color.White);
+                    }*/
+
+                    // drawing the player
+                    if (player.Invincible == 0 || player.Invincible % 30 <= 15)
+                    {
+                        if (player.CurrentHealth > 0)
+                        {
+                            //draws the player's attack
+                            if (player.Attack(kState) && !player.IsDelivering)
                             {
                                 if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
                                 {
-                                    spriteBatch.Draw(player.Image, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerFrame * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT), player.Color, 0, Vector2.Zero, 1,
+                                    spriteBatch.Draw(playerAttack, new Vector2((player.Rect.X - 12) - screen.X, player.Rect.Y), new Rectangle(playerAttackFrame * PLAYER_ATTACK_WIDTH, 0, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT), player.Color, 0, Vector2.Zero, 1,
                                         SpriteEffects.FlipHorizontally, 0);
                                 }
                                 else if (player.Dir == Direction.FaceRight || player.Dir == Direction.MoveRight)
                                 {
-                                    spriteBatch.Draw(player.Image, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerFrame * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT), player.Color);
+                                    spriteBatch.Draw(playerAttack, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerAttackFrame * PLAYER_ATTACK_WIDTH, 0, PLAYER_ATTACK_WIDTH, PLAYER_ATTACK_HEIGHT), player.Color);
                                 }
                             }
+                            // draw the delivery
+                            else if (player.IsDelivering)
+                            {
+                                if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
+                                {
+                                    spriteBatch.Draw(playerDeliver, new Vector2((player.Rect.X - 12) - screen.X, player.Rect.Y), new Rectangle(playerDeliveryFrame * PLAYER_DELIVERY_WIDTH, 0, PLAYER_DELIVERY_WIDTH, PLAYER_DELIVERY_HEIGHT), player.Color, 0, Vector2.Zero, 1,
+                                        SpriteEffects.FlipHorizontally, 0);
+                                }
+                                else if (player.Dir == Direction.FaceRight || player.Dir == Direction.MoveRight)
+                                {
+                                    spriteBatch.Draw(playerDeliver, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerDeliveryFrame * PLAYER_DELIVERY_WIDTH, 0, PLAYER_DELIVERY_WIDTH, PLAYER_DELIVERY_HEIGHT), player.Color);
+                                }
+                            }
+                            // draw the player moving
                             else
                             {
-                                spriteBatch.Draw(playerClimb, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerClimbFrame * PLAYER_CLIMB_WIDTH, 0, PLAYER_CLIMB_WIDTH, PLAYER_CLIMB_HEIGHT), player.Color, 0, Vector2.Zero, 1,
-                                        SpriteEffects.FlipHorizontally, 0);
+                                if (player.IsClimbing == false)
+                                {
+                                    if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
+                                    {
+                                        spriteBatch.Draw(player.Image, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerFrame * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT), player.Color, 0, Vector2.Zero, 1,
+                                            SpriteEffects.FlipHorizontally, 0);
+                                    }
+                                    else if (player.Dir == Direction.FaceRight || player.Dir == Direction.MoveRight)
+                                    {
+                                        spriteBatch.Draw(player.Image, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerFrame * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT), player.Color);
+                                    }
+                                }
+                                else
+                                {
+                                    spriteBatch.Draw(playerClimb, new Vector2(player.Rect.X - screen.X, player.Rect.Y), new Rectangle(playerClimbFrame * PLAYER_CLIMB_WIDTH, 0, PLAYER_CLIMB_WIDTH, PLAYER_CLIMB_HEIGHT), player.Color, 0, Vector2.Zero, 1,
+                                            SpriteEffects.FlipHorizontally, 0);
+                                }
                             }
                         }
                     }
-                }
 
-                        // drawing the zombies
-                        for (int i = 0; i < zombies.Count; i++)
+                    // draw the zombies
+                    for (int i = 0; i < zombies.Count; i++)
+                    {
+                        if (zombies[i].CurrentHealth > 0)
                         {
-                            if (zombies[i].CurrentHealth > 0)
+                            if (zombies[i].Dir == Direction.MoveLeft)
                             {
-                                if (zombies[i].Dir == Direction.MoveLeft)
-                                {
-                                    spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color, 0, Vector2.Zero, 1,
-                                        SpriteEffects.FlipHorizontally, 0);
-                                }
-                                else if (zombies[i].Dir == Direction.MoveRight)
-                                {
-                                    spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color);
-                                }
-
+                                spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color, 0, Vector2.Zero, 1,
+                                    SpriteEffects.FlipHorizontally, 0);
                             }
-                        }
+                            else if (zombies[i].Dir == Direction.MoveRight)
+                            {
+                                spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color);
+                            }
 
+                        }
+                    }
+
+                    // draw the pause screen
                     if (isPaused)
                     {
                         spriteBatch.Draw(pause, new Rectangle(0, 0, 800, 450), Color.White);
@@ -860,9 +859,10 @@ namespace ApocalypticPizzaDash
                     break;
 
                     case GameState.GameOver:
-                        // drawing the game over screen and prompting player to try again
-                        spriteBatch.Draw(gameover, new Rectangle(0, 0, 800, 450), Color.White);
-                        break;
+                    
+                    // drawing the game over screen and prompting player to try again
+                    spriteBatch.Draw(gameover, new Rectangle(0, 0, 800, 450), Color.White);
+                    break;
                 }
 
             spriteBatch.End();

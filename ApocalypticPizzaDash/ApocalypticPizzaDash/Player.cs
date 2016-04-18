@@ -19,7 +19,6 @@ namespace ApocalypticPizzaDash
         private bool allDelivered, isDelivering;
 
         // when player gets hit, he'll be invincible to attack for some time
-        // (to be implemented in milestone 3)
         private int invincible;
 
         // keyboard-state attributes
@@ -207,7 +206,9 @@ namespace ApocalypticPizzaDash
             prevKBState = kbState;
         }
 
-        //player's attack method
+        /// <summary>
+        /// Makes the player attack
+        /// </summary>
         public bool Attack(KeyboardState kState)
         {
             // assign current keyboard state to param
@@ -237,6 +238,9 @@ namespace ApocalypticPizzaDash
             }
         }
 
+        /// <summary>
+        /// Makes the player climb up or down a ladder
+        /// </summary>
         public bool Climb(KeyboardState kState, Rectangle ladder)
         {
             // climbing controls when at bottom of ladder
@@ -275,6 +279,9 @@ namespace ApocalypticPizzaDash
             return false;
         }
 
+        /// <summary>
+        /// Delivers a pizza at a door
+        /// </summary>
         public bool Deliver(KeyboardState kState, Rectangle doorRect)
         {
             if(kState.IsKeyDown(Keys.W))
