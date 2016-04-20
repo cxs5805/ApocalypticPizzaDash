@@ -20,6 +20,7 @@ namespace ApocalypticPizzaDash
 
         // when player gets hit, he'll be invincible to attack for some time
         private int invincible;
+        private int lives;
 
         // keyboard-state attributes
         private KeyboardState kbState;
@@ -28,13 +29,14 @@ namespace ApocalypticPizzaDash
         // attacking attributes
         private Rectangle attackBox;
 
-        public Player(Texture2D image, Rectangle rect, int health):base(image, rect, health)
+        public Player(Texture2D image, Rectangle rect, int health, int lives):base(image, rect, health)
         {
             isUp = true;
             isClimbing = false;
             allDelivered = false;
             isDelivering = false;
             invincible = 0;
+            this.lives = lives;
         }
 
         // properties
@@ -72,6 +74,12 @@ namespace ApocalypticPizzaDash
         {
             get { return invincible; }
             set { invincible = value; }
+        }
+
+        public int Lives
+        {
+            get { return lives; }
+            set { lives = value; }
         }
 
         /// <summary>
@@ -139,7 +147,15 @@ namespace ApocalypticPizzaDash
                 ySpeed += GRAVITY;
 
                 // Logic for solid platforms
-                Rectangle collision = new Rectangle(Rect.X, Rect.Y, Rect.Width, Rect.Height + 2);
+                Rectangle collision = new Rectangle(Rect.X + 10, Rect.Y + 40, 14, 8); ;
+
+                if(Dir == Direction.FaceLeft || Dir == Direction.MoveLeft)
+                {
+                    collision = new Rectangle(Rect.X, Rect.Y + 40, 14, 8);
+                }
+                
+
+
                 for (int i = 0; i < buildings.Count && !isOnBuilding && !isClimbing; i++)
                 {
                     for (int j = 0; j < buildings[i].Hitboxes.Count && !isOnBuilding; j++)

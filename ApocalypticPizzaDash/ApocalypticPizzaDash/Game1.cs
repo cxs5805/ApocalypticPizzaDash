@@ -125,7 +125,7 @@ namespace ApocalypticPizzaDash
 
             // initi the player object
             player = new Player(null, new Rectangle(0, GraphicsDevice.Viewport.Height - 75,
-            PLAYER_WIDTH, PLAYER_HEIGHT), 3);
+            PLAYER_WIDTH, PLAYER_HEIGHT), 3, 3);
 
             // init Zombie list and add one zombie for testing purposes
             zombies = new List<Zombie>();
@@ -224,7 +224,7 @@ namespace ApocalypticPizzaDash
                     if(player.Die())
                     {
                       player = new Player(player.Image, new Rectangle(0, GraphicsDevice.Viewport.Height - 75,
-                      PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth);
+                      PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth, 3);
                     }
 
                     // respawn the zombie(s)
@@ -302,7 +302,7 @@ namespace ApocalypticPizzaDash
                                     }
                                     break;
                                 case 2:
-                                    player.Rect = levelRects[i / 3];
+                                    player = new Player(player.Image, levelRects[i / 3], player.TotalHealth, 3);
                                     player.AllDelivered = false;
                                     break;
                                 case 3:
@@ -340,11 +340,33 @@ namespace ApocalypticPizzaDash
                     // cause game over if timer runs out
                     if(timer < 60)
                     {
-                        gState = GameState.GameOver;
-                        player.CurrentHealth = 0;
-                        for (int i = 0; i < zombies.Count; i++)
+                        if (player.Lives == 0)
                         {
-                            zombies[i].CurrentHealth = 0;
+                            gState = GameState.GameOver;
+                        }
+                        else
+                        {
+                            player.Lives--;
+                            player.IsDelivering = false;
+                            timer = 6000;
+                            int currentZombies = 0;
+                            for (int i = 0; i < levelData.Count; i += 3)
+                            {
+                                switch (levelData[i])
+                                {
+                                    case 2:
+                                        player = new Player(player.Image, new Rectangle(levelRects[i / 3].X, levelRects[i / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth, player.Lives);
+                                        break;
+                                    case 3:
+                                        zombies[currentZombies] = new Zombie(zombie1, levelRects[i / 3], 3);
+                                        currentZombies++;
+                                        break;
+                                    case 4:
+                                        zombies[currentZombies] = new Zombie(zombie2, levelRects[i / 3], 3);
+                                        currentZombies++;
+                                        break;
+                                }
+                            }
                         }
                     }
 
@@ -428,7 +450,34 @@ namespace ApocalypticPizzaDash
                         // when the player runs out of health, the game ends
                         if (player.Die())
                         {
-                            gState = GameState.GameOver;
+                            if (player.Lives == 0)
+                            {
+                                gState = GameState.GameOver;
+                            }
+                            else
+                            {
+                                player.Lives--;
+                                player.IsDelivering = false;
+                                timer = 6000;
+                                int currentZombies = 0;
+                                for (int i = 0; i < levelData.Count; i += 3)
+                                {
+                                    switch(levelData[i])
+                                    {
+                                        case 2:
+                                            player = new Player(player.Image, new Rectangle(levelRects[i / 3].X, levelRects[i / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth, player.Lives);
+                                            break;
+                                        case 3:
+                                            zombies[currentZombies] = new Zombie(zombie1, levelRects[i / 3], 3);
+                                            currentZombies++;
+                                            break;
+                                        case 4:
+                                            zombies[currentZombies] = new Zombie(zombie2, levelRects[i / 3], 3);
+                                            currentZombies++;
+                                            break;
+                                    }
+                                }
+                            }
                         }
 
                         // when the zombie runs out of health, it dies
@@ -569,7 +618,7 @@ namespace ApocalypticPizzaDash
                                             }
                                             break;
                                         case 2:
-                                            player = new Player(player.Image, new Rectangle(levelRects[l / 3].X, levelRects[l / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth);
+                                            player = new Player(player.Image, new Rectangle(levelRects[l / 3].X, levelRects[l / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth, player.Lives);
                                             break;
                                         case 3:
                                             if (currentZombies < zombies.Count)
@@ -642,10 +691,11 @@ namespace ApocalypticPizzaDash
                         }
                         zombieFrame = zombieFramesElapsed % numZombieFrames + 1;
                         
+                        // decrement the timer
+                        timer--;
                     }
 
-                    // decrement the timer
-                    timer--;
+                    
 
                     // Update screen position
                     screen = new Rectangle(player.Rect.X - (screen.Width / 2), 0, screen.Width, screen.Height);
@@ -743,6 +793,7 @@ namespace ApocalypticPizzaDash
                     spriteBatch.DrawString(testFont, "Player health: " + player.CurrentHealth, new Vector2(0, 0), Color.Black);
                     spriteBatch.DrawString(testFont, "Day " + currentLevel.ToString(), new Vector2(0, 32), Color.Black);
                     spriteBatch.DrawString(testFont, "Week " + loop.ToString(), new Vector2(0, 64), Color.Black);
+                    spriteBatch.DrawString(testFont, "Spare Lives: " + player.Lives.ToString(), new Vector2(0, 96), Color.Black);
                     spriteBatch.DrawString(testFont, timeDisplay, new Vector2(325, 0), Color.Black);
                     spriteBatch.DrawString(testFont, "Score: " + score.ToString(), new Vector2(GraphicsDevice.Viewport.Width - 200, 0), Color.Black);
 
@@ -771,11 +822,20 @@ namespace ApocalypticPizzaDash
                     }
 
 
-                    /*// draw the attack box (for debugging purposes, TO BE REMOVED IN FINAL GAME)
+                    // draw the attack box (for debugging purposes, TO BE REMOVED IN FINAL GAME)
                     if(player.Attack(kState) && !player.IsDelivering)
                     {
                         spriteBatch.Draw(gameover, new Rectangle(player.AttackBox.X - screen.X, player.AttackBox.Y, player.AttackBox.Width, player.AttackBox.Height), Color.White);
-                    }*/
+                    }
+                    // draw feet collision box (ALSO FOR DEBUGGING ONLY)
+                    Rectangle collision = new Rectangle(player.Rect.X + 10 - screen.X, player.Rect.Y + 40, 14, 8); ;
+
+                    if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
+                    {
+                        collision = new Rectangle(player.Rect.X + 6 - screen.X, player.Rect.Y + 40, 14, 8);
+                    }
+                    
+                    spriteBatch.Draw(gameover, collision, Color.White);
 
                     // drawing the player
                     if (player.Invincible == 0 || player.Invincible % 30 <= 15)
