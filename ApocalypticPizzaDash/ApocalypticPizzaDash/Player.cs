@@ -15,7 +15,7 @@ namespace ApocalypticPizzaDash
         private const float GRAVITY = 1.3f;
         private const float INITL_JUMP_V = -20f;
         private float ySpeed;
-        private bool isUp, isClimbing;
+        private bool isUp, isClimbing, isAttacking;
         private bool allDelivered, isDelivering;
 
         // when player gets hit, he'll be invincible to attack for some time
@@ -33,6 +33,7 @@ namespace ApocalypticPizzaDash
         {
             isUp = true;
             isClimbing = false;
+            isAttacking = false;
             allDelivered = false;
             isDelivering = false;
             invincible = 0;
@@ -56,6 +57,12 @@ namespace ApocalypticPizzaDash
         {
             get { return isDelivering; }
             set { isDelivering = value; }
+        }
+
+        public bool IsAttacking
+        {
+            get { return isAttacking; }
+            set { isAttacking = value; }
         }
 
         public Rectangle AttackBox
@@ -236,6 +243,7 @@ namespace ApocalypticPizzaDash
                 // set height and width of attack hitbox
                 int hitboxWidth = 18;
                 int hitboxHeight = 10;
+                isAttacking = true;
 
                 // draw hitbox of attack depending on direction player is facing
                 if (Dir == Direction.FaceRight || Dir == Direction.MoveRight)
@@ -246,6 +254,7 @@ namespace ApocalypticPizzaDash
                 {
                     AttackBox = new Rectangle(Rect.X - (hitboxWidth - 1), Rect.Y + 26, hitboxWidth, hitboxHeight);
                 }
+                prevKBState = kbState;
                 return true;
             }
             else

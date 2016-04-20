@@ -26,7 +26,8 @@ namespace ApocalypticPizzaDash
 
         //player attributes
         Player player;
-        int playerAnimationOffset;
+        int playerDeliveryAnimationOffset;
+        int playerAttackAnimationOffset;
         const int PLAYER_HEIGHT = 46;
         const int PLAYER_WIDTH = 30;
 
@@ -490,10 +491,11 @@ namespace ApocalypticPizzaDash
                         }
 
                         // move player normally if not attacking
-                        if (!player.Attack(kState) && !player.IsDelivering)
+                        if (!player.Attack(kState) && !player.IsDelivering && !player.IsAttacking)
                         {
                             // disable attack box
                             player.AttackBox = Rectangle.Empty;
+                            playerAttackAnimationOffset = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerAttackFrame);
 
                             // handling input to move player
                             if (!player.IsClimbing)
@@ -535,13 +537,13 @@ namespace ApocalypticPizzaDash
                             {
                                 for(int door = 1; buildings[i].Hitboxes.ContainsKey("door" + door.ToString()); door++)
                                 {
-                                    if (player.Rect.Intersects(buildings[i].Hitboxes["door" + door.ToString()]) && !buildings[i].HasPizza)
+                                    if (player.Rect.Intersects(buildings[i].Hitboxes["door1"]) && !buildings[i].HasPizza)
                                     {
-                                        doorRect = buildings[i].Hitboxes["door" + door.ToString()];
+                                        doorRect = buildings[i].Hitboxes["door1"];
                                         if(player.Deliver(kState, doorRect))
                                         {
                                             player.IsDelivering = true;
-                                            playerAnimationOffset = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerDeliveryFrame);
+                                            playerDeliveryAnimationOffset = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerDeliveryFrame);
                                             buildings[i].HasPizza = true;
                                             buildingsLeft = false;
                                             for(int k = 0; k < currentBuildings; k++)
@@ -667,13 +669,21 @@ namespace ApocalypticPizzaDash
                         }
                         else if(!player.IsDelivering)
                         {
-                            // animate the player attacking
-                            playerAttackFrame = playerAttackFramesElapsed % (numPlayerAttackFrames + 1);
+                            // If the player is attacking, update their animation frame each frame
+                            if(player.IsAttacking)
+                            {
+                                playerAttackFrame = (playerAttackFramesElapsed - playerAttackAnimationOffset) % (numPlayerAttackFrames + 2);
+                            }
+                            // If the last frame is reached, the attack is over.
+                            if(playerAttackFrame == numPlayerAttackFrames + 1)
+                            {
+                                player.IsAttacking = false;
+                            }
                         }
                         else if(player.IsDelivering)
                         {
                             // animate the delivery
-                            playerDeliveryFrame = (playerDeliveryFramesElapsed - playerAnimationOffset) % (numPlayerDeliveryFrames + 2);
+                            playerDeliveryFrame = (playerDeliveryFramesElapsed - playerAttackAnimationOffset) % (numPlayerDeliveryFrames + 2);
                             if(playerDeliveryFrame == numPlayerDeliveryFrames + 1)
                             {
                                 player.IsDelivering = false;
@@ -785,7 +795,7 @@ namespace ApocalypticPizzaDash
                         else
                         {
                             spriteBatch.Draw(buildings[i].Image, new Rectangle(buildings[i].Rect.X - screen.X, buildings[i].Rect.Y, buildings[i].Rect.Width, buildings[i].Rect.Height), Color.White);
-                            spriteBatch.Draw(delivery2, new Rectangle(buildings[i].Hitboxes["door1"].X - 4 - screen.X, buildings[i].Hitboxes["door1"].Y - 60, 44, 40), Color.White);
+                            spriteBatch.Draw(delivery2, new Rectangle(buildings[i].Hitboxes["door1"].X - 4 - screen.X, buildings[i].Hitboxes["door1"].Y - 60, 42, 38), Color.White);
                         }
                     }
 
@@ -823,7 +833,7 @@ namespace ApocalypticPizzaDash
 
 
                     // draw the attack box (for debugging purposes, TO BE REMOVED IN FINAL GAME)
-                    if(player.Attack(kState) && !player.IsDelivering)
+                    if(player.IsAttacking && !player.IsDelivering)
                     {
                         spriteBatch.Draw(gameover, new Rectangle(player.AttackBox.X - screen.X, player.AttackBox.Y, player.AttackBox.Width, player.AttackBox.Height), Color.White);
                     }
@@ -843,7 +853,7 @@ namespace ApocalypticPizzaDash
                         if (player.CurrentHealth > 0)
                         {
                             //draws the player's attack
-                            if (player.Attack(kState) && !player.IsDelivering)
+                            if (player.IsAttacking && !player.IsDelivering)
                             {
                                 if (player.Dir == Direction.FaceLeft || player.Dir == Direction.MoveLeft)
                                 {
