@@ -18,10 +18,10 @@ namespace ApocalypticPizzaDash
         Texture2D loadingBkd;
         Texture2D pizza;
         int pizzaFramesElapsed;
-        int numPizzaFrames = 12;
+        int numPizzaFrames = 7;
         int pizzaFrame;
-        const int PIZZA_HEIGHT = 7;
-        const int PIZZA_WIDTH = 14;
+        const int PIZZA_HEIGHT = 72;
+        const int PIZZA_WIDTH = 120;
         double timePerPizzaFrame = 100;
         Vector2 pizzaPos;
 
@@ -576,94 +576,14 @@ namespace ApocalypticPizzaDash
 
                             if (!buildingsLeft && !player.IsDelivering)
                             {
-                                /*player.IsDelivering = false;
-                                player.AllDelivered = true;
+                                isLoading = true;
                                 currentLevel++;
                                 // If we've reached the end of the week, it's time to loop!
-                                if(currentLevel > 5)
+                                if (currentLevel > 5)
                                 {
                                     currentLevel = 1;
                                     loop++;
                                 }
-                                // Time to load the new level
-                                buildingsLeft = true;
-                                timer = 6000;
-                                levelData.Clear();
-                                buildings.Clear();
-                                zombies.Clear();
-                                indicator.Clear();
-                                levelData = reader.readIn("Content/Levels/level" + currentLevel.ToString() + ".dat");
-                                levelWidth = levelData[0] * 2;
-                                levelData.RemoveAt(0);
-                                levelRects = reader.makeRect(levelData);
-                                int currentZombies = 0;
-                                currentBuildings = 0;
-                                for (int l = 0; l < levelData.Count; l += 3)
-                                {
-                                    switch (levelData[l])
-                                    {
-                                        case 0:
-                                            if (currentBuildings < buildings.Count)
-                                            {
-                                                buildings[currentBuildings] = new Building(0, levelRects[l / 3], building1);
-                                                buildings[currentBuildings].SetHitboxes();
-                                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
-                                                currentBuildings++;
-                                            }
-                                            else
-                                            {
-                                                buildings.Add(new Building(0, levelRects[l / 3], building1));
-                                                buildings[currentBuildings].SetHitboxes();
-                                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
-                                                currentBuildings++;
-                                            }
-                                            break;
-                                        case 1:
-                                            if (currentBuildings < buildings.Count)
-                                            {
-                                                buildings[currentBuildings] = new Building(1, levelRects[l / 3], building2);
-                                                buildings[currentBuildings].SetHitboxes();
-                                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
-                                                currentBuildings++;
-                                            }
-                                            else
-                                            {
-                                                buildings.Add(new Building(1, levelRects[l / 3], building2));
-                                                buildings[currentBuildings].SetHitboxes();
-                                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
-                                                currentBuildings++;
-                                            }
-                                            break;
-                                        case 2:
-                                            player = new Player(player.Image, new Rectangle(levelRects[l / 3].X, levelRects[l / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth, player.Lives);
-                                            break;
-                                        case 3:
-                                            if (currentZombies < zombies.Count)
-                                            {
-                                                zombies[currentZombies] = new Zombie(zombie1, levelRects[l / 3], 3);
-                                                currentZombies++;
-                                            }
-                                            else
-                                            {
-                                                zombies.Add(new Zombie(zombie1, levelRects[l / 3], 3));
-                                                currentZombies++;
-                                            }
-                                            break;
-                                        case 4:
-                                            if (currentZombies < zombies.Count)
-                                            {
-                                                zombies[currentZombies] = new Zombie(zombie2, levelRects[l / 3], 3);
-                                                currentZombies++;
-                                            }
-                                            else
-                                            {
-                                                zombies.Add(new Zombie(zombie2, levelRects[l / 3], 3));
-                                                currentZombies++;
-                                            }
-                                            break;
-                                    }
-                                }*/
-                                isLoading = true;
                                 gState = GameState.Loading;
                             }
 
@@ -756,8 +676,8 @@ namespace ApocalypticPizzaDash
                     LoadLevel(gameTime.ElapsedGameTime.Milliseconds);
 
                     //animating el pizza
-                    pizzaFramesElapsed = (int)(gameTime.TotalGameTime.Milliseconds / timePerPizzaFrame);
-                    pizzaFrame = pizzaFramesElapsed % numPizzaFrames + 1;
+                    pizzaFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPizzaFrame);
+                    pizzaFrame = pizzaFramesElapsed % (numPizzaFrames + 1);
 
                     break;
             }
@@ -827,9 +747,8 @@ namespace ApocalypticPizzaDash
 
                     // draw the UI (player's health, the timer, and the zombie's health)
                     spriteBatch.DrawString(testFont, "Player health: " + player.CurrentHealth, new Vector2(0, 0), Color.Black);
-                    spriteBatch.DrawString(testFont, "Day " + currentLevel.ToString(), new Vector2(0, 32), Color.Black);
-                    spriteBatch.DrawString(testFont, "Week " + loop.ToString(), new Vector2(0, 64), Color.Black);
-                    spriteBatch.DrawString(testFont, "Spare Lives: " + player.Lives.ToString(), new Vector2(0, 96), Color.Black);
+                    spriteBatch.DrawString(testFont, "Day " + currentLevel.ToString() + " Week " + loop.ToString(), new Vector2(0, 32), Color.Black);
+                    spriteBatch.DrawString(testFont, "Spare Lives: " + player.Lives.ToString(), new Vector2(0, 64), Color.Black);
                     spriteBatch.DrawString(testFont, timeDisplay, new Vector2(325, 0), Color.Black);
                     spriteBatch.DrawString(testFont, "Score: " + score.ToString(), new Vector2(GraphicsDevice.Viewport.Width - 200, 0), Color.Black);
 
@@ -859,7 +778,7 @@ namespace ApocalypticPizzaDash
 
 
                     // draw the attack box (for debugging purposes, TO BE REMOVED IN FINAL GAME)
-                    if(player.IsAttacking && !player.IsDelivering)
+                    /*if(player.IsAttacking && !player.IsDelivering)
                     {
                         spriteBatch.Draw(gameover, new Rectangle(player.AttackBox.X - screen.X, player.AttackBox.Y, player.AttackBox.Width, player.AttackBox.Height), Color.White);
                     }
@@ -871,7 +790,7 @@ namespace ApocalypticPizzaDash
                         collision = new Rectangle(player.Rect.X + 6 - screen.X, player.Rect.Y + 40, 14, 8);
                     }
                     
-                    spriteBatch.Draw(gameover, collision, Color.White);
+                    spriteBatch.Draw(gameover, collision, Color.White);*/
 
                     // drawing the player
                     if (player.Invincible == 0 || player.Invincible % 30 <= 15)
@@ -962,7 +881,9 @@ namespace ApocalypticPizzaDash
                 
                 //draws the pizza
                 case GameState.Loading:
-                    spriteBatch.Draw(loadingBkd, new Rectangle(0, 0, 800, 450), Color.White);
+                    GraphicsDevice.Clear(Color.Black);
+                    spriteBatch.DrawString(testFont, "Dawn of Day " + currentLevel.ToString(), new Vector2(336, 128), Color.White);
+                    spriteBatch.DrawString(testFont, "Week " + loop.ToString(), new Vector2(364, 160), Color.White);
                     spriteBatch.Draw(pizza, new Vector2(GraphicsDevice.Viewport.Width / 2 - PIZZA_WIDTH / 2, GraphicsDevice.Viewport.Height / 2 - PIZZA_HEIGHT / 2), new Rectangle(pizzaFrame * PIZZA_WIDTH, 0, PIZZA_WIDTH, PIZZA_HEIGHT), Color.White);
                     break;
             }
@@ -988,15 +909,8 @@ namespace ApocalypticPizzaDash
                 gState = GameState.Game;
                 player.IsDelivering = false;
                 player.AllDelivered = true;
-                currentLevel++;
                 //sets the game to a loading state
                 isLoading = true;
-                // If we've reached the end of the week, it's time to loop!
-                if (currentLevel > 5)
-                {
-                    currentLevel = 1;
-                    loop++;
-                }
                 // Time to load the new level
                 buildingsLeft = true;
                 timer = 6000;
