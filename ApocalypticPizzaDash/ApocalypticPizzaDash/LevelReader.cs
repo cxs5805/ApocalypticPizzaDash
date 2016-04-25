@@ -105,13 +105,29 @@ namespace ApocalypticPizzaDash
                         height = 42;
                         width = 34;
                         break;
+                    case 5: //bld3
+                        height = 250;
+                        width = 184;
+                        break;
+                    case 6: //bld4
+                        height = 260;
+                        width = 252;
+                        break;
+                    case 7: //bld5
+                        height = 298;
+                        width = 204;
+                        break;
+                    case 8: //bld6
+                        height = 298;
+                        width = 204;
+                        break;
                     default:
                         height = 0;
                         width = 0;
                         break;
                 }
 
-                if (grey[(i * 3) - 3] > 2)
+                if (grey[(i * 3) - 3] > 2 && grey[(i * 3) - 3] < 5)
                 {
                     objectList.Add(new Rectangle(grey[(i * 3) - 2], grey[(i * 3) - 1] + 4, width, height));
                 }
