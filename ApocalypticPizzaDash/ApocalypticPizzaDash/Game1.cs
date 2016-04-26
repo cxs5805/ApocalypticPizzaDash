@@ -141,7 +141,7 @@ namespace ApocalypticPizzaDash
 
             // init Zombie list and add one zombie for testing purposes
             zombies = new List<Zombie>();
-            zombies.Add(new Zombie(null, new Rectangle(GraphicsDevice.Viewport.Width,
+            zombies.Add(new Zombie(player, null, new Rectangle(GraphicsDevice.Viewport.Width,
             GraphicsDevice.Viewport.Height - 75, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), 3));
 
             // init buildings list
@@ -248,7 +248,7 @@ namespace ApocalypticPizzaDash
                     {
                         if (zombies[i].Die())
                         {
-                            zombies[i] = new Zombie(zombies[i].Image, new Rectangle(GraphicsDevice.Viewport.Width,
+                            zombies[i] = new Zombie(player, zombies[i].Image, new Rectangle(GraphicsDevice.Viewport.Width,
                                 GraphicsDevice.Viewport.Height - 75, PLAYER_WIDTH, PLAYER_HEIGHT), 100);
                         }
                     }
@@ -324,24 +324,24 @@ namespace ApocalypticPizzaDash
                                 case 3:
                                     if (currentZombies < zombies.Count)
                                     {
-                                        zombies[currentZombies] = new Zombie(zombie1, levelRects[i / 3], 3);
+                                        zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], 3);
                                         currentZombies++;
                                     }
                                     else
                                     {
-                                        zombies.Add(new Zombie(zombie1, levelRects[i / 3], 3));
+                                        zombies.Add(new Zombie(player, zombie1, levelRects[i / 3], 3));
                                         currentZombies++;
                                     }
                                     break;
                                 case 4:
                                     if (currentZombies < zombies.Count)
                                     {
-                                        zombies[currentZombies] = new Zombie(zombie2, levelRects[i / 3], 3);
+                                        zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], 3);
                                         currentZombies++;
                                     }
                                     else
                                     {
-                                        zombies.Add(new Zombie(zombie2, levelRects[i / 3], 3));
+                                        zombies.Add(new Zombie(player, zombie2, levelRects[i / 3], 3));
                                         currentZombies++;
                                     }
                                     break;
@@ -374,11 +374,11 @@ namespace ApocalypticPizzaDash
                                         player = new Player(player.Image, new Rectangle(levelRects[i / 3].X, levelRects[i / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth, player.Lives);
                                         break;
                                     case 3:
-                                        zombies[currentZombies] = new Zombie(zombie1, levelRects[i / 3], 3);
+                                        zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], 3);
                                         currentZombies++;
                                         break;
                                     case 4:
-                                        zombies[currentZombies] = new Zombie(zombie2, levelRects[i / 3], 3);
+                                        zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], 3);
                                         currentZombies++;
                                         break;
                                 }
@@ -484,11 +484,11 @@ namespace ApocalypticPizzaDash
                                             player = new Player(player.Image, new Rectangle(levelRects[i / 3].X, levelRects[i / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth, player.Lives);
                                             break;
                                         case 3:
-                                            zombies[currentZombies] = new Zombie(zombie1, levelRects[i / 3], 3);
+                                            zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], 3);
                                             currentZombies++;
                                             break;
                                         case 4:
-                                            zombies[currentZombies] = new Zombie(zombie2, levelRects[i / 3], 3);
+                                            zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], 3);
                                             currentZombies++;
                                             break;
                                     }
@@ -966,24 +966,24 @@ namespace ApocalypticPizzaDash
                         case 3:
                             if (currentZombies < zombies.Count)
                             {
-                                zombies[currentZombies] = new Zombie(zombie1, levelRects[l / 3], 3);
+                                zombies[currentZombies] = new Zombie(player, zombie1, levelRects[l / 3], 3);
                                 currentZombies++;
                             }
                             else
                             {
-                                zombies.Add(new Zombie(zombie1, levelRects[l / 3], 3));
+                                zombies.Add(new Zombie(player, zombie1, levelRects[l / 3], 3));
                                 currentZombies++;
                             }
                             break;
                         case 4:
                             if (currentZombies < zombies.Count)
                             {
-                                zombies[currentZombies] = new Zombie(zombie2, levelRects[l / 3], 3);
+                                zombies[currentZombies] = new Zombie(player, zombie2, levelRects[l / 3], 3);
                                 currentZombies++;
                             }
                             else
                             {
-                                zombies.Add(new Zombie(zombie2, levelRects[l / 3], 3));
+                                zombies.Add(new Zombie(player, zombie2, levelRects[l / 3], 3));
                                 currentZombies++;
                             }
                             break;

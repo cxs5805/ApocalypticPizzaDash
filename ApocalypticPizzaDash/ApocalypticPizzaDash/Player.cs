@@ -12,8 +12,8 @@ namespace ApocalypticPizzaDash
     {
 
         // jumping attributes
-        private const float GRAVITY = 1.3f;
-        private const float INITL_JUMP_V = -20f;
+        private const float GRAVITY = .9f;
+        private const float INITL_JUMP_V = -16f;
         private float ySpeed;
         private bool isUp, isClimbing, isAttacking;
         private bool allDelivered, isDelivering;
