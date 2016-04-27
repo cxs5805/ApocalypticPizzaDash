@@ -90,6 +90,10 @@ namespace ApocalypticPizzaDash
         bool buildingsLeft;
         Texture2D building1;
         Texture2D building2;
+        Texture2D building3;
+        Texture2D building4;
+        Texture2D building5;
+        Texture2D building6;
         Texture2D delivery2;
         int currentBuildings;
 
@@ -201,6 +205,10 @@ namespace ApocalypticPizzaDash
             // buildings
             building1 = Content.Load<Texture2D>("Building1");
             building2 = Content.Load<Texture2D>("Building2");
+            building3 = Content.Load<Texture2D>("Building3");
+            building4 = Content.Load<Texture2D>("Building4");
+            building5 = Content.Load<Texture2D>("Building5");
+            building6 = Content.Load<Texture2D>("Building6");
             delivery2 = Content.Load<Texture2D>("Delivery2");
 
             //indicator
@@ -343,6 +351,70 @@ namespace ApocalypticPizzaDash
                                     {
                                         zombies.Add(new Zombie(player, zombie2, levelRects[i / 3], 3));
                                         currentZombies++;
+                                    }
+                                    break;
+                                case 5:
+                                    if (currentBuildings < buildings.Count)
+                                    {
+                                        buildings[currentBuildings] = new Building(2, levelRects[i / 3], building3);
+                                        buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                        currentBuildings++;
+                                    }
+                                    else
+                                    {
+                                        buildings.Add(new Building(2, levelRects[i / 3], building3));
+                                        buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                        currentBuildings++;
+                                    }
+                                    break;
+                                case 6:
+                                    if (currentBuildings < buildings.Count)
+                                    {
+                                        buildings[currentBuildings] = new Building(3, levelRects[i / 3], building4);
+                                        buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                        currentBuildings++;
+                                    }
+                                    else
+                                    {
+                                        buildings.Add(new Building(3, levelRects[i / 3], building4));
+                                        buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                        currentBuildings++;
+                                    }
+                                    break;
+                                case 7:
+                                    if (currentBuildings < buildings.Count)
+                                    {
+                                        buildings[currentBuildings] = new Building(4, levelRects[i / 3], building5);
+                                        buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                        currentBuildings++;
+                                    }
+                                    else
+                                    {
+                                        buildings.Add(new Building(4, levelRects[i / 3], building5));
+                                        buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                        currentBuildings++;
+                                    }
+                                    break;
+                                case 8:
+                                    if (currentBuildings < buildings.Count)
+                                    {
+                                        buildings[currentBuildings] = new Building(5, levelRects[i / 3], building6);
+                                        buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                        currentBuildings++;
+                                    }
+                                    else
+                                    {
+                                        buildings.Add(new Building(5, levelRects[i / 3], building6));
+                                        buildings[currentBuildings].SetHitboxes();
+                                        indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                        currentBuildings++;
                                     }
                                     break;
                             }
@@ -985,6 +1057,70 @@ namespace ApocalypticPizzaDash
                             {
                                 zombies.Add(new Zombie(player, zombie2, levelRects[l / 3], 3));
                                 currentZombies++;
+                            }
+                            break;
+                        case 5:
+                            if (currentBuildings < buildings.Count)
+                            {
+                                buildings[currentBuildings] = new Building(2, levelRects[l / 3], building3);
+                                buildings[currentBuildings].SetHitboxes();
+                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                currentBuildings++;
+                            }
+                            else
+                            {
+                                buildings.Add(new Building(2, levelRects[l / 3], building3));
+                                buildings[currentBuildings].SetHitboxes();
+                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                currentBuildings++;
+                            }
+                            break;
+                        case 6:
+                            if (currentBuildings < buildings.Count)
+                            {
+                                buildings[currentBuildings] = new Building(3, levelRects[l / 3], building4);
+                                buildings[currentBuildings].SetHitboxes();
+                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                currentBuildings++;
+                            }
+                            else
+                            {
+                                buildings.Add(new Building(3, levelRects[l / 3], building4));
+                                buildings[currentBuildings].SetHitboxes();
+                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                currentBuildings++;
+                            }
+                            break;
+                        case 7:
+                            if (currentBuildings < buildings.Count)
+                            {
+                                buildings[currentBuildings] = new Building(4, levelRects[l / 3], building5);
+                                buildings[currentBuildings].SetHitboxes();
+                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                currentBuildings++;
+                            }
+                            else
+                            {
+                                buildings.Add(new Building(4, levelRects[l / 3], building5));
+                                buildings[currentBuildings].SetHitboxes();
+                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                currentBuildings++;
+                            }
+                            break;
+                        case 8:
+                            if (currentBuildings < buildings.Count)
+                            {
+                                buildings[currentBuildings] = new Building(5, levelRects[l / 3], building6);
+                                buildings[currentBuildings].SetHitboxes();
+                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                currentBuildings++;
+                            }
+                            else
+                            {
+                                buildings.Add(new Building(5, levelRects[l / 3], building6));
+                                buildings[currentBuildings].SetHitboxes();
+                                indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
+                                currentBuildings++;
                             }
                             break;
                     }
