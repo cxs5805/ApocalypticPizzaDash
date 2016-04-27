@@ -14,13 +14,15 @@ namespace ApocalypticPizzaDash
         private int index;
         private Random rand;
         private Player player;
+        private int speed;
         // design note: for milestone 3, make all frame animation variables attributes and params of constructor
 
-        public Zombie(Player play, Texture2D image, Rectangle rect, int health):base(image, rect, health)
+        public Zombie(Player play, Texture2D image, Rectangle rect, int health, int speed):base(image, rect, health)
         {
             rand = new Random();
             index = rand.Next(0, 2);
             player = play;
+            this.speed = speed;
         }
 
         /// <summary>
@@ -33,7 +35,7 @@ namespace ApocalypticPizzaDash
             if(index == 0)
             {
                 Dir = Direction.MoveLeft;
-                Rect = new Rectangle(Rect.X - 1, Rect.Y, Rect.Width, Rect.Height);
+                Rect = new Rectangle(Rect.X - speed, Rect.Y, Rect.Width, Rect.Height);
 
                 // when zombie hits boundary, it moves right
                 if (Rect.X <= 0)
@@ -51,7 +53,7 @@ namespace ApocalypticPizzaDash
             else if (index == 1)
             {
                 Dir = Direction.MoveRight;
-                Rect = new Rectangle(Rect.X + 1, Rect.Y, Rect.Width, Rect.Height);
+                Rect = new Rectangle(Rect.X + speed, Rect.Y, Rect.Width, Rect.Height);
 
                 // when zombie hits boundary, it moves left
                 if (Rect.X + Rect.Width >= screenWidth)

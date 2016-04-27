@@ -30,6 +30,8 @@ namespace ApocalypticPizzaDash
         GameState gState, gStatePrev;
         KeyboardState kState, kStatePrev;
         double timer;
+        double maxTime = 6000;
+        double minTime = 3600;
         int score, loop;
         bool isPaused, isLoading;
         int elTimer = 0;
@@ -78,6 +80,10 @@ namespace ApocalypticPizzaDash
         List<Zombie> zombies;
         Texture2D zombie1;
         Texture2D zombie2;
+        int zombieSpeed;
+        int maxZombieSpeed = 2;
+        int zombieHealth;
+        int maxZombieHealth = 10;
         const int ZOMBIE_HEIGHT = 42;
         const int ZOMBIE_WIDTH = 26;
         int zombieFrame;
@@ -146,7 +152,9 @@ namespace ApocalypticPizzaDash
             // init Zombie list and add one zombie for testing purposes
             zombies = new List<Zombie>();
             zombies.Add(new Zombie(player, null, new Rectangle(GraphicsDevice.Viewport.Width,
-            GraphicsDevice.Viewport.Height - 75, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), 3));
+            GraphicsDevice.Viewport.Height - 75, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), 3, 1));
+            zombieSpeed = 1;
+            zombieHealth = 3;
 
             // init buildings list
             buildings = new List<Building>();
@@ -257,7 +265,7 @@ namespace ApocalypticPizzaDash
                         if (zombies[i].Die())
                         {
                             zombies[i] = new Zombie(player, zombies[i].Image, new Rectangle(GraphicsDevice.Viewport.Width,
-                                GraphicsDevice.Viewport.Height - 75, PLAYER_WIDTH, PLAYER_HEIGHT), 100);
+                                GraphicsDevice.Viewport.Height - 75, PLAYER_WIDTH, PLAYER_HEIGHT), 3, 1);
                         }
                     }
 
@@ -266,15 +274,21 @@ namespace ApocalypticPizzaDash
                     if(kState.IsKeyDown(Keys.Enter) && kStatePrev.IsKeyUp(Keys.Enter))
                     {
                         gState = GameState.Game;
-                        
+
                         // each level lasts 100 seconds (1 min 40)
-                        timer = 6000;
+                        zombieSpeed = 1;
+                        zombieHealth = 3;
+                        currentLevel = 1;
+                        loop = 1;
+                        timer = maxTime - ((loop - 1) * 600);
+                        if (timer < minTime)
+                        {
+                            timer = minTime;
+                        }
 
                         // by default, player has no points
                         score = 0;
                         buildingsLeft = true;
-                        currentLevel = 1;
-                        loop = 1;
 
                         // clear any leftover in-game assets 
                         levelData.Clear();
@@ -332,24 +346,24 @@ namespace ApocalypticPizzaDash
                                 case 3:
                                     if (currentZombies < zombies.Count)
                                     {
-                                        zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], 3);
+                                        zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], zombieHealth, zombieSpeed);
                                         currentZombies++;
                                     }
                                     else
                                     {
-                                        zombies.Add(new Zombie(player, zombie1, levelRects[i / 3], 3));
+                                        zombies.Add(new Zombie(player, zombie1, levelRects[i / 3], zombieHealth, zombieSpeed));
                                         currentZombies++;
                                     }
                                     break;
                                 case 4:
                                     if (currentZombies < zombies.Count)
                                     {
-                                        zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], 3);
+                                        zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], zombieHealth, zombieSpeed);
                                         currentZombies++;
                                     }
                                     else
                                     {
-                                        zombies.Add(new Zombie(player, zombie2, levelRects[i / 3], 3));
+                                        zombies.Add(new Zombie(player, zombie2, levelRects[i / 3], zombieHealth, zombieSpeed));
                                         currentZombies++;
                                     }
                                     break;
@@ -436,7 +450,11 @@ namespace ApocalypticPizzaDash
                         {
                             player.Lives--;
                             player.IsDelivering = false;
-                            timer = 6000;
+                            timer = maxTime - ((loop - 1) * 600);
+                            if (timer < minTime)
+                            {
+                                timer = minTime;
+                            }
                             int currentZombies = 0;
                             for (int i = 0; i < levelData.Count; i += 3)
                             {
@@ -446,11 +464,11 @@ namespace ApocalypticPizzaDash
                                         player = new Player(player.Image, new Rectangle(levelRects[i / 3].X, levelRects[i / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth, player.Lives);
                                         break;
                                     case 3:
-                                        zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], 3);
+                                        zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], zombieHealth, zombieSpeed);
                                         currentZombies++;
                                         break;
                                     case 4:
-                                        zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], 3);
+                                        zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], zombieHealth, zombieSpeed);
                                         currentZombies++;
                                         break;
                                 }
@@ -546,7 +564,11 @@ namespace ApocalypticPizzaDash
                             {
                                 player.Lives--;
                                 player.IsDelivering = false;
-                                timer = 6000;
+                                timer = maxTime - ((loop - 1) * 600);
+                                if (timer < minTime)
+                                {
+                                    timer = minTime;
+                                }
                                 int currentZombies = 0;
                                 for (int i = 0; i < levelData.Count; i += 3)
                                 {
@@ -556,11 +578,11 @@ namespace ApocalypticPizzaDash
                                             player = new Player(player.Image, new Rectangle(levelRects[i / 3].X, levelRects[i / 3].Y, PLAYER_WIDTH, PLAYER_HEIGHT), player.TotalHealth, player.Lives);
                                             break;
                                         case 3:
-                                            zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], 3);
+                                            zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], zombieHealth, zombieSpeed);
                                             currentZombies++;
                                             break;
                                         case 4:
-                                            zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], 3);
+                                            zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], zombieHealth, zombieSpeed);
                                             currentZombies++;
                                             break;
                                     }
@@ -655,6 +677,15 @@ namespace ApocalypticPizzaDash
                                 {
                                     currentLevel = 1;
                                     loop++;
+                                    if(loop == 3)
+                                    {
+                                        zombieSpeed++;
+                                    }
+                                    zombieHealth += loop % 2;
+                                    if(zombieHealth > maxZombieHealth)
+                                    {
+                                        zombieHealth = maxZombieHealth;
+                                    }
                                 }
                                 gState = GameState.Loading;
                             }
@@ -985,7 +1016,11 @@ namespace ApocalypticPizzaDash
                 isLoading = true;
                 // Time to load the new level
                 buildingsLeft = true;
-                timer = 6000;
+                timer = maxTime - ((loop - 1) * 600);
+                if (timer < minTime)
+                {
+                    timer = minTime;
+                }
                 levelData.Clear();
                 buildings.Clear();
                 zombies.Clear();
@@ -1038,24 +1073,24 @@ namespace ApocalypticPizzaDash
                         case 3:
                             if (currentZombies < zombies.Count)
                             {
-                                zombies[currentZombies] = new Zombie(player, zombie1, levelRects[l / 3], 3);
+                                zombies[currentZombies] = new Zombie(player, zombie1, levelRects[l / 3], zombieHealth, zombieSpeed);
                                 currentZombies++;
                             }
                             else
                             {
-                                zombies.Add(new Zombie(player, zombie1, levelRects[l / 3], 3));
+                                zombies.Add(new Zombie(player, zombie1, levelRects[l / 3], zombieHealth, zombieSpeed));
                                 currentZombies++;
                             }
                             break;
                         case 4:
                             if (currentZombies < zombies.Count)
                             {
-                                zombies[currentZombies] = new Zombie(player, zombie2, levelRects[l / 3], 3);
+                                zombies[currentZombies] = new Zombie(player, zombie2, levelRects[l / 3], zombieHealth, zombieSpeed);
                                 currentZombies++;
                             }
                             else
                             {
-                                zombies.Add(new Zombie(player, zombie2, levelRects[l / 3], 3));
+                                zombies.Add(new Zombie(player, zombie2, levelRects[l / 3], zombieHealth, zombieSpeed));
                                 currentZombies++;
                             }
                             break;
@@ -1125,6 +1160,7 @@ namespace ApocalypticPizzaDash
                             break;
                     }
                 }
+                // break here
             }
         }
     }
