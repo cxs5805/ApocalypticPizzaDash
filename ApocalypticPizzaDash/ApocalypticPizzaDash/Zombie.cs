@@ -12,16 +12,20 @@ namespace ApocalypticPizzaDash
     {
         // attributes
         private int index;
+        public bool isFalling;
         private Random rand;
         private Player player;
+        private int count;
         // design note: for milestone 3, make all frame animation variables attributes and params of constructor
 
         public Zombie(Player play, Texture2D image, Rectangle rect, int health):base(image, rect, health)
         {
+            isFalling = false;  
             rand = new Random();
             index = rand.Next(0, 2);
             player = play;
-        }
+            count = 0;
+    }
 
         /// <summary>
         /// randomizes the zombies' movements
@@ -29,40 +33,77 @@ namespace ApocalypticPizzaDash
         /// <param name="screenWidth"></param>
         public void Move(int screenWidth)
         {
-            // moving the zombie left
-            if(index == 0)
+            if (count > 30)
             {
-                Dir = Direction.MoveLeft;
-                Rect = new Rectangle(Rect.X - 1, Rect.Y, Rect.Width, Rect.Height);
+                isFalling = false;
+                count = 0;
+            }
 
-                // when zombie hits boundary, it moves right
-                if (Rect.X <= 0)
+            // moving the zombie left
+            if (!isFalling)
+            {
+                if (index == 0)
                 {
-                    Dir = Direction.MoveRight;
-                    index = 1;
+                    Dir = Direction.MoveLeft;
+                    Rect = new Rectangle(Rect.X - 1, Rect.Y, Rect.Width, Rect.Height);
+
+                    // when zombie hits boundary, it moves right
+                    if (Rect.X <= 0)
+                    {
+                        Dir = Direction.MoveRight;
+                        index = 1;
+                    }
+                    else if ((player.Rect.X - Rect.X) <= 400 && (player.Rect.X - Rect.X) >= 50 && player.Rect.Y >= 210)
+                    {
+                        Dir = Direction.MoveRight;
+                        index = 1;
+                    }
                 }
-                else if((player.Rect.X - Rect.X) <= 400 && (player.Rect.X - Rect.X) >= 100 && player.Rect.Y >= 210)
+                // moving the zombie right
+                else if (index == 1)
                 {
                     Dir = Direction.MoveRight;
-                    index = 1;
+                    Rect = new Rectangle(Rect.X + 1, Rect.Y, Rect.Width, Rect.Height);
+
+                    // when zombie hits boundary, it moves left
+                    if (Rect.X + Rect.Width >= screenWidth)
+                    {
+                        Dir = Direction.MoveLeft;
+                        index = 0;
+                    }
+                    else if ((Rect.X - player.Rect.X) <= 400 && (Rect.X - player.Rect.X) >= 50 && player.Rect.Y >= 210)
+                    {
+                        Dir = Direction.MoveLeft;
+                        index = 0;
+                    }
                 }
             }
-            // moving the zombie right
-            else if (index == 1)
+            else if (isFalling)
             {
-                Dir = Direction.MoveRight;
-                Rect = new Rectangle(Rect.X + 1, Rect.Y, Rect.Width, Rect.Height);
-
-                // when zombie hits boundary, it moves left
-                if (Rect.X + Rect.Width >= screenWidth)
+                if (index == 0)
                 {
                     Dir = Direction.MoveLeft;
-                    index = 0;
+                    Rect = new Rectangle(Rect.X - 5, Rect.Y - (15 - count), Rect.Width, Rect.Height);
+                    count++;
+                    // when zombie hits boundary, it moves right
+                    if (Rect.X <= 0)
+                    {
+                        Dir = Direction.MoveRight;
+                        index = 1;
+                    }
                 }
-                else if ((Rect.X - player.Rect.X) <= 400 && (Rect.X - player.Rect.X) >= 100 && player.Rect.Y >= 210)
+                // moving the zombie right
+                else if (index == 1)
                 {
-                    Dir = Direction.MoveLeft;
-                    index = 0;
+                    Dir = Direction.MoveRight;
+                    Rect = new Rectangle(Rect.X + 5, Rect.Y - (15 - count), Rect.Width, Rect.Height);
+                    count++;
+                    // when zombie hits boundary, it moves left
+                    if (Rect.X + Rect.Width >= screenWidth)
+                    {
+                        Dir = Direction.MoveLeft;
+                        index = 0;
+                    }
                 }
             }
         }
