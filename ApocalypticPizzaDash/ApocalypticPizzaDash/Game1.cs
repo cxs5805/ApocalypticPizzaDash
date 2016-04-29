@@ -957,29 +957,12 @@ namespace ApocalypticPizzaDash
                         {
                             if (zombies[i].Dir == Direction.MoveLeft)
                             {
-
-                                if (!zombies[i].isFalling)
-                                {
-                                    spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color, 0, Vector2.Zero, 1,
+                                spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color, 0, Vector2.Zero, 1,
                                     SpriteEffects.FlipHorizontally, 0);
-                                }
-                                else
-                                {
-                                    spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(6 * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color);
-                                }
-
                             }
                             else if (zombies[i].Dir == Direction.MoveRight)
                             {
-                                if (!zombies[i].isFalling)
-                                {
-                                    spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color);
-                                }
-                                else
-                                {
-                                    spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(6 * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color, 0, Vector2.Zero, 1,
-                                    SpriteEffects.FlipHorizontally, 0);
-                                }
+                                spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color);
                             }
 
                         }
