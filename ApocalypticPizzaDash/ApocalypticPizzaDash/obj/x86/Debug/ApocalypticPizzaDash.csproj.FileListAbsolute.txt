@@ -263,3 +263,8 @@ Z:\GDAPSII\PAPD429\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug
 Z:\GDAPSII\PAPD429\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\MonoGame.Framework.dll
 Z:\GDAPSII\PAPD429\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\OpenTK.dll
 Z:\GDAPSII\PAPD429\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
+D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building3.png
+D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building4.png
+D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building5.png
+D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building6.png
+D:\Users\cxs5805\ApocalypticPizzaDash-master\ApocalypticPizzaDash-master\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\pizza.png
