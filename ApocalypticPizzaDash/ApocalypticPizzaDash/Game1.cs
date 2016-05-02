@@ -898,15 +898,6 @@ namespace ApocalypticPizzaDash
                         {
                             zombies[i].Color = Color.White;
                         }
-                        if (player.Rect.Intersects(zombies[i].Rect))
-                        {
-                            player.Color = Color.Red;
-                            break;
-                        }
-                        else
-                        {
-                            player.Color = Color.White;
-                        }
                     }
 
 
@@ -1113,9 +1104,9 @@ namespace ApocalypticPizzaDash
                                 zombies.Add(new Zombie(player, zombie1, levelRects[l / 3], zombieHealth, zombieSpeed));
                                 currentZombies++;
                             }
-                            if (zombies[l - 1].Rect.Y != 360)
+                            if (zombies[currentZombies - 1].Rect.Y != 360)
                             {
-                                zombies[l - 1].Rect = new Rectangle(zombies[l - 1].Rect.X, 360, zombies[l - 1].Rect.Width, zombies[l - 1].Rect.Height);
+                                zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width, zombies[currentZombies - 1].Rect.Height);
                             }
                             break;
                         case 4:
@@ -1129,9 +1120,9 @@ namespace ApocalypticPizzaDash
                                 zombies.Add(new Zombie(player, zombie2, levelRects[l / 3], zombieHealth, zombieSpeed));
                                 currentZombies++;
                             }
-                            if (zombies[l - 1].Rect.Y != 360)
+                            if (zombies[currentZombies - 1].Rect.Y != 360)
                             {
-                                zombies[l - 1].Rect = new Rectangle(zombies[l - 1].Rect.X, 360, zombies[l - 1].Rect.Width, zombies[l - 1].Rect.Height);
+                                zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width, zombies[currentZombies - 1].Rect.Height);
                             }
                             break;
                         case 5:

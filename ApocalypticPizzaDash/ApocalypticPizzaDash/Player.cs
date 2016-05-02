@@ -322,10 +322,6 @@ namespace ApocalypticPizzaDash
             if(invincible == 0)
             {
                 CurrentHealth--;
-                if(IsColliding && !WasColliding)
-                {
-                    Color = Color.Red;
-                }
             }
         }
 
