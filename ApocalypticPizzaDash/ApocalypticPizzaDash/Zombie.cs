@@ -21,7 +21,7 @@ namespace ApocalypticPizzaDash
 
         public Zombie(Player play, Texture2D image, Rectangle rect, int health, int speed):base(image, rect, health)
         {
-            isFalling = true;
+            isFalling = false;
             count = 0;
             rand = new Random();
             index = rand.Next(0, 2);

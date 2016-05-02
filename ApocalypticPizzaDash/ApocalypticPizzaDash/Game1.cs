@@ -78,18 +78,30 @@ namespace ApocalypticPizzaDash
 
         // zombie attributes
         List<Zombie> zombies;
+        List<BossZombie> bosses;
         Texture2D zombie1;
         Texture2D zombie2;
+        Texture2D bZombie;
         int zombieSpeed;
         int maxZombieSpeed = 2;
+        int bossSpeed;
+        int maxBossspeed = 2;
         int zombieHealth;
+        int bossHealth;
         int maxZombieHealth = 10;
+        int maxBossHealth = 20;
         const int ZOMBIE_HEIGHT = 42;
         const int ZOMBIE_WIDTH = 26;
+        const int BOSS_HEIGHT = 52;
+        const int BOSS_WIDTH = 40;
         int zombieFrame;
         int numZombieFrames = 5;
         int zombieFramesElapsed;
         double timePerZombieFrame = 100;
+        int bossFrame;
+        int numBossFrames = 3;
+        int bossFramesElapsed;
+        double timePerBossFrame = 100;
 
         // buildings
         List<Building> buildings;
@@ -156,6 +168,13 @@ namespace ApocalypticPizzaDash
             zombieSpeed = 1;
             zombieHealth = 3;
 
+            //also a boss
+            bosses = new List<BossZombie>();
+            bosses.Add(new BossZombie(player, null, new Rectangle(GraphicsDevice.Viewport.Width,
+            GraphicsDevice.Viewport.Height - 100, BOSS_WIDTH, BOSS_HEIGHT), 3, 2));
+            bossSpeed = 1;
+            bossHealth = 5;
+
             // init buildings list
             buildings = new List<Building>();
 
@@ -209,6 +228,7 @@ namespace ApocalypticPizzaDash
 
             zombie1 = Content.Load<Texture2D>("Zombie1");
             zombie2 = Content.Load<Texture2D>("Zombie2");
+            bZombie = Content.Load<Texture2D>("BossZombieWalking");
 
             // buildings
             building1 = Content.Load<Texture2D>("Building1");
@@ -279,6 +299,10 @@ namespace ApocalypticPizzaDash
                         zombieSpeed = 1;
                         zombieHealth = 3;
                         currentLevel = 1;
+
+                        bossSpeed = 1;
+                        bossHealth = 5;
+
                         loop = 1;
                         timer = maxTime - ((loop - 1) * 600);
                         if (timer < minTime)
@@ -294,6 +318,7 @@ namespace ApocalypticPizzaDash
                         levelData.Clear();
                         buildings.Clear();
                         zombies.Clear();
+                        bosses.Clear();
                         indicator.Clear();
 
                         // read in level file and set
@@ -302,6 +327,7 @@ namespace ApocalypticPizzaDash
                         levelData.RemoveAt(0);
                         levelRects = reader.makeRect(levelData);
                         int currentZombies = 0;
+                        int currentbosses = 0;
                         currentBuildings = 0;
                         for(int i = 0; i < levelData.Count; i += 3)
                         {
@@ -504,6 +530,10 @@ namespace ApocalypticPizzaDash
                         {
                             zombies[i].IsColliding = false;
                         }
+                        for (int i = 0; i < bosses.Count; i++)
+                        {
+                            bosses[i].IsColliding = false;
+                        }
                         for (int i = 0; i < zombies.Count; i++)
                         {
                             // if player's attack box collides with zombie, zombie takes damage
@@ -536,6 +566,47 @@ namespace ApocalypticPizzaDash
                                 player.Invincible = 120;
                             }
                         }
+                        for (int i = 0; i < bosses.Count; i++)
+                        {
+                            // if player's attack box collides with boss, it takes damage
+                            if (player.AttackBox.Intersects(bosses[i].Rect) && bosses[i].CurrentHealth > 0)
+                            {
+                                // boss gets pushed back (may remove
+                                if (bosses[i].Rect.X - player.AttackBox.X > 0)
+                                {
+                                    bosses[i].Rect = new Rectangle(bosses[i].Rect.X + 13, bosses[i].Rect.Y, bosses[i].Rect.Width, bosses[i].Rect.Height);
+                                }
+                                else if (bosses[i].Rect.X - player.AttackBox.X <= 0)
+                                {
+                                    bosses[i].Rect = new Rectangle(bosses[i].Rect.X - 13, bosses[i].Rect.Y, bosses[i].Rect.Width, bosses[i].Rect.Height);
+                                }
+
+                                bosses[i].IsColliding = true;
+                                bosses[i].Collision();
+
+                                // Increment score by 100 points upon kill
+                                if (bosses[i].CurrentHealth == 0 && bosses[i].Rect != Rectangle.Empty)
+                                {
+                                    score += 100;
+                                }
+                            }
+                            // if boss collides with player, player takes damage
+                            if (bosses[i].Rect.Intersects(player.Rect) && player.CurrentHealth > 0 && player.Invincible == 0)
+                            {
+                                player.IsColliding = true;
+                                player.Collision();
+                                player.Invincible = 120;
+                            }
+                            //if boss is aggro and collides with zombie, knockback
+                            for (int j = 0; j < zombies.Count; j++)
+                            {
+                                if (zombies[j].Rect.Intersects(bosses[i].Rect) && bosses[i].isAngry)
+                                {
+                                    zombies[j].isFalling = true;
+                                    zombies[j].CurrentHealth = zombies[i].CurrentHealth - 1;
+                            }
+                            }
+                        }
                         if (player.Invincible > 0)
                         {
                             player.Invincible--;
@@ -545,6 +616,10 @@ namespace ApocalypticPizzaDash
                         {
                             zombies[i].WasColliding = zombies[i].IsColliding;
                         }
+                        for (int i = 0; i < bosses.Count; i++)
+                        {
+                            bosses[i].WasColliding = bosses[i].IsColliding;
+                        }
 
                         // getting total number of frames elapsed thus far in the existence of each object 
                         playerAttackFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerAttackFrame);
@@ -552,6 +627,7 @@ namespace ApocalypticPizzaDash
                         playerDeliveryFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerDeliveryFrame);
                         playerFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerFrame);
                         zombieFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerZombieFrame);
+                        bossFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerBossFrame);
 
                         // when the player runs out of health, the game ends
                         if (player.Die())
@@ -570,6 +646,7 @@ namespace ApocalypticPizzaDash
                                     timer = minTime;
                                 }
                                 int currentZombies = 0;
+                                int currentBosses = 0;
                                 for (int i = 0; i < levelData.Count; i += 3)
                                 {
                                     switch(levelData[i])
@@ -596,6 +673,15 @@ namespace ApocalypticPizzaDash
                             if (zombies[i].CurrentHealth <= 0)
                             {
                                 zombies[i].Rect = Rectangle.Empty;
+                            }
+                        }
+
+                        // as does the boss
+                        for (int i = 0; i < bosses.Count; i++)
+                        {
+                            if (bosses[i].CurrentHealth <= 0)
+                            {
+                                bosses[i].Rect = Rectangle.Empty;
                             }
                         }
 
@@ -680,11 +766,18 @@ namespace ApocalypticPizzaDash
                                     if(loop == 3)
                                     {
                                         zombieSpeed++;
+                                        bossSpeed++;
                                     }
                                     zombieHealth += loop % 2;
-                                    if(zombieHealth > maxZombieHealth)
+                                    bossHealth += loop % 2;
+                                    if (zombieHealth > maxZombieHealth)
                                     {
                                         zombieHealth = maxZombieHealth;
+                                    }
+
+                                    if (bossHealth > maxBossHealth)
+                                    {
+                                        bossHealth = maxBossHealth;
                                     }
                                 }
                                 gState = GameState.Loading;
@@ -740,7 +833,14 @@ namespace ApocalypticPizzaDash
                             zombies[i].Move(levelWidth);
                         }
                         zombieFrame = zombieFramesElapsed % numZombieFrames + 1;
-                        
+
+                        // and the bosses
+                        for (int i = 0; i < bosses.Count; i++)
+                        {
+                            bosses[i].Move(levelWidth);
+                        }
+                        bossFrame = bossFramesElapsed % numBossFrames + 1;
+
                         // decrement the timer
                         timer--;
                     }
@@ -895,8 +995,8 @@ namespace ApocalypticPizzaDash
                     
                     spriteBatch.Draw(gameover, collision, Color.White);*/
 
-                    // drawing the player
-                    if (player.Invincible == 0 || player.Invincible % 30 <= 15)
+                        // drawing the player
+                        if (player.Invincible == 0 || player.Invincible % 30 <= 15)
                     {
                         if (player.CurrentHealth > 0)
                         {
@@ -985,8 +1085,24 @@ namespace ApocalypticPizzaDash
                         }
                     }
 
-                    // draw the pause screen
-                    if (isPaused)
+                    for (int i = 0; i < bosses.Count; i++)
+                    {
+                        if (bosses[i].CurrentHealth > 0)
+                        {
+                            if (bosses[i].Dir == Direction.MoveLeft)
+                            {
+                                spriteBatch.Draw(bZombie, new Vector2(bosses[i].Rect.X - screen.X, bosses[i].Rect.Y), new Rectangle(bossFrame * BOSS_WIDTH, 0, BOSS_WIDTH, BOSS_HEIGHT), bosses[i].Color, 0, Vector2.Zero, 1,
+                                SpriteEffects.FlipHorizontally, 0);
+                            }
+                            else if (bosses[i].Dir == Direction.MoveRight)
+                            {
+                                spriteBatch.Draw(bZombie, new Vector2(bosses[i].Rect.X - screen.X, bosses[i].Rect.Y), new Rectangle(bossFrame * BOSS_WIDTH, 0, BOSS_WIDTH, BOSS_HEIGHT), bosses[i].Color);
+                            }
+                        }
+                    }
+
+                        // draw the pause screen
+                        if (isPaused)
                     {
                         spriteBatch.Draw(pause, new Rectangle(0, 0, 800, 450), Color.White);
                     }
@@ -1041,12 +1157,14 @@ namespace ApocalypticPizzaDash
                 levelData.Clear();
                 buildings.Clear();
                 zombies.Clear();
+                bosses.Clear();
                 indicator.Clear();
                 levelData = reader.readIn("Content/Levels/level" + currentLevel.ToString() + ".dat");
                 levelWidth = levelData[0] * 2;
                 levelData.RemoveAt(0);
                 levelRects = reader.makeRect(levelData);
                 int currentZombies = 0;
+                int currentBosses = 0;
                 currentBuildings = 0;
                 for (int l = 0; l < levelData.Count; l += 3)
                 {
