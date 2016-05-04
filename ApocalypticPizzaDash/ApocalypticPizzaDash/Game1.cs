@@ -318,7 +318,7 @@ namespace ApocalypticPizzaDash
                         levelData.Clear();
                         buildings.Clear();
                         zombies.Clear();
-                        bosses.Clear();
+                        //bosses.Clear();
                         indicator.Clear();
 
                         // read in level file and set
@@ -942,7 +942,30 @@ namespace ApocalypticPizzaDash
                     case GameState.Game:
 
                     // draw the in-game backdrop
-                    spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), Color.White);
+                    if ((int)(timer / 3600) == 1 || (int)((timer / 60) % 60) >= 50)
+                    {
+                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(0, 0, 800, 450), Color.White);
+                    }
+                    else if ((int)((timer / 60) % 60) < 50 && (int)((timer / 60) % 60) >= 40)
+                    {
+                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(800, 0, 800, 450), Color.White);
+                    }
+                    else if ((int)((timer / 60) % 60) < 40 && (int)((timer / 60) % 60) >= 30)
+                    {
+                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(1600, 0, 800, 450), Color.White);
+                    }
+                    else if ((int)((timer / 60) % 60) < 30 && (int)((timer / 60) % 60) >= 20)
+                    {
+                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(2400, 0, 800, 450), Color.White);
+                    }
+                    else if ((int)((timer / 60) % 60) < 20 && (int)((timer / 60) % 60) >= 10)
+                    {
+                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(3200, 0, 800, 450), Color.White);
+                    }
+                    else if ((int)((timer / 60) % 60) < 10 && (int)((timer / 60) % 60) >= 00)
+                    {
+                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(4000, 0, 800, 450), Color.White);
+                    }
 
                     // format time to display in minutes and seconds
                     int minutes = (int)(timer / 3600);
