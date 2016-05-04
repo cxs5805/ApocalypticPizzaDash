@@ -305,3 +305,4 @@ Z:\GDAPSII\PAPD52\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\
 Z:\GDAPSII\PAPD52\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\OpenTK.dll
 Z:\GDAPSII\PAPD52\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
 Z:\GDAPSII\PAPD52\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\BossZombieWalking.png
+D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\BossZombieWalking.png

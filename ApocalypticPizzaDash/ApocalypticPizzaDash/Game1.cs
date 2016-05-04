@@ -380,6 +380,11 @@ namespace ApocalypticPizzaDash
                                         zombies.Add(new Zombie(player, zombie1, levelRects[i / 3], zombieHealth, zombieSpeed));
                                         currentZombies++;
                                     }
+                                    if (zombies[currentZombies - 1].Rect.Y != 360)
+                                    {
+                                        zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width,
+                                            zombies[currentZombies - 1].Rect.Height);
+                                    }
                                     break;
                                 case 4:
                                     if (currentZombies < zombies.Count)
@@ -391,6 +396,11 @@ namespace ApocalypticPizzaDash
                                     {
                                         zombies.Add(new Zombie(player, zombie2, levelRects[i / 3], zombieHealth, zombieSpeed));
                                         currentZombies++;
+                                    }
+                                    if (zombies[currentZombies - 1].Rect.Y != 360)
+                                    {
+                                        zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width,
+                                            zombies[currentZombies - 1].Rect.Height);
                                     }
                                     break;
                                 case 5:
@@ -492,10 +502,20 @@ namespace ApocalypticPizzaDash
                                     case 3:
                                         zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], zombieHealth, zombieSpeed);
                                         currentZombies++;
+                                        if (zombies[currentZombies - 1].Rect.Y != 360)
+                                        {
+                                            zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width,
+                                                zombies[currentZombies - 1].Rect.Height);
+                                        }
                                         break;
                                     case 4:
                                         zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], zombieHealth, zombieSpeed);
                                         currentZombies++;
+                                        if (zombies[currentZombies - 1].Rect.Y != 360)
+                                        {
+                                            zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width,
+                                                zombies[currentZombies - 1].Rect.Height);
+                                        }
                                         break;
                                 }
                             }
@@ -657,10 +677,20 @@ namespace ApocalypticPizzaDash
                                         case 3:
                                             zombies[currentZombies] = new Zombie(player, zombie1, levelRects[i / 3], zombieHealth, zombieSpeed);
                                             currentZombies++;
+                                            if (zombies[currentZombies - 1].Rect.Y != 360)
+                                            {
+                                                zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width,
+                                                    zombies[currentZombies - 1].Rect.Height);
+                                            }
                                             break;
                                         case 4:
                                             zombies[currentZombies] = new Zombie(player, zombie2, levelRects[i / 3], zombieHealth, zombieSpeed);
                                             currentZombies++;
+                                            if (zombies[currentZombies - 1].Rect.Y != 360)
+                                            {
+                                                zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width,
+                                                    zombies[currentZombies - 1].Rect.Height);
+                                            }
                                             break;
                                     }
                                 }
@@ -968,15 +998,6 @@ namespace ApocalypticPizzaDash
                         {
                             zombies[i].Color = Color.White;
                         }
-                        if (player.Rect.Intersects(zombies[i].Rect))
-                        {
-                            player.Color = Color.Red;
-                            break;
-                        }
-                        else
-                        {
-                            player.Color = Color.White;
-                        }
                     }
 
 
@@ -1216,6 +1237,10 @@ namespace ApocalypticPizzaDash
                                 zombies.Add(new Zombie(player, zombie1, levelRects[l / 3], zombieHealth, zombieSpeed));
                                 currentZombies++;
                             }
+                            if (zombies[currentZombies - 1].Rect.Y != 360)
+                            {
+                                zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width, zombies[currentZombies - 1].Rect.Height);
+                            }
                             break;
                         case 4:
                             if (currentZombies < zombies.Count)
@@ -1227,6 +1252,10 @@ namespace ApocalypticPizzaDash
                             {
                                 zombies.Add(new Zombie(player, zombie2, levelRects[l / 3], zombieHealth, zombieSpeed));
                                 currentZombies++;
+                            }
+                            if (zombies[currentZombies - 1].Rect.Y != 360)
+                            {
+                                zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width, zombies[currentZombies - 1].Rect.Height);
                             }
                             break;
                         case 5:
