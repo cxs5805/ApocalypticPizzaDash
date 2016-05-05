@@ -79,32 +79,32 @@ namespace ApocalypticPizzaDash
                         index = 0;
                     }
                 }
-                else if (isFalling)
+            }
+            else if (isFalling)
+            {
+                if (index == 0)
                 {
-                    if (index == 0)
-                    {
-                        Dir = Direction.MoveLeft;
-                        Rect = new Rectangle(Rect.X - 5, Rect.Y - (15 - count), Rect.Width, Rect.Height);
-                        count++;
-                        // when zombie hits boundary, it moves right
-                        if (Rect.X <= 0)
-                        {
-                            Dir = Direction.MoveRight;
-                            index = 1;
-                        }
-                    }
-                    // moving the zombie right
-                    else if (index == 1)
+                    Dir = Direction.MoveLeft;
+                    Rect = new Rectangle(Rect.X - 5, Rect.Y - (15 - count), Rect.Width, Rect.Height);
+                    count++;
+                    // when zombie hits boundary, it moves right
+                    if (Rect.X <= 0)
                     {
                         Dir = Direction.MoveRight;
-                        Rect = new Rectangle(Rect.X + 5, Rect.Y - (15 - count), Rect.Width, Rect.Height);
-                        count++;
-                        // when zombie hits boundary, it moves left
-                        if (Rect.X + Rect.Width >= screenWidth)
-                        {
-                            Dir = Direction.MoveLeft;
-                            index = 0;
-                        }
+                        index = 1;
+                    }
+                }
+                // moving the zombie right
+                else if (index == 1)
+                {
+                    Dir = Direction.MoveRight;
+                    Rect = new Rectangle(Rect.X + 5, Rect.Y - (15 - count), Rect.Width, Rect.Height);
+                    count++;
+                    // when zombie hits boundary, it moves left
+                    if (Rect.X + Rect.Width >= screenWidth)
+                    {
+                        Dir = Direction.MoveLeft;
+                        index = 0;
                     }
                 }
             }

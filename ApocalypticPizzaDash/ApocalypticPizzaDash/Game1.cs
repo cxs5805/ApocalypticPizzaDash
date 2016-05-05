@@ -318,7 +318,7 @@ namespace ApocalypticPizzaDash
                         levelData.Clear();
                         buildings.Clear();
                         zombies.Clear();
-                        //bosses.Clear();
+                        bosses.Clear();
                         indicator.Clear();
 
                         // read in level file and set
@@ -467,6 +467,15 @@ namespace ApocalypticPizzaDash
                                         currentBuildings++;
                                     }
                                     break;
+                                case 9:
+                                    bosses.Add(new BossZombie(player, bZombie, levelRects[i / 3], bossHealth, bossSpeed));
+                                    currentbosses++;
+                                    if(bosses[currentbosses - 1].Rect.Y + bosses[currentbosses - 1].Rect.Height != 402)
+                                    {
+                                        bosses[currentbosses - 1].Rect = new Rectangle(bosses[currentbosses - 1].Rect.X, 402 - bosses[currentbosses - 1].Rect.Height,
+                                            bosses[currentbosses - 1].Rect.Height, bosses[currentbosses - 1].Rect.Width);
+                                    }
+                                    break;
                             }
                         }
                     }
@@ -492,6 +501,7 @@ namespace ApocalypticPizzaDash
                                 timer = minTime;
                             }
                             int currentZombies = 0;
+                            int currentBosses = 0;
                             for (int i = 0; i < levelData.Count; i += 3)
                             {
                                 switch (levelData[i])
@@ -515,6 +525,21 @@ namespace ApocalypticPizzaDash
                                         {
                                             zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width,
                                                 zombies[currentZombies - 1].Rect.Height);
+                                        }
+                                        break;
+                                    case 9:
+                                        if(bosses.Count > 0)
+                                        {
+                                            if(bosses[currentBosses].CurrentHealth > 0)
+                                            {
+                                                bosses[currentBosses] = new BossZombie(player, bZombie, levelRects[i / 3], bossHealth, bossSpeed);
+                                                if(bosses[currentBosses].Rect.Y + bosses[currentBosses].Rect.Height != 402)
+                                                {
+                                                    bosses[currentBosses].Rect = new Rectangle(bosses[currentBosses].Rect.X, 402 - bosses[currentBosses].Rect.Height,
+                                                        bosses[currentBosses].Rect.Width, bosses[currentBosses].Rect.Height);
+                                                }
+                                            }
+                                            currentBosses++;
                                         }
                                         break;
                                 }
@@ -591,7 +616,7 @@ namespace ApocalypticPizzaDash
                             // if player's attack box collides with boss, it takes damage
                             if (player.AttackBox.Intersects(bosses[i].Rect) && bosses[i].CurrentHealth > 0)
                             {
-                                // boss gets pushed back (may remove
+                                // boss gets pushed back (may remove)
                                 if (bosses[i].Rect.X - player.AttackBox.X > 0)
                                 {
                                     bosses[i].Rect = new Rectangle(bosses[i].Rect.X + 13, bosses[i].Rect.Y, bosses[i].Rect.Width, bosses[i].Rect.Height);
@@ -690,6 +715,21 @@ namespace ApocalypticPizzaDash
                                             {
                                                 zombies[currentZombies - 1].Rect = new Rectangle(zombies[currentZombies - 1].Rect.X, 360, zombies[currentZombies - 1].Rect.Width,
                                                     zombies[currentZombies - 1].Rect.Height);
+                                            }
+                                            break;
+                                        case 9:
+                                            if (bosses.Count > 0)
+                                            {
+                                                if (bosses[currentBosses].CurrentHealth > 0)
+                                                {
+                                                    bosses[currentBosses] = new BossZombie(player, bZombie, levelRects[i / 3], bossHealth, bossSpeed);
+                                                    if (bosses[currentBosses].Rect.Y + bosses[currentBosses].Rect.Height != 402)
+                                                    {
+                                                        bosses[currentBosses].Rect = new Rectangle(bosses[currentBosses].Rect.X, 402 - bosses[currentBosses].Rect.Height,
+                                                            bosses[currentBosses].Rect.Width, bosses[currentBosses].Rect.Height);
+                                                    }
+                                                }
+                                                currentBosses++;
                                             }
                                             break;
                                     }
@@ -1343,6 +1383,15 @@ namespace ApocalypticPizzaDash
                                 buildings[currentBuildings].SetHitboxes();
                                 indicator.Add(new Rectangle(indBar.X + ((indBar.Width * buildings[currentBuildings].Hitboxes["door1"].X) / levelWidth) - 8, 45, 22, 20));
                                 currentBuildings++;
+                            }
+                            break;
+                        case 9:
+                            bosses.Add(new BossZombie(player, bZombie, levelRects[l / 3], bossHealth, bossSpeed));
+                            currentBosses++;
+                            if(bosses[currentBosses - 1].Rect.Y + bosses[currentBosses - 1].Rect.Height != 402)
+                            {
+                                bosses[currentBosses - 1].Rect = new Rectangle(bosses[currentBosses - 1].Rect.X, 402 - bosses[currentBosses - 1].Rect.Height,
+                                    bosses[currentBosses - 1].Rect.Height, bosses[currentBosses - 1].Rect.Width);
                             }
                             break;
                     }

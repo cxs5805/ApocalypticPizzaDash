@@ -121,6 +121,10 @@ namespace ApocalypticPizzaDash
                         height = 298;
                         width = 204;
                         break;
+                    case 9: //boss zombie
+                        height = 52;
+                        width = 40;
+                        break;
                     default:
                         height = 0;
                         width = 0;

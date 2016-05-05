@@ -348,3 +348,9 @@ Z:\GDAPSII\PAPD54\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\
 Z:\GDAPSII\PAPD54\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\MonoGame.Framework.dll
 Z:\GDAPSII\PAPD54\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\OpenTK.dll
 Z:\GDAPSII\PAPD54\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\BossZombieWalking.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building3.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building4.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building5.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\Building6.png
+C:\Users\Edward-Game\Documents\Visual Studio 2015\Projects\GDAPS 2\apocalypse-pizza\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\pizza.png
