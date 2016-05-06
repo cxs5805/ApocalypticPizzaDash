@@ -396,3 +396,4 @@ Z:\GDAPSII\PAPD56\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\
 Z:\GDAPSII\PAPD56\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\MonoGame.Framework.dll
 Z:\GDAPSII\PAPD56\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\OpenTK.dll
 Z:\GDAPSII\PAPD56\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
+D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\scores.txt
