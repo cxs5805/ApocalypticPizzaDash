@@ -296,12 +296,13 @@ namespace ApocalypticPizzaDash
                         gState = GameState.Game;
 
                         // each level lasts 100 seconds (1 min 40)
+
+                        bossSpeed = 1;
+                        bossHealth = 5; 
                         zombieSpeed = 1;
                         zombieHealth = 3;
                         currentLevel = 1;
 
-                        bossSpeed = 1;
-                        bossHealth = 5;
 
                         loop = 1;
                         timer = maxTime - ((loop - 1) * 600);
@@ -647,7 +648,7 @@ namespace ApocalypticPizzaDash
                             {
                                 if (zombies[j].Rect.Intersects(bosses[i].Rect) && bosses[i].isAngry)
                                 {
-                                    zombies[j].isFalling = true;
+                                    zombies[j].Fall();
                                     zombies[j].CurrentHealth = zombies[i].CurrentHealth - 1;
                             }
                             }

@@ -110,6 +110,19 @@ namespace ApocalypticPizzaDash
             }
         }
 
+        public void Fall()
+        {
+            isFalling = true;
+            if (index == 1)
+            {
+                index = 0;
+            }
+            else
+            {
+                index = 1;
+            }
+        }
+
         /// <summary>
         /// overrides the Collision method such that the zombie will not glow red
         /// </summary>

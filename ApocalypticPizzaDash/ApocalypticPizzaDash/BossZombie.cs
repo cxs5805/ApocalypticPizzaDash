@@ -37,9 +37,7 @@ namespace ApocalypticPizzaDash
             if (index == 0)
             {
                 Dir = Direction.MoveLeft;
-                Rect = new Rectangle(Rect.X - speed /*/ 2*/, Rect.Y, Rect.Width, Rect.Height);  // Had to comment out dividing the boss zombie's speed by 2.
-                // This is because speed is an int, and initial speed is 1. 1/2 is 0.5, which in c# rounds down to 0.
-
+                Rect = new Rectangle(Rect.X - speed, Rect.Y, Rect.Width, Rect.Height);
                 isAngry = false;
 
                 // when boss hits boundary, it moves right
@@ -52,6 +50,11 @@ namespace ApocalypticPizzaDash
                 {
                     Dir = Direction.MoveRight;
                     index = 1;
+                }
+
+                //make boss aggro
+                if ((player.Rect.X - Rect.X) <= 500 && player.Rect.Y >= 210)
+                {
                     isAngry = true;
                 }
             }
@@ -59,7 +62,7 @@ namespace ApocalypticPizzaDash
             else if (index == 1)
             {
                 Dir = Direction.MoveRight;
-                Rect = new Rectangle(Rect.X + speed /*/ 2*/, Rect.Y, Rect.Width, Rect.Height);  // Ditto on commenting out the speed divisor.
+                Rect = new Rectangle(Rect.X + speed, Rect.Y, Rect.Width, Rect.Height);
                 isAngry = false;
 
                 // when boss hits boundary, it moves left
@@ -72,6 +75,11 @@ namespace ApocalypticPizzaDash
                 {
                     Dir = Direction.MoveLeft;
                     index = 0;
+                }
+
+                //make boss aggro
+                if ((Rect.X - player.Rect.X) <= 500 && player.Rect.Y >= 210)
+                {
                     isAngry = true;
                 }
             }
