@@ -31,7 +31,7 @@ namespace ApocalypticPizzaDash
         KeyboardState kState, kStatePrev;
         double timer;
         double maxTime = 6000;
-        double minTime = 3600;
+        double minTime = 1200;
         int score, loop;
         bool isPaused, isLoading;
         int elTimer = 0;
@@ -297,7 +297,7 @@ namespace ApocalypticPizzaDash
 
                         // each level lasts 100 seconds (1 min 40)
 
-                        bossSpeed = 1;
+                        bossSpeed = 2;
                         bossHealth = 5; 
                         zombieSpeed = 1;
                         zombieHealth = 3;
@@ -305,7 +305,7 @@ namespace ApocalypticPizzaDash
 
 
                         loop = 1;
-                        timer = maxTime - ((loop - 1) * 600);
+                        timer = maxTime - ((loop - 1) * 1200);
                         if (timer < minTime)
                         {
                             timer = minTime;
@@ -496,7 +496,7 @@ namespace ApocalypticPizzaDash
                         {
                             player.Lives--;
                             player.IsDelivering = false;
-                            timer = maxTime - ((loop - 1) * 600);
+                            timer = maxTime - ((loop - 1) * 1200);
                             if (timer < minTime)
                             {
                                 timer = minTime;
@@ -649,7 +649,7 @@ namespace ApocalypticPizzaDash
                                 if (zombies[j].Rect.Intersects(bosses[i].Rect) && bosses[i].isAngry)
                                 {
                                     zombies[j].Fall();
-                                    zombies[j].CurrentHealth = zombies[i].CurrentHealth - 1;
+                                    //zombies[j].CurrentHealth = zombies[i].CurrentHealth - 1;
                             }
                             }
                         }
@@ -686,7 +686,7 @@ namespace ApocalypticPizzaDash
                             {
                                 player.Lives--;
                                 player.IsDelivering = false;
-                                timer = maxTime - ((loop - 1) * 600);
+                                timer = maxTime - ((loop - 1) * 1200);
                                 if (timer < minTime)
                                 {
                                     timer = minTime;
@@ -1234,7 +1234,7 @@ namespace ApocalypticPizzaDash
                 isLoading = true;
                 // Time to load the new level
                 buildingsLeft = true;
-                timer = maxTime - ((loop - 1) * 600);
+                timer = maxTime - ((loop - 1) * 1200);
                 if (timer < minTime)
                 {
                     timer = minTime;
