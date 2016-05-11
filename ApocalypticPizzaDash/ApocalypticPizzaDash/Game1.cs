@@ -22,6 +22,7 @@ namespace ApocalypticPizzaDash
         int timesEntered;
         int currentLetter;
         int[] index = new int[3];
+        int myScorePos;
 
         //alphabet for user letter choosing
         List<char> alphabet;
@@ -494,6 +495,7 @@ namespace ApocalypticPizzaDash
                         if (player.Lives == 0)
                         {
                             gState = GameState.GameOver;
+                            isWrittem = false;
                             currentLetter = 0;
                             LoadScores();
                         }
@@ -826,13 +828,20 @@ namespace ApocalypticPizzaDash
                     initials[currentLetter] = temp;
                     if (!isWrittem)
                     {
-                        WriteScores();
+                        myScorePos = WriteScores();
                     }
                     
 
                     // user can return to menu by hitting "enter"
                     if(kState.IsKeyDown(Keys.Enter) && kStatePrev.IsKeyUp(Keys.Enter))
                     {
+                        StreamWriter scoreWriter = new StreamWriter("Content/scores.txt");
+                        names[myScorePos] = initials[0].ToString() + initials[1].ToString() + initials[2].ToString();
+                        for (int l = 0; l < scores.Length; l++)
+                        {
+                            scoreWriter.WriteLine(names[l] + " " + scores[l]);
+                        }
+                        scoreWriter.Close();
                         gState = GameState.Menu;
                         timer = 0;
                     }
@@ -1273,9 +1282,9 @@ namespace ApocalypticPizzaDash
             //isLoaded = true;
         }
 
-        public void WriteScores()
+        public int WriteScores()
         {
-            StreamWriter scoreWriter = new StreamWriter("Content/scores.txt");
+            int myScorePos = -1;
 
             for (int i = 0; i < scores.Length; i++)
             {
@@ -1296,20 +1305,15 @@ namespace ApocalypticPizzaDash
                     }
                     temp[i] = currentScore;
                     tempName[i] = initials[0].ToString() + initials[1].ToString() + initials[2].ToString();
+                    myScorePos = i;
                     scores = temp;
                     names = tempName;
                     break;
                 }
             }
 
-            for (int l = 0; l < scores.Length; l++)
-            {
-                scoreWriter.WriteLine(names[l] + " " + scores[l]);
-            }
-
-            scoreWriter.Close();
-
             isWrittem = true;
+            return myScorePos;
         }
 
         //reusing single key press for the hi score table
