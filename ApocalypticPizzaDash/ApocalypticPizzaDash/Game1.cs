@@ -219,7 +219,6 @@ namespace ApocalypticPizzaDash
 
             //loading screen pizza
             pizza = Content.Load<Texture2D>("pizza");
-            loadingBkd = Content.Load<Texture2D>("loading");
 
             // now giving the player and zombie their respective sprites
             player.Image = Content.Load<Texture2D>("spritesheet");
