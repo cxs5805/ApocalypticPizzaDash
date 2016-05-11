@@ -530,3 +530,5 @@ Z:\GDAPSII\PAPD511\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug
 Z:\GDAPSII\PAPD511\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
 Z:\GDAPSII\PAPD511\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\BG-2.png
 D:\Users\eeo4537\ApocalypticPizzaDash\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Debug\Content\BG-2.png
+Z:\GDAPSII\511.5\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.exe
+Z:\GDAPSII\511.5\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Debug\ApocalypticPizzaDash.pdb
