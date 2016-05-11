@@ -71,6 +71,9 @@
     <Content Include="Content\BG-1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\BG-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\BossZombieWalking.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

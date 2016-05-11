@@ -35,7 +35,7 @@ namespace ApocalypticPizzaDash
         int score, loop;
         bool isPaused, isLoading;
         int elTimer = 0;
-        Texture2D backdrop, pause, gameover;
+        Texture2D backdrop, sky, pause, gameover;
 
         //player attributes
         Player player;
@@ -211,6 +211,7 @@ namespace ApocalypticPizzaDash
 
             // basic backdrop for each level
             backdrop = Content.Load<Texture2D>("BG-1");
+            sky = Content.Load<Texture2D>("BG-2");
 
             gameover = Content.Load<Texture2D>("gameover");
 
@@ -985,28 +986,14 @@ namespace ApocalypticPizzaDash
                     // draw the in-game backdrop
                     if ((int)(timer / 3600) == 1 || (int)((timer / 60) % 60) >= 50)
                     {
-                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(0, 0, 800, 450), Color.White);
+                        spriteBatch.Draw(sky, new Rectangle(0, 0, 800, 450), new Rectangle(0, 0, 800, 450), Color.White);
                     }
-                    else if ((int)((timer / 60) % 60) < 50 && (int)((timer / 60) % 60) >= 40)
+                    else if ((int)((timer / 60) % 60) < 50)
                     {
-                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(800, 0, 800, 450), Color.White);
+                        spriteBatch.Draw(sky, new Rectangle(0, 0, 800, 450), new Rectangle(0, 750 - (int)(15*((timer / 60) % 60)), 800, 450), Color.White);
                     }
-                    else if ((int)((timer / 60) % 60) < 40 && (int)((timer / 60) % 60) >= 30)
-                    {
-                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(1600, 0, 800, 450), Color.White);
-                    }
-                    else if ((int)((timer / 60) % 60) < 30 && (int)((timer / 60) % 60) >= 20)
-                    {
-                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(2400, 0, 800, 450), Color.White);
-                    }
-                    else if ((int)((timer / 60) % 60) < 20 && (int)((timer / 60) % 60) >= 10)
-                    {
-                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(3200, 0, 800, 450), Color.White);
-                    }
-                    else if ((int)((timer / 60) % 60) < 10 && (int)((timer / 60) % 60) >= 00)
-                    {
-                        spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(4000, 0, 800, 450), Color.White);
-                    }
+
+                    spriteBatch.Draw(backdrop, new Rectangle(0, 0, 800, 450), new Rectangle(0, 0, 800, 450), Color.White);
 
                     // format time to display in minutes and seconds
                     int minutes = (int)(timer / 3600);
