@@ -15,15 +15,16 @@ namespace ApocalypticPizzaDash
     public class Game1 : Game
     {
         //hi-score attributes
-        string letterOne;
-        int[] scores = new int[3];
+        char[] initials = new char[3];
+        int[] scores = new int[3]; string[] names = new string[3];
         bool isLoaded = false, isWrittem = false;
         int currentScore;
         int timesEntered;
-        int index;
+        int currentLetter;
+        int[] index = new int[3];
 
         //alphabet for user letter choosing
-        List<string> alphabet;
+        List<char> alphabet;
 
         //level loading pizza
         Texture2D loadingBkd;
@@ -154,36 +155,41 @@ namespace ApocalypticPizzaDash
         protected override void Initialize()
         {
             //hi score stuff
-
-            alphabet = new List<string>();
+            initials[0] = 'A';
+            initials[1] = 'A';
+            initials[2] = 'A';
+            index[0] = 0;
+            index[1] = 0;
+            index[2] = 0;
+            alphabet = new List<char>();
 
             //adds each letter of the alphabet to the list
-            alphabet.Add("A");
-            alphabet.Add("B");
-            alphabet.Add("C");
-            alphabet.Add("D");
-            alphabet.Add("E");
-            alphabet.Add("F");
-            alphabet.Add("G");
-            alphabet.Add("H");
-            alphabet.Add("I");
-            alphabet.Add("J");
-            alphabet.Add("K");
-            alphabet.Add("L");
-            alphabet.Add("M");
-            alphabet.Add("N");
-            alphabet.Add("O");
-            alphabet.Add("P");
-            alphabet.Add("Q");
-            alphabet.Add("R");
-            alphabet.Add("S");
-            alphabet.Add("T");
-            alphabet.Add("U");
-            alphabet.Add("V");
-            alphabet.Add("W");
-            alphabet.Add("X");
-            alphabet.Add("Y");
-            alphabet.Add("Z");
+            alphabet.Add('A');
+            alphabet.Add('B');
+            alphabet.Add('C');
+            alphabet.Add('D');
+            alphabet.Add('E');
+            alphabet.Add('F');
+            alphabet.Add('G');
+            alphabet.Add('H');
+            alphabet.Add('I');
+            alphabet.Add('J');
+            alphabet.Add('K');
+            alphabet.Add('L');
+            alphabet.Add('M');
+            alphabet.Add('N');
+            alphabet.Add('O');
+            alphabet.Add('P');
+            alphabet.Add('Q');
+            alphabet.Add('R');
+            alphabet.Add('S');
+            alphabet.Add('T');
+            alphabet.Add('U');
+            alphabet.Add('V');
+            alphabet.Add('W');
+            alphabet.Add('X');
+            alphabet.Add('Y');
+            alphabet.Add('Z');
 
             // start game out unpaused
             isPaused = false;
@@ -488,8 +494,7 @@ namespace ApocalypticPizzaDash
                         if (player.Lives == 0)
                         {
                             gState = GameState.GameOver;
-                            index = 0;
-                            letterOne = GetLetter();
+                            currentLetter = 0;
                             LoadScores();
                         }
                         else
@@ -607,8 +612,7 @@ namespace ApocalypticPizzaDash
                                 isLoaded = false;
                                 isWrittem = false;
                                 gState = GameState.GameOver;
-                                index = 0;
-                                letterOne = GetLetter();
+                                currentLetter = 0;
                                 LoadScores();
                             }
                             else
@@ -818,8 +822,8 @@ namespace ApocalypticPizzaDash
 
                     //hi score stuff
                     kState = Keyboard.GetState();
-                    letterOne = GetLetter();
-
+                    char temp = GetLetter();
+                    initials[currentLetter] = temp;
                     if (!isWrittem)
                     {
                         WriteScores();
@@ -1040,9 +1044,28 @@ namespace ApocalypticPizzaDash
                     
                     // drawing the game over screen and prompting player to try again
                     spriteBatch.Draw(gameover, new Rectangle(0, 0, 800, 450), Color.White);
+                    bool myScore = false;
                     for (int i = 0; i < scores.Length; i++ )
                     {
-                        spriteBatch.DrawString(testFont, letterOne, new Vector2((GraphicsDevice.Viewport.Width / 2) - 64, GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.White);
+                        if (scores[i] == currentScore && !myScore)
+                        {
+                            for (int k = 0; k < initials.Length; k++)
+                            {
+                                if (k == currentLetter)
+                                {
+                                    spriteBatch.DrawString(testFont, initials[k].ToString(), new Vector2((GraphicsDevice.Viewport.Width / 2) - 64 + (k * 18), GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.Red);
+                                }
+                                else
+                                {
+                                    spriteBatch.DrawString(testFont, initials[k].ToString(), new Vector2((GraphicsDevice.Viewport.Width / 2) - 64 + (k * 18), GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.White);
+                                }
+                            }
+                            myScore = true;
+                        }
+                        else
+                        {
+                            spriteBatch.DrawString(testFont, names[i], new Vector2((GraphicsDevice.Viewport.Width / 2) - 64, GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.White);
+                        }
                         spriteBatch.DrawString(testFont, scores[i].ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.White);
                     }
                         break;
@@ -1238,6 +1261,9 @@ namespace ApocalypticPizzaDash
 
             while((currentLine = scoreReader.ReadLine()) != null)
             {
+                names[count] = currentLine[0].ToString() + currentLine[1].ToString() + currentLine[2].ToString();
+                currentLine = currentLine.Substring(3);
+                currentLine.Trim();
                 scores[count] = int.Parse(currentLine);
                 count++;
             }
@@ -1249,31 +1275,36 @@ namespace ApocalypticPizzaDash
 
         public void WriteScores()
         {
-            StreamWriter scoreWriter = new StreamWriter("scores.txt");
+            StreamWriter scoreWriter = new StreamWriter("Content/scores.txt");
 
             for (int i = 0; i < scores.Length; i++)
             {
-                if (currentScore > scores[i])
+                if (currentScore >= scores[i])
                 {
                     int[] temp = new int[scores.Length];
+                    string[] tempName = new string[names.Length];
                     for (int k = 0; k < i; k++)
                     {
                         temp[k] = scores[k];
+                        tempName[k] = names[k];
                     }
 
                     for (int j = i + 1; j < temp.Length; j++)
                     {
                         temp[j] = scores[j - 1];
+                        tempName[j] = names[j - 1];
                     }
                     temp[i] = currentScore;
+                    tempName[i] = initials[0].ToString() + initials[1].ToString() + initials[2].ToString();
                     scores = temp;
+                    names = tempName;
                     break;
                 }
             }
 
             for (int l = 0; l < scores.Length; l++)
             {
-                scoreWriter.WriteLine(scores[l]);
+                scoreWriter.WriteLine(names[l] + " " + scores[l]);
             }
 
             scoreWriter.Close();
@@ -1298,22 +1329,43 @@ namespace ApocalypticPizzaDash
         /// <summary>
         /// scrolls through the alphabet so that the user can enter their name, returns the letter that the player has selected
         /// </summary>
-        public string GetLetter()
+        public char GetLetter()
         {
-            //index is initially zero
-            //index = 0;
-
             //will start at the lowest index of the list, and add to that as the down key is pressed
             if(SingleKeyPress(Keys.Down))
             {
-                index++;
-                if(index == alphabet.Count)
+                index[currentLetter]++;
+                if(index[currentLetter] == alphabet.Count)
                 {
-                    index = 0;
+                    index[currentLetter] = 0;
+                }
+            }
+            if(SingleKeyPress(Keys.Up))
+            {
+                index[currentLetter]--;
+                if(index[currentLetter] < 0)
+                {
+                    index[currentLetter] = alphabet.Count - 1;
+                }
+            }
+            if(SingleKeyPress(Keys.Left))
+            {
+                currentLetter--;
+                if(currentLetter < 0)
+                {
+                    currentLetter = 2;
+                }
+            }
+            if(SingleKeyPress(Keys.Right))
+            {
+                currentLetter++;
+                if(currentLetter > 2)
+                {
+                    currentLetter = 0;
                 }
             }
 
-            return alphabet[index];
+            return alphabet[index[currentLetter]];
         }
     }
 }
