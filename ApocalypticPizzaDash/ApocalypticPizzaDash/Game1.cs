@@ -836,7 +836,10 @@ namespace ApocalypticPizzaDash
                     if(kState.IsKeyDown(Keys.Enter) && kStatePrev.IsKeyUp(Keys.Enter))
                     {
                         StreamWriter scoreWriter = new StreamWriter("Content/scores.txt");
-                        names[myScorePos] = initials[0].ToString() + initials[1].ToString() + initials[2].ToString();
+                        if (myScorePos != -1)
+                        {
+                            names[myScorePos] = initials[0].ToString() + initials[1].ToString() + initials[2].ToString();
+                        }
                         for (int l = 0; l < scores.Length; l++)
                         {
                             scoreWriter.WriteLine(names[l] + " " + scores[l]);
