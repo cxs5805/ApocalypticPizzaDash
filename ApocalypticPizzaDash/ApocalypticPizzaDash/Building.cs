@@ -52,6 +52,7 @@ namespace ApocalypticPizzaDash
 
         public void SetHitboxes()
         {
+            //switches work faster in this situation
             switch(type)
             {
                 case (0):
