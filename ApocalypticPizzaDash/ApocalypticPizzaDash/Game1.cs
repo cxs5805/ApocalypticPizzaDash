@@ -14,6 +14,19 @@ namespace ApocalypticPizzaDash
     /// </summary>
     public class Game1 : Game
     {
+        //hi-score attributes
+        char[] initials = new char[3];
+        int[] scores = new int[3]; string[] names = new string[3];
+        bool isLoaded = false, isWrittem = false;
+        int currentScore;
+        int timesEntered;
+        int currentLetter;
+        int[] index = new int[3];
+        int myScorePos;
+
+        //alphabet for user letter choosing
+        List<char> alphabet;
+
         //level loading pizza
         Texture2D loadingBkd;
         Texture2D pizza;
@@ -103,6 +116,7 @@ namespace ApocalypticPizzaDash
         int bossFramesElapsed;
         double timePerBossFrame = 100;
 
+
         // buildings
         List<Building> buildings;
         bool buildingsLeft;
@@ -154,6 +168,43 @@ namespace ApocalypticPizzaDash
         /// </summary>
         protected override void Initialize()
         {
+            //hi score stuff
+            initials[0] = 'A';
+            initials[1] = 'A';
+            initials[2] = 'A';
+            index[0] = 0;
+            index[1] = 0;
+            index[2] = 0;
+            alphabet = new List<char>();
+
+            //adds each letter of the alphabet to the list
+            alphabet.Add('A');
+            alphabet.Add('B');
+            alphabet.Add('C');
+            alphabet.Add('D');
+            alphabet.Add('E');
+            alphabet.Add('F');
+            alphabet.Add('G');
+            alphabet.Add('H');
+            alphabet.Add('I');
+            alphabet.Add('J');
+            alphabet.Add('K');
+            alphabet.Add('L');
+            alphabet.Add('M');
+            alphabet.Add('N');
+            alphabet.Add('O');
+            alphabet.Add('P');
+            alphabet.Add('Q');
+            alphabet.Add('R');
+            alphabet.Add('S');
+            alphabet.Add('T');
+            alphabet.Add('U');
+            alphabet.Add('V');
+            alphabet.Add('W');
+            alphabet.Add('X');
+            alphabet.Add('Y');
+            alphabet.Add('Z');
+
             // start game out unpaused
             isPaused = false;
 
@@ -296,7 +347,6 @@ namespace ApocalypticPizzaDash
                         gState = GameState.Game;
 
                         // each level lasts 100 seconds (1 min 40)
-
                         bossSpeed = 2;
                         bossHealth = 5; 
                         zombieSpeed = 1;
@@ -312,7 +362,7 @@ namespace ApocalypticPizzaDash
                         }
 
                         // by default, player has no points
-                        score = 0;
+                        currentScore = 0;
                         buildingsLeft = true;
 
                         // clear any leftover in-game assets 
@@ -471,7 +521,7 @@ namespace ApocalypticPizzaDash
                                 case 9:
                                     bosses.Add(new BossZombie(player, bZombie, levelRects[i / 3], bossHealth, bossSpeed));
                                     currentbosses++;
-                                    if(bosses[currentbosses - 1].Rect.Y + bosses[currentbosses - 1].Rect.Height != 402)
+                                    if (bosses[currentbosses - 1].Rect.Y + bosses[currentbosses - 1].Rect.Height != 402)
                                     {
                                         bosses[currentbosses - 1].Rect = new Rectangle(bosses[currentbosses - 1].Rect.X, 402 - bosses[currentbosses - 1].Rect.Height,
                                             bosses[currentbosses - 1].Rect.Height, bosses[currentbosses - 1].Rect.Width);
@@ -491,6 +541,9 @@ namespace ApocalypticPizzaDash
                         if (player.Lives == 0)
                         {
                             gState = GameState.GameOver;
+                            isWrittem = false;
+                            currentLetter = 0;
+                            LoadScores();
                         }
                         else
                         {
@@ -529,12 +582,12 @@ namespace ApocalypticPizzaDash
                                         }
                                         break;
                                     case 9:
-                                        if(bosses.Count > 0)
+                                        if (bosses.Count > 0)
                                         {
-                                            if(bosses[currentBosses].CurrentHealth > 0)
+                                            if (bosses[currentBosses].CurrentHealth > 0)
                                             {
                                                 bosses[currentBosses] = new BossZombie(player, bZombie, levelRects[i / 3], bossHealth, bossSpeed);
-                                                if(bosses[currentBosses].Rect.Y + bosses[currentBosses].Rect.Height != 402)
+                                                if (bosses[currentBosses].Rect.Y + bosses[currentBosses].Rect.Height != 402)
                                                 {
                                                     bosses[currentBosses].Rect = new Rectangle(bosses[currentBosses].Rect.X, 402 - bosses[currentBosses].Rect.Height,
                                                         bosses[currentBosses].Rect.Width, bosses[currentBosses].Rect.Height);
@@ -601,7 +654,7 @@ namespace ApocalypticPizzaDash
                                 // Increment score by 50 points upon kill
                                 if(zombies[i].CurrentHealth == 0 && zombies[i].Rect != Rectangle.Empty)
                                 {
-                                    score += 50;
+                                    currentScore += 50;
                                 }
                             }
                             // if zombie collides with player, player takes damage
@@ -612,6 +665,7 @@ namespace ApocalypticPizzaDash
                                 player.Invincible = 120;
                             }
                         }
+
                         for (int i = 0; i < bosses.Count; i++)
                         {
                             // if player's attack box collides with boss, it takes damage
@@ -650,7 +704,7 @@ namespace ApocalypticPizzaDash
                                 {
                                     zombies[j].Fall();
                                     //zombies[j].CurrentHealth = zombies[i].CurrentHealth - 1;
-                            }
+                                }
                             }
                         }
                         if (player.Invincible > 0)
@@ -662,10 +716,6 @@ namespace ApocalypticPizzaDash
                         {
                             zombies[i].WasColliding = zombies[i].IsColliding;
                         }
-                        for (int i = 0; i < bosses.Count; i++)
-                        {
-                            bosses[i].WasColliding = bosses[i].IsColliding;
-                        }
 
                         // getting total number of frames elapsed thus far in the existence of each object 
                         playerAttackFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerPlayerAttackFrame);
@@ -675,12 +725,17 @@ namespace ApocalypticPizzaDash
                         zombieFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerZombieFrame);
                         bossFramesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerBossFrame);
 
+
                         // when the player runs out of health, the game ends
                         if (player.Die())
                         {
                             if (player.Lives == 0)
                             {
+                                isLoaded = false;
+                                isWrittem = false;
                                 gState = GameState.GameOver;
+                                currentLetter = 0;
+                                LoadScores();
                             }
                             else
                             {
@@ -732,6 +787,7 @@ namespace ApocalypticPizzaDash
                                                 }
                                                 currentBosses++;
                                             }
+
                                             break;
                                     }
                                 }
@@ -845,7 +901,6 @@ namespace ApocalypticPizzaDash
                                     {
                                         zombieHealth = maxZombieHealth;
                                     }
-
                                     if (bossHealth > maxBossHealth)
                                     {
                                         bossHealth = maxBossHealth;
@@ -894,7 +949,7 @@ namespace ApocalypticPizzaDash
                                 playerDeliveryFrame = 0;
 
                                 // player earns 100 points for delivery
-                                score += 100;
+                                currentScore += 100;
                             }
                         }
 
@@ -936,10 +991,29 @@ namespace ApocalypticPizzaDash
 
                 case GameState.GameOver:
 
-                    // user can return to menu by hitting "enter"
+                    //hi score stuff
                     kState = Keyboard.GetState();
+                    char temp = GetLetter();
+                    initials[currentLetter] = temp;
+                    if (!isWrittem)
+                    {
+                        myScorePos = WriteScores();
+                    }
+                    
+
+                    // user can return to menu by hitting "enter"
                     if(kState.IsKeyDown(Keys.Enter) && kStatePrev.IsKeyUp(Keys.Enter))
                     {
+                        StreamWriter scoreWriter = new StreamWriter("Content/scores.txt");
+                        if (myScorePos != -1)
+                        {
+                            names[myScorePos] = initials[0].ToString() + initials[1].ToString() + initials[2].ToString();
+                        }
+                        for (int l = 0; l < scores.Length; l++)
+                        {
+                            scoreWriter.WriteLine(names[l] + " " + scores[l]);
+                        }
+                        scoreWriter.Close();
                         gState = GameState.Menu;
                         timer = 0;
                     }
@@ -1033,7 +1107,7 @@ namespace ApocalypticPizzaDash
                     spriteBatch.DrawString(testFont, "Day " + currentLevel.ToString() + " Week " + loop.ToString(), new Vector2(0, 32), Color.Black);
                     spriteBatch.DrawString(testFont, "Spare Lives: " + player.Lives.ToString(), new Vector2(0, 64), Color.Black);
                     spriteBatch.DrawString(testFont, timeDisplay, new Vector2(325, 0), Color.Black);
-                    spriteBatch.DrawString(testFont, "Score: " + score.ToString(), new Vector2(GraphicsDevice.Viewport.Width - 200, 0), Color.Black);
+                    spriteBatch.DrawString(testFont, "Score: " + currentScore.ToString(), new Vector2(GraphicsDevice.Viewport.Width - 200, 0), Color.Black);
 
                     // drawing the objects. when a collision occurs, both the player and the zombie turn red
                     // testing if player is colliding with the zombie on the current frame
@@ -1066,8 +1140,8 @@ namespace ApocalypticPizzaDash
                     
                     spriteBatch.Draw(gameover, collision, Color.White);*/
 
-                        // drawing the player
-                        if (player.Invincible == 0 || player.Invincible % 30 <= 15)
+                    // drawing the player
+                    if (player.Invincible == 0 || player.Invincible % 30 <= 15)
                     {
                         if (player.CurrentHealth > 0)
                         {
@@ -1132,13 +1206,12 @@ namespace ApocalypticPizzaDash
                                 if (!zombies[i].isFalling)
                                 {
                                     spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color, 0, Vector2.Zero, 1,
-                                    SpriteEffects.FlipHorizontally, 0);
+                                        SpriteEffects.FlipHorizontally, 0);
                                 }
                                 else
                                 {
                                     spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(6 * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color);
                                 }
-
                             }
                             else if (zombies[i].Dir == Direction.MoveRight)
                             {
@@ -1151,6 +1224,7 @@ namespace ApocalypticPizzaDash
                                     spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(6 * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color, 0, Vector2.Zero, 1,
                                     SpriteEffects.FlipHorizontally, 0);
                                 }
+                                spriteBatch.Draw(zombies[i].Image, new Vector2(zombies[i].Rect.X - screen.X, zombies[i].Rect.Y), new Rectangle(zombieFrame * ZOMBIE_WIDTH, 0, ZOMBIE_WIDTH, ZOMBIE_HEIGHT), zombies[i].Color);
                             }
 
                         }
@@ -1172,8 +1246,8 @@ namespace ApocalypticPizzaDash
                         }
                     }
 
-                        // draw the pause screen
-                        if (isPaused)
+                    // draw the pause screen
+                    if (isPaused)
                     {
                         spriteBatch.Draw(pause, new Rectangle(0, 0, 800, 450), Color.White);
                     }
@@ -1184,7 +1258,31 @@ namespace ApocalypticPizzaDash
                     
                     // drawing the game over screen and prompting player to try again
                     spriteBatch.Draw(gameover, new Rectangle(0, 0, 800, 450), Color.White);
-                    break;
+                    bool myScore = false;
+                    for (int i = 0; i < scores.Length; i++ )
+                    {
+                        if (scores[i] == currentScore && !myScore)
+                        {
+                            for (int k = 0; k < initials.Length; k++)
+                            {
+                                if (k == currentLetter)
+                                {
+                                    spriteBatch.DrawString(testFont, initials[k].ToString(), new Vector2((GraphicsDevice.Viewport.Width / 2) - 64 + (k * 18), GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.Red);
+                                }
+                                else
+                                {
+                                    spriteBatch.DrawString(testFont, initials[k].ToString(), new Vector2((GraphicsDevice.Viewport.Width / 2) - 64 + (k * 18), GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.White);
+                                }
+                            }
+                            myScore = true;
+                        }
+                        else
+                        {
+                            spriteBatch.DrawString(testFont, names[i], new Vector2((GraphicsDevice.Viewport.Width / 2) - 64, GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.White);
+                        }
+                        spriteBatch.DrawString(testFont, scores[i].ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.White);
+                    }
+                        break;
                 
                 //draws the pizza
                 case GameState.Loading:
@@ -1375,7 +1473,7 @@ namespace ApocalypticPizzaDash
                         case 9:
                             bosses.Add(new BossZombie(player, bZombie, levelRects[l / 3], bossHealth, bossSpeed));
                             currentBosses++;
-                            if(bosses[currentBosses - 1].Rect.Y + bosses[currentBosses - 1].Rect.Height != 402)
+                            if (bosses[currentBosses - 1].Rect.Y + bosses[currentBosses - 1].Rect.Height != 402)
                             {
                                 bosses[currentBosses - 1].Rect = new Rectangle(bosses[currentBosses - 1].Rect.X, 402 - bosses[currentBosses - 1].Rect.Height,
                                     bosses[currentBosses - 1].Rect.Height, bosses[currentBosses - 1].Rect.Width);
@@ -1385,6 +1483,117 @@ namespace ApocalypticPizzaDash
                 }
                 // break here
             }
+        }
+
+        public void LoadScores()
+        {
+            StreamReader scoreReader = new StreamReader("Content/scores.txt");
+            
+            string currentLine = "";
+            int count = 0;
+
+            while((currentLine = scoreReader.ReadLine()) != null)
+            {
+                names[count] = currentLine[0].ToString() + currentLine[1].ToString() + currentLine[2].ToString();
+                currentLine = currentLine.Substring(3);
+                currentLine.Trim();
+                scores[count] = int.Parse(currentLine);
+                count++;
+            }
+
+            scoreReader.Close();
+
+            //isLoaded = true;
+        }
+
+        public int WriteScores()
+        {
+            int myScorePos = -1;
+
+            for (int i = 0; i < scores.Length; i++)
+            {
+                if (currentScore >= scores[i])
+                {
+                    int[] temp = new int[scores.Length];
+                    string[] tempName = new string[names.Length];
+                    for (int k = 0; k < i; k++)
+                    {
+                        temp[k] = scores[k];
+                        tempName[k] = names[k];
+                    }
+
+                    for (int j = i + 1; j < temp.Length; j++)
+                    {
+                        temp[j] = scores[j - 1];
+                        tempName[j] = names[j - 1];
+                    }
+                    temp[i] = currentScore;
+                    tempName[i] = initials[0].ToString() + initials[1].ToString() + initials[2].ToString();
+                    myScorePos = i;
+                    scores = temp;
+                    names = tempName;
+                    break;
+                }
+            }
+
+            isWrittem = true;
+            return myScorePos;
+        }
+
+        //reusing single key press for the hi score table
+        public bool SingleKeyPress(Keys key)
+        {
+            // only true if it's the first frame in which the param key is pressed
+            if (kState.IsKeyDown(key) && kStatePrev.IsKeyUp(key))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// scrolls through the alphabet so that the user can enter their name, returns the letter that the player has selected
+        /// </summary>
+        public char GetLetter()
+        {
+            //will start at the lowest index of the list, and add to that as the down key is pressed
+            if(SingleKeyPress(Keys.Down))
+            {
+                index[currentLetter]++;
+                if(index[currentLetter] == alphabet.Count)
+                {
+                    index[currentLetter] = 0;
+                }
+            }
+            if(SingleKeyPress(Keys.Up))
+            {
+                index[currentLetter]--;
+                if(index[currentLetter] < 0)
+                {
+                    index[currentLetter] = alphabet.Count - 1;
+                }
+            }
+            if(SingleKeyPress(Keys.Left))
+            {
+                currentLetter--;
+                if(currentLetter < 0)
+                {
+                    currentLetter = 2;
+                }
+            }
+            if(SingleKeyPress(Keys.Right))
+            {
+                currentLetter++;
+                if(currentLetter > 2)
+                {
+                    currentLetter = 0;
+                }
+            }
+
+            return alphabet[index[currentLetter]];
         }
     }
 }
