@@ -79,3 +79,5 @@ Z:\GDAPSII\511.5\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Release
 Z:\GDAPSII\511.5\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Release\MonoGame.Framework.dll
 Z:\GDAPSII\511.5\ApocalypticPizzaDash\ApocalypticPizzaDash\bin\WindowsGL\Release\OpenTK.dll
 Z:\GDAPSII\511.5\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Release\ApocalypticPizzaDash.csprojResolveAssemblyReference.cache
+Z:\GDAPSII\Pizza Dash 513\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Release\ApocalypticPizzaDash.exe
+Z:\GDAPSII\Pizza Dash 513\ApocalypticPizzaDash\ApocalypticPizzaDash\obj\x86\Release\ApocalypticPizzaDash.pdb
