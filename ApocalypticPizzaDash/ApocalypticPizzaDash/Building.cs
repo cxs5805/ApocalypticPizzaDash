@@ -93,8 +93,8 @@ namespace ApocalypticPizzaDash
             else if(type == 5)
             {
                 hitboxes.Add("roof1", new Rectangle(rect.X + 2, rect.Y + 26, 202, 12));
-                hitboxes.Add("platform1", new Rectangle(rect.X + 4, rect.Y + 100, 156, 8));
-                hitboxes.Add("door1", new Rectangle(rect.X + 110, rect.Y + 50, 34, 52));
+                hitboxes.Add("platform1", new Rectangle(rect.X + 4, rect.Y + 130, 156, 8));
+                hitboxes.Add("door1", new Rectangle(rect.X + 110, rect.Y + 80, 34, 52));
             }
         }
     }

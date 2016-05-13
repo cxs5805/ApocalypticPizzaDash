@@ -1278,9 +1278,9 @@ namespace ApocalypticPizzaDash
                         }
                         else
                         {
-                            spriteBatch.DrawString(testFont, names[i], new Vector2((GraphicsDevice.Viewport.Width / 2) - 64, GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.White);
+                            spriteBatch.DrawString(testFont, names[i], new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.Black);
                         }
-                        spriteBatch.DrawString(testFont, scores[i].ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.White);
+                        spriteBatch.DrawString(testFont, scores[i].ToString(), new Vector2((GraphicsDevice.Viewport.Width / 2) + 6, GraphicsDevice.Viewport.Height / 2 + (i * 32)), Color.Black);
                     }
                         break;
                 
